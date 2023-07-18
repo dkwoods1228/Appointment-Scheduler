@@ -2,9 +2,11 @@ package database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class DBConnect {
-
+    private static PreparedStatement preparedStatement;
     private static final String protocol = "jdbc";
     private static final String vendor = ":mysql:";
     private static final String location = "//localhost/";
@@ -15,7 +17,7 @@ public class DBConnect {
     private static String password = "Passw0rd!"; // Password
     public static Connection connection;  // Connection Interface
 
-    public static void openConnection()
+    public static Connection openConnection()
     {
         try {
             Class.forName(driver); // Locate Driver
@@ -26,6 +28,7 @@ public class DBConnect {
         {
             System.out.println("Error:" + e.getMessage());
         }
+        return null;
     }
 
     public static void closeConnection() {
@@ -41,5 +44,12 @@ public class DBConnect {
 
     public static Connection getConnection() {
         return connection;
+    }
+
+    public static void setPreparedStatement(Connection connection, String sqlCommand) throws SQLException {
+        preparedStatement = connection.prepareStatement(sqlCommand);
+    }
+    public static PreparedStatement getPreparedStatement() {
+        return preparedStatement;
     }
 }
