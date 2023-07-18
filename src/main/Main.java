@@ -1,6 +1,6 @@
-package Main;
+package main;
 
-import Database.DBConnect;
+import database.DBConnect;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

@@ -69,7 +69,7 @@
          <font>
             <Font size="14.0" />
          </font></Button>
-        <Button fx:id="returnToMainMenuButton" layoutX="605.0" layoutY="418.0" mnemonicParsing="false" onAction="#returnToMainMenuButtonClicked" prefHeight="30.0" prefWidth="256.0" text="Main Menu">
+        <Button fx:id="returnToMainMenuButton" layoutX="605.0" layoutY="418.0" mnemonicParsing="false" onAction="#returnToMainMenuButtonClicked" prefHeight="30.0" prefWidth="256.0" text="main Menu">
          <font>
             <Font size="14.0" />
          </font></Button>

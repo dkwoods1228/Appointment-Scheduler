@@ -1,8 +1,22 @@
 package controller;
 
 import javafx.event.ActionEvent;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 
 public class AppointmentController {
+    public TableView appointmentTable;
+    public TableColumn appointID;
+    public TableColumn appointTitle;
+    public TableColumn appointDescription;
+    public TableColumn appointLocation;
+    public TableColumn contactID;
+    public TableColumn appointType;
+    public TableColumn appointStart;
+    public TableColumn appointEnd;
+    public TableColumn appointCustomerID;
+    public TableColumn userID;
+
     public void addAppointButtonClicked(ActionEvent actionEvent) {
     }
 

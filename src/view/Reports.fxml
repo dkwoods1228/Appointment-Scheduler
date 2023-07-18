@@ -62,7 +62,7 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <Button layoutX="823.0" layoutY="589.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="117.0" text="Main Menu" />
+      <Button layoutX="823.0" layoutY="589.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="117.0" text="main Menu" />
       <Line endX="657.0" layoutX="339.0" layoutY="314.0" startX="-339.0" stroke="#0000004b" />
       <Line endX="10.5" endY="-27.5" layoutX="584.0" layoutY="341.0" startX="10.5" startY="290.0" stroke="#0000004b" />
    </children>

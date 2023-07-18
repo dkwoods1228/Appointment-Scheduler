@@ -61,7 +61,7 @@
          <font>
             <Font size="14.0" />
          </font></Button>
-      <Button fx:id="customerToMainMenuButton" layoutX="350.0" layoutY="392.0" mnemonicParsing="false" onAction="#customerToMainMenuButtonClicked" prefHeight="25.0" prefWidth="252.0" text="Main Menu">
+      <Button fx:id="customerToMainMenuButton" layoutX="350.0" layoutY="392.0" mnemonicParsing="false" onAction="#customerToMainMenuButtonClicked" prefHeight="25.0" prefWidth="252.0" text="main Menu">
          <font>
             <Font size="14.0" />
          </font></Button>
