@@ -6,14 +6,17 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.*;
 
 import java.io.IOException;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -22,9 +25,11 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Optional;
+import java.util.ResourceBundle;
+
 import static main.Timezone.timeAndDateToUTC;
 
-public class AppointmentController {
+public class AppointmentController implements Initializable {
     @FXML
     private Button exitButton;
     @FXML
@@ -328,5 +333,28 @@ public class AppointmentController {
             Stage exitProgram = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             exitProgram.close();
         }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        try {
+            ObservableList<Appointment> maintainAppointments = AppointmentDAO.getAppointments();
+            appointID.setCellValueFactory(new PropertyValueFactory<>("appointID"));
+            appointTitle.setCellValueFactory(new PropertyValueFactory<>("appointTitle"));
+            appointDescription.setCellValueFactory(new PropertyValueFactory<>("appointDescription"));
+            appointLocation.setCellValueFactory(new PropertyValueFactory<>("appointLocation"));
+            contactID.setCellValueFactory(new PropertyValueFactory<>("contactID"));
+            appointType.setCellValueFactory(new PropertyValueFactory<>("appointType"));
+            appointStart.setCellValueFactory(new PropertyValueFactory<>("start"));
+            appointEnd.setCellValueFactory(new PropertyValueFactory<>("end"));
+            appointCustomerID.setCellValueFactory(new PropertyValueFactory<>("appointCustomerID"));
+            userID.setCellValueFactory(new PropertyValueFactory<>("userID"));
+
+            appointmentTable.setItems(maintainAppointments);
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
     }
+}
 
