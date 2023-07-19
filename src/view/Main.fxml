@@ -7,7 +7,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="364.0" prefWidth="343.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
    <children>
-      <Label layoutX="111.0" layoutY="56.0" text="main Menu" textAlignment="CENTER">
+      <Label layoutX="111.0" layoutY="56.0" text="Main Menu" textAlignment="CENTER">
          <font>
             <Font size="24.0" />
          </font>

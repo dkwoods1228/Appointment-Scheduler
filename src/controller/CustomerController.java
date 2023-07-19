@@ -72,7 +72,13 @@ public class CustomerController implements Initializable {
     void addCustomerButtonClicked(ActionEvent actionEvent) {
         try {
             Connection connection = DBConnect.openConnection();
-            if (!updateCustomerName.getText().isEmpty() || !updateCustomerAddress.getText().isEmpty() || !updateCustomerPostalCode.getText().isEmpty() || !updateCustomerPhoneNumber.getText().isEmpty() || !updateCustomerCountry.getValue().isEmpty() || !updateCustomerStateProv.getValue().isEmpty()) {
+            if (updateCustomerName.getText().isEmpty() || updateCustomerAddress.getText().isEmpty() || updateCustomerPostalCode.getText().isEmpty() || updateCustomerPhoneNumber.getText().isEmpty() || updateCustomerCountry.getValue().isEmpty() || updateCustomerStateProv.getValue().isEmpty()) {
+                Alert missingFields = new Alert(Alert.AlertType.ERROR);
+                missingFields.setTitle("Missing Information");
+                missingFields.setContentText("You must enter information in all fields to add an appointment.");
+                missingFields.showAndWait();
+
+            } else if (!updateCustomerName.getText().isEmpty() || !updateCustomerAddress.getText().isEmpty() || !updateCustomerPostalCode.getText().isEmpty() || !updateCustomerPhoneNumber.getText().isEmpty() || !updateCustomerCountry.getValue().isEmpty() || !updateCustomerStateProv.getValue().isEmpty()) {
 
                 Integer disabledCustomerID = (int) (Math.random() * 50);
                 int division = 0;
@@ -294,5 +300,12 @@ public class CustomerController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void exitButtonClicked(ActionEvent actionEvent) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"Are you sure you would like to exit this program?");
+        alert.showAndWait();
+        Stage exitProgram = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        exitProgram.close();
     }
 }
