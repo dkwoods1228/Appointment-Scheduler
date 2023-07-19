@@ -47,8 +47,7 @@
       <ComboBox fx:id="updateCustomerCountry" layoutX="631.0" layoutY="327.0" onAction="#updateCustomerCountryComboBox" prefWidth="150.0" />
       <ComboBox fx:id="updateCustomerStateProv" layoutX="631.0" layoutY="379.0" prefWidth="150.0" />
       <Line endX="60.0" endY="-42.0" layoutX="555.0" layoutY="44.0" startX="60.0" startY="425.5" stroke="#0000004b" />
-      <Button fx:id="customerSaveButton" layoutX="637.0" layoutY="420.0" mnemonicParsing="false" onAction="#customerSaveButtonClicked" text="Save" />
-      <Button fx:id="customerCancelButton" layoutX="706.0" layoutY="420.0" mnemonicParsing="false" onAction="#customerCancelButtonClicked" text="Cancel" />
+      <Button fx:id="customerSaveButton" layoutX="643.0" layoutY="420.0" mnemonicParsing="false" onAction="#customerSaveButtonClicked" prefHeight="25.0" prefWidth="120.0" text="Save" />
       <Button fx:id="addCustomerButton" layoutX="25.0" layoutY="340.0" mnemonicParsing="false" onAction="#addCustomerButtonClicked" prefHeight="25.0" prefWidth="252.0" text="Add Customer">
          <font>
             <Font size="14.0" />
@@ -61,7 +60,7 @@
          <font>
             <Font size="14.0" />
          </font></Button>
-      <Button fx:id="customerToMainMenuButton" layoutX="350.0" layoutY="392.0" mnemonicParsing="false" onAction="#customerToMainMenuButtonClicked" prefHeight="25.0" prefWidth="252.0" text="main Menu">
+      <Button fx:id="customerToMainMenuButton" layoutX="350.0" layoutY="392.0" mnemonicParsing="false" onAction="#customerToMainMenuButtonClicked" prefHeight="25.0" prefWidth="252.0" text="Main Menu">
          <font>
             <Font size="14.0" />
          </font></Button>

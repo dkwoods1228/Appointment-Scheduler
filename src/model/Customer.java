@@ -7,17 +7,17 @@ public class Customer {
     private String customerPostal;
     private String customerPhone;
     private int divisionID;
-    private String divisionName;
+    private String division;
 
     public Customer(int customerID, String customerName, String customerAddress, String customerPostal, String customerPhone,
-                    int divisionID, String divisionName) {
+                    int divisionID, String division) {
         this.customerID = customerID;
         this.customerName = customerName;
         this.customerAddress = customerAddress;
         this.customerPhone = customerPhone;
         this.customerPostal = customerPostal;
         this.divisionID = divisionID;
-        this.divisionName = divisionName;
+        this.division = division;
     }
 
     public int getCustomerID() {
@@ -68,11 +68,11 @@ public class Customer {
         this.divisionID = divisionID;
     }
 
-    public String getDivisionName() {
-        return divisionName;
+    public String getDivision() {
+        return division;
     }
 
-    public void setDivisionName(String divisionName) {
-        this.divisionName = divisionName;
+    public void setDivision(String division) {
+        this.division = division;
     }
 }

@@ -6,44 +6,70 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.*;
 
 import java.io.IOException;
+import java.lang.reflect.Executable;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
-public class CustomerController {
-    @FXML private TextField updateCustomerID;
-    @FXML private TextField updateCustomerName;
-    @FXML private TextField updateCustomerAddress;
-    @FXML private TextField updateCustomerPostalCode;
-    @FXML private TextField updateCustomerPhoneNumber;
-    @FXML private ComboBox<String> updateCustomerCountry;
-    @FXML private ComboBox<String> updateCustomerStateProv;
-    @FXML private Button customerSaveButton;
-    @FXML private Button customerCancelButton;
-    @FXML private Button addCustomerButton;
-    @FXML private Button updateCustomerRecordsButton;
-    @FXML private Button customerToMainMenuButton;
-    @FXML private Button deleteCustomerButton;
-    @FXML private TableView<Customer> customerTable;
-    @FXML private TableColumn<?,?> customerIDColumn;
-    @FXML private TableColumn<?,?> customerNameColumn;
-    @FXML private TableColumn<?,?> customerAddressColumn;
-    @FXML private TableColumn<?,?> customerPostalCodeColumn;
-    @FXML private TableColumn<?,?> customerPhoneNumberColumn;
-    @FXML private TableColumn<?,?> customerFirstLevelColumn;
+public class CustomerController implements Initializable {
+    @FXML
+    private TextField updateCustomerID;
+    @FXML
+    private TextField updateCustomerName;
+    @FXML
+    private TextField updateCustomerAddress;
+    @FXML
+    private TextField updateCustomerPostalCode;
+    @FXML
+    private TextField updateCustomerPhoneNumber;
+    @FXML
+    private ComboBox<String> updateCustomerCountry;
+    @FXML
+    private ComboBox<String> updateCustomerStateProv;
+    @FXML
+    private Button customerSaveButton;
+    @FXML
+    private Button customerCancelButton;
+    @FXML
+    private Button addCustomerButton;
+    @FXML
+    private Button updateCustomerRecordsButton;
+    @FXML
+    private Button customerToMainMenuButton;
+    @FXML
+    private Button deleteCustomerButton;
+    @FXML
+    private TableView<Customer> customerTable;
+    @FXML
+    private TableColumn<?, ?> customerIDColumn;
+    @FXML
+    private TableColumn<?, ?> customerNameColumn;
+    @FXML
+    private TableColumn<?, ?> customerAddressColumn;
+    @FXML
+    private TableColumn<?, ?> customerPostalCodeColumn;
+    @FXML
+    private TableColumn<?, ?> customerPhoneNumberColumn;
+    @FXML
+    private TableColumn<?, ?> customerFirstLevelColumn;
 
-    public void addCustomerButtonClicked(ActionEvent actionEvent) {
+    @FXML
+    void addCustomerButtonClicked(ActionEvent actionEvent) {
         try {
             Connection connection = DBConnect.openConnection();
             if (!updateCustomerName.getText().isEmpty() || !updateCustomerAddress.getText().isEmpty() || !updateCustomerPostalCode.getText().isEmpty() || !updateCustomerPhoneNumber.getText().isEmpty() || !updateCustomerCountry.getValue().isEmpty() || !updateCustomerStateProv.getValue().isEmpty()) {
@@ -58,75 +84,117 @@ public class CustomerController {
                 String sqlCommand = "INSERT INTO customers (Customer_ID, Customer_Name, Address, Postal_Code, Phone, Create_Date, Created_By, Last_Update, Last_Updated_By, Division_ID) VALUES (?,?,?,?,?,?,?,?,?,?)";
                 DBConnect.setPreparedStatement(DBConnect.getConnection(), sqlCommand);
                 PreparedStatement prepare = DBConnect.getPreparedStatement();
-                    prepare.setInt(1, disabledCustomerID);
-                    prepare.setString(2, updateCustomerName.getText());
-                    prepare.setString(3, updateCustomerAddress.getText());
-                    prepare.setString(4, updateCustomerPostalCode.getText());
-                    prepare.setString(5, updateCustomerPhoneNumber.getText());
-                    prepare.setTimestamp(6, Timestamp.valueOf(LocalDateTime.now()));
-                    prepare.setString(7, "admin");
-                    prepare.setTimestamp(8, Timestamp.valueOf(LocalDateTime.now()));
-                    prepare.setString(9, "admin");
-                    prepare.setInt(10, division);
-                    prepare.execute();
+                prepare.setInt(1, disabledCustomerID);
+                prepare.setString(2, updateCustomerName.getText());
+                prepare.setString(3, updateCustomerAddress.getText());
+                prepare.setString(4, updateCustomerPostalCode.getText());
+                prepare.setString(5, updateCustomerPhoneNumber.getText());
+                prepare.setTimestamp(6, Timestamp.valueOf(LocalDateTime.now()));
+                prepare.setString(7, "admin");
+                prepare.setTimestamp(8, Timestamp.valueOf(LocalDateTime.now()));
+                prepare.setString(9, "admin");
+                prepare.setInt(10, division);
+                prepare.execute();
 
-                    updateCustomerID.clear();
-                    updateCustomerName.clear();
-                    updateCustomerAddress.clear();
-                    updateCustomerPostalCode.clear();
-                    updateCustomerPhoneNumber.clear();
+                updateCustomerID.clear();
+                updateCustomerName.clear();
+                updateCustomerAddress.clear();
+                updateCustomerPostalCode.clear();
+                updateCustomerPhoneNumber.clear();
 
-                    ObservableList<Customer> newCustomersTable = CustomerDAO.getCustomers(connection);
-                    customerTable.setItems(newCustomersTable);
+                ObservableList<Customer> newCustomersTable = CustomerDAO.getCustomers(connection);
+                customerTable.setItems(newCustomersTable);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    public void updateCustomerRecordsButtonClicked(ActionEvent actionEvent) {
-            try {
-                DBConnect.openConnection();
-                Customer customerClicked = (Customer) customerTable.getSelectionModel().getSelectedItem();
-                String division = "", country = "";
 
-                if(customerClicked != null) {
-                    ObservableList<CountryDAO> getCountries = CountryDAO.getCountries();
-                    ObservableList<DivisionDAO> getDivisions = DivisionDAO.getDivisions();
-                    ObservableList<String> allDivisions = FXCollections.observableArrayList();
+    @FXML
+    void updateCustomerRecordsButtonClicked(ActionEvent actionEvent) {
+        try {
+            DBConnect.openConnection();
+            Customer customerClicked = (Customer) customerTable.getSelectionModel().getSelectedItem();
+            String division = "", country = "";
 
-                    updateCustomerID.setText(String.valueOf((customerClicked.getCustomerID())));
-                    updateCustomerName.setText(customerClicked.getCustomerName());
-                    updateCustomerAddress.setText(customerClicked.getCustomerAddress());
-                    updateCustomerPostalCode.setText(customerClicked.getCustomerPostal());
-                    updateCustomerPhoneNumber.setText(customerClicked.getCustomerPhone());
-                    updateCustomerStateProv.setItems(allDivisions);
+            if (customerClicked != null) {
+                ObservableList<CountryDAO> getCountries = CountryDAO.getCountries();
+                ObservableList<DivisionDAO> getDivisions = DivisionDAO.getDivisions();
+                ObservableList<String> allDivisions = FXCollections.observableArrayList();
 
-                    for (Division division1: getDivisions) {
-                        allDivisions.add(division1.getDivision());
-                        int countryID = division1.getCountryID();
+                updateCustomerID.setText(String.valueOf((customerClicked.getCustomerID())));
+                updateCustomerName.setText(customerClicked.getCustomerName());
+                updateCustomerAddress.setText(customerClicked.getCustomerAddress());
+                updateCustomerPostalCode.setText(customerClicked.getCustomerPostal());
+                updateCustomerPhoneNumber.setText(customerClicked.getCustomerPhone());
+                updateCustomerStateProv.setItems(allDivisions);
 
-                        if (division1.getDivisionID() == customerClicked.getDivisionID()) {
-                            division = division1.getDivision();
+                for (Division division1 : getDivisions) {
+                    allDivisions.add(division1.getDivision());
+                    int countryID = division1.getCountryID();
 
-                            for (Countries countries: getCountries) {
-                                if (countries.getCountryID() == countryID) {
-                                    country = countries.getCountry();
-                                }
+                    if (division1.getDivisionID() == customerClicked.getDivisionID()) {
+                        division = division1.getDivision();
+
+                        for (Countries countries : getCountries) {
+                            if (countries.getCountryID() == countryID) {
+                                country = countries.getCountry();
                             }
                         }
                     }
-                    updateCustomerStateProv.setValue(division);
-                    updateCustomerCountry.setValue(country);
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+                updateCustomerStateProv.setValue(division);
+                updateCustomerCountry.setValue(country);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public void customerSaveButtonClicked(ActionEvent actionEvent) {
+    @FXML
+    void customerSaveButtonClicked(ActionEvent actionEvent) {
+        try {
+            Connection connection = DBConnect.openConnection();
+            if (!updateCustomerName.getText().isEmpty() || !updateCustomerAddress.getText().isEmpty() || !updateCustomerPostalCode.getText().isEmpty() || !updateCustomerPhoneNumber.getText().isEmpty() || !updateCustomerCountry.getValue().isEmpty() || !updateCustomerStateProv.getValue().isEmpty()) {
+                int division = 0;
+                for (DivisionDAO division1 : DivisionDAO.getDivisions()) {
+                    if (updateCustomerStateProv.getSelectionModel().getSelectedItem().equals(division1.getDivision())) {
+                        division = division1.getDivisionID();
+                    }
+                }
+                String sqlCommand = "UPDATE customers SET Customer_ID = ?, Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Create_Date = ?, Created_By = ?, Last_Update = ?, Last_Updated_By = ?, Division_ID = ? WHERE Customer_ID = ?";
+                DBConnect.setPreparedStatement(DBConnect.getConnection(), sqlCommand);
+                PreparedStatement prepare = DBConnect.getPreparedStatement();
+                prepare.setInt(1, Integer.parseInt(updateCustomerID.getText()));
+                prepare.setString(2, updateCustomerName.getText());
+                prepare.setString(3, updateCustomerAddress.getText());
+                prepare.setString(4, updateCustomerPostalCode.getText());
+                prepare.setString(5, updateCustomerPhoneNumber.getText());
+                prepare.setTimestamp(6, Timestamp.valueOf(LocalDateTime.now()));
+                prepare.setString(7, "admin");
+                prepare.setTimestamp(8, Timestamp.valueOf(LocalDateTime.now()));
+                prepare.setString(9, "admin");
+                prepare.setInt(10, division);
+                prepare.setInt(11, Integer.parseInt((updateCustomerID.getText())));
+                prepare.execute();
+
+                updateCustomerID.clear();
+                updateCustomerName.clear();
+                updateCustomerAddress.clear();
+                updateCustomerPostalCode.clear();
+                updateCustomerPhoneNumber.clear();
+
+                ObservableList<Customer> newCustomersTable = CustomerDAO.getCustomers(connection);
+                customerTable.setItems(newCustomersTable);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    @FXML void deleteCustomerButtonClicked(ActionEvent actionEvent) throws SQLException {
+
+    @FXML
+    void deleteCustomerButtonClicked(ActionEvent actionEvent) throws SQLException {
         Connection connection = DBConnect.openConnection();
         ObservableList<Appointment> maintainAppointments = AppointmentDAO.getAppointments();
         Alert deleteCustomerAlert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you would like to delete this customer and their corresponding appointments?");
@@ -140,7 +208,7 @@ public class CustomerController {
             PreparedStatement prepare = DBConnect.getPreparedStatement();
             int deleteCustomer = customerTable.getSelectionModel().getSelectedItem().getCustomerID();
 
-            for (Appointment appoint: maintainAppointments) {
+            for (Appointment appoint : maintainAppointments) {
                 int customerIDAppoint = appoint.getAppointCustomerID();
                 if (deleteCustomer == customerIDAppoint) {
                     String sqlCommand2 = "DELETE FROM appointments WHERE Appointment_ID = ?";
@@ -155,10 +223,35 @@ public class CustomerController {
 
     }
 
-    public void customerCancelButtonClicked(ActionEvent actionEvent) {
-    }
-
     public void updateCustomerCountryComboBox(ActionEvent actionEvent) throws SQLException {
+        try {
+            DBConnect.openConnection();
+            String countryClicked = updateCustomerCountry.getSelectionModel().getSelectedItem();
+            ObservableList<DivisionDAO> maintainDivisions = DivisionDAO.getDivisions();
+            ObservableList<String> US = FXCollections.observableArrayList();
+            ObservableList<String> UK = FXCollections.observableArrayList();
+            ObservableList<String> Canada = FXCollections.observableArrayList();
+
+            maintainDivisions.forEach(Division -> {
+                if (Division.getCountryID() == 1) {
+                    US.add(Division.getDivision());
+                } else if (Division.getCountryID() == 2) {
+                    UK.add(Division.getDivision());
+                } else if (Division.getCountryID() == 3) {
+                    Canada.add(Division.getDivision());
+                }
+            });
+            if (countryClicked.equals("U.S")) {
+                updateCustomerStateProv.setItems(US);
+            } else if (countryClicked.equals("UK")) {
+                updateCustomerStateProv.setItems(UK);
+            } else if (countryClicked.equals("Canada")) {
+                updateCustomerStateProv.setItems(Canada);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -171,5 +264,35 @@ public class CustomerController {
         returnToMain.setScene(newScene);
         returnToMain.show();
         returnToMain.centerOnScreen();
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        try {
+            Connection connection = DBConnect.openConnection();
+
+            ObservableList<Customer> maintainCustomers = CustomerDAO.getCustomers(connection);
+            ObservableList<CountryDAO> maintainCountries = CountryDAO.getCountries();
+            ObservableList<String> countries = FXCollections.observableArrayList();
+            ObservableList<DivisionDAO> maintainDivisions = DivisionDAO.getDivisions();
+            ObservableList<String> divisions = FXCollections.observableArrayList();
+
+            customerIDColumn.setCellValueFactory(new PropertyValueFactory<>("customerID"));
+            customerNameColumn.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+            customerAddressColumn.setCellValueFactory(new PropertyValueFactory<>("customerAddress"));
+            customerPostalCodeColumn.setCellValueFactory(new PropertyValueFactory<>("customerPostal"));
+            customerPhoneNumberColumn.setCellValueFactory(new PropertyValueFactory<>("customerPhone"));
+            customerFirstLevelColumn.setCellValueFactory(new PropertyValueFactory<>("division"));
+
+            maintainCountries.stream().map(Countries::getCountry).forEach(countries::add);
+            updateCustomerCountry.setItems(countries);
+
+            maintainDivisions.forEach(Division -> divisions.add(Division.getDivision()));
+            updateCustomerStateProv.setItems(divisions);
+            customerTable.setItems(maintainCustomers);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
