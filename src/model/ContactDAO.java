@@ -23,7 +23,7 @@ public class ContactDAO {
         }
         return maintainContacts;
     }
-    public static String getContactID(String contactID) throws SQLException {
+    public static String tryContactID(String contactID) throws SQLException {
         PreparedStatement prepare = DBConnect.getConnection().prepareStatement("SELECT * FROM contacts WHERE Contact_Name = ?");
         prepare.setString(1, contactID);
         ResultSet results = prepare.executeQuery();

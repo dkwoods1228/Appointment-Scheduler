@@ -15,10 +15,14 @@ import model.*;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Optional;
+import static main.Timezone.timeAndDateToUTC;
 
 public class AppointmentController {
     public Button exitButton;
@@ -62,7 +66,7 @@ public class AppointmentController {
     @FXML void addAppointButtonClicked(ActionEvent actionEvent) {
     }
 
-    @FXML void updateSaveButtonClicked(ActionEvent actionEvent) {
+    @FXML void updateSaveButtonClicked(ActionEvent actionEvent) throws IOException {
         try {
             Connection connection = DBConnect.openConnection();
 
@@ -91,13 +95,106 @@ public class AppointmentController {
 
                 ZonedDateTime startToEasternTime = startZone.withZoneSameInstant(ZoneId.of("America/New_York"));
                 ZonedDateTime endToEasternTime = endZone.withZoneSameInstant(ZoneId.of("America/New_York"));
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-    }
 
-    @FXML void deleteButtonClicked(ActionEvent actionEvent) {
+                if (startToEasternTime.toLocalDate().getDayOfWeek().getValue() == (DayOfWeek.SUNDAY.getValue()) ||
+                        startToEasternTime.toLocalDate().getDayOfWeek().getValue() == (DayOfWeek.SATURDAY.getValue()) ||
+                        endToEasternTime.toLocalDate().getDayOfWeek().getValue() == (DayOfWeek.SUNDAY.getValue()) ||
+                        endToEasternTime.toLocalDate().getDayOfWeek().getValue() == (DayOfWeek.SATURDAY.getValue())) {
+                    Alert outsideBusiness = new Alert(Alert.AlertType.ERROR);
+                    outsideBusiness.setTitle("Outside Business Operations");
+                    outsideBusiness.setContentText("You have selected a day outside of business operations. Business days are normally Monday-Friday.");
+                    outsideBusiness.showAndWait();
+                    return;
+                }
+                if (startToEasternTime.toLocalTime().isBefore(LocalTime.of(8,0,0)) || startToEasternTime.toLocalTime().isAfter(LocalTime.of(22,0,0))
+                    || endToEasternTime.toLocalTime().isBefore(LocalTime.of(8,0,0)) || endToEasternTime.toLocalTime().isAfter(LocalTime.of(22,0,0))) {
+                    Alert timeOutsideBusiness = new Alert(Alert.AlertType.ERROR);
+                    timeOutsideBusiness.setTitle("Outside Business Operations");
+                    timeOutsideBusiness.setContentText("You have selected a time outside of business operations. Business hours are normally 8:00am-10:00pm.");
+                    timeOutsideBusiness.showAndWait();
+                    return;
+                }
+
+                int alteredCustomID = Integer.parseInt(updateAppointCustomerID.getText());
+                int appointID = Integer.parseInt(updateAppointID.getText());
+
+                if (endLocalAll.isBefore(startLocalAll)) {
+                    Alert valueError = new Alert(Alert.AlertType.ERROR);
+                    valueError.setTitle("Start Time After End Time");
+                    valueError.setContentText("The selected start time cannot be after the selected end time.");
+                    valueError.showAndWait();
+                    return;
+                }
+                if (endLocalAll.isEqual(startLocalAll)) {
+                    Alert sameTimes = new Alert(Alert.AlertType.ERROR);
+                    sameTimes.setTitle("Same Start and End Times");
+                    sameTimes.setContentText("The appointment has the same start and end times. End time must be later than start time.");
+                    sameTimes.showAndWait();
+                    return;
+                }
+                for (Appointment appointment: maintainAppointments) {
+                    LocalDateTime startAppointVerify = appointment.getStart();
+                    LocalDateTime endAppointVerify = appointment.getEnd();
+
+                    if ((alteredCustomID == appointment.getAppointCustomerID()) && (appointID != appointment.getAppointID()) &&
+                            (startLocalAll.isBefore(startAppointVerify)) && (endLocalAll.isAfter(endAppointVerify))) {
+                        Alert overlapAppoint = new Alert(Alert.AlertType.ERROR);
+                        overlapAppoint.setTitle("Overlapping Appointment");
+                        overlapAppoint.setContentText("This appointment will overlap with an existing appointment.");
+                        overlapAppoint.showAndWait();
+                        return;
+                    }
+                    if ((alteredCustomID == appointment.getAppointCustomerID()) && (appointID != appointment.getAppointID()) &&
+                            (startLocalAll.isAfter(startAppointVerify)) && (startLocalAll.isBefore(endAppointVerify))) {
+                        Alert overlapStartTime = new Alert(Alert.AlertType.ERROR);
+                        overlapStartTime.setTitle("Overlapping Appointment");
+                        overlapStartTime.setContentText("The start time of this appointment will overlap with an existing appointment.");
+                        overlapStartTime.showAndWait();
+                        return;
+                    }
+                    if ((alteredCustomID == appointment.getAppointCustomerID()) && (appointID != appointment.getAppointID()) &&
+                            (endLocalAll.isAfter(startAppointVerify)) && (endLocalAll.isBefore(endAppointVerify))) {
+                        Alert overlapStartTime = new Alert(Alert.AlertType.ERROR);
+                        overlapStartTime.setTitle("Overlapping Appointment");
+                        overlapStartTime.setContentText("The end time of this appointment will overlap with an existing appointment.");
+                        overlapStartTime.showAndWait();
+                        return;
+                }
+            }
+                String timeStart = updateAppointStartTime.getValue();
+                String dateStart = updateAppointStartDate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                String timeEnd = updateAppointEndTime.getValue();
+                String dateEnd = updateAppointEndDate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                String utcStart = timeAndDateToUTC(dateStart + " " + timeStart + ":00");
+                String utcEnd = timeAndDateToUTC(dateEnd + " " + timeEnd + ":00");
+
+                String sqlCommand = "UPDATE appointments SET Appointment_ID = ?, Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Last_Update = ?, Last_updated_By = ?, Customer_ID = ?, User_ID = ?, Contact_ID = ? WHERE Appointment_ID = ?";
+                DBConnect.setPreparedStatement(DBConnect.getConnection(), sqlCommand);
+                PreparedStatement prepare = DBConnect.getPreparedStatement();
+
+                prepare.setInt(1, Integer.parseInt(updateAppointID.getText()));
+                prepare.setString(2, updateAppointTitle.getText());
+                prepare.setString(3, updateAppointDescription.getText());
+                prepare.setString(4, updateAppointLocation.getText());
+                prepare.setString(5, updateAppointDescription.getText());
+                prepare.setString(6, utcStart);
+                prepare.setString(7, utcEnd);
+                prepare.setTimestamp(8, Timestamp.valueOf(LocalDateTime.now()));
+                prepare.setString(9, "admin");
+                prepare.setInt(10, Integer.parseInt(updateAppointCustomerID.getText()));
+                prepare.setInt(11, Integer.parseInt(updateAppointUserID.getText()));
+                prepare.setInt(12, Integer.parseInt(ContactDAO.tryContactID(updateAppointContact.getValue())));
+                prepare.setInt(13, Integer.parseInt(updateAppointID.getText()));
+                prepare.execute();
+
+                ObservableList<Appointment> listOfAppointments = AppointmentDAO.getAppointments();
+                appointmentTable.setItems(listOfAppointments);
+        }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        @FXML void deleteButtonClicked(ActionEvent actionEvent) {
         try {
             Connection connection = DBConnect.openConnection();
             int delID = appointmentTable.getSelectionModel().getSelectedItem().getAppointID();
