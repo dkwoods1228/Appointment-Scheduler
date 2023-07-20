@@ -9,7 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ContactDAO {
-    ObservableList<Contact> getContacts() throws SQLException {
+
+    public static ObservableList<Contact> getContacts() throws SQLException {
         ObservableList<Contact> maintainContacts = FXCollections.observableArrayList();
         String sqlCommand = "SELECT * from contacts";
         PreparedStatement prepare = DBConnect.getConnection().prepareStatement(sqlCommand);

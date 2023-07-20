@@ -8,74 +8,74 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="574.0" prefWidth="388.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddAppointmentController">
+<AnchorPane prefHeight="534.0" prefWidth="388.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddAppointmentController">
     <children>
-        <Label layoutX="69.0" layoutY="32.0" text="Add Appointment">
+        <Label layoutX="94.0" layoutY="14.0" text="Add Appointment">
             <font>
                 <Font size="28.0" />
             </font>
         </Label>
-        <Label layoutX="15.0" layoutY="105.0" text="Appointment ID">
+        <Label layoutX="11.0" layoutY="69.0" text="Appointment ID">
          <font>
             <Font size="14.0" />
          </font></Label>
-        <Label layoutX="15.0" layoutY="141.0" text="Title">
+        <Label layoutX="11.0" layoutY="105.0" text="Title">
          <font>
             <Font size="14.0" />
          </font></Label>
-        <Label layoutX="15.0" layoutY="172.0" text="Description">
+        <Label layoutX="11.0" layoutY="142.0" text="Description">
          <font>
             <Font size="14.0" />
          </font></Label>
-        <Label layoutX="15.0" layoutY="205.0" text="Location">
+        <Label layoutX="11.0" layoutY="174.0" text="Location">
          <font>
             <Font size="14.0" />
          </font></Label>
-        <Label layoutX="15.0" layoutY="241.0" text="Contact">
+        <Label layoutX="11.0" layoutY="205.0" text="Contact">
          <font>
             <Font size="14.0" />
          </font></Label>
-        <Label layoutX="15.0" layoutY="284.0" text="Appointment Type">
+        <Label layoutX="11.0" layoutY="243.0" text="Appointment Type">
          <font>
             <Font size="14.0" />
          </font></Label>
-        <Label layoutX="15.0" layoutY="324.0" text="Start Date">
+        <Label layoutX="11.0" layoutY="277.0" text="Start Date">
          <font>
             <Font size="14.0" />
          </font></Label>
-        <Label layoutX="15.0" layoutY="354.0" text="End Date">
+        <Label layoutX="11.0" layoutY="317.0" text="End Date">
          <font>
             <Font size="14.0" />
          </font></Label>
-        <Label layoutX="15.0" layoutY="387.0" text="Start Time">
+        <Label layoutX="11.0" layoutY="354.0" text="Start Time">
          <font>
             <Font size="14.0" />
          </font></Label>
-        <Label layoutX="15.0" layoutY="425.0" text="End Time">
+        <Label layoutX="11.0" layoutY="393.0" text="End Time">
          <font>
             <Font size="14.0" />
          </font></Label>
-        <Label layoutX="15.0" layoutY="466.0" text="Customer ID">
+        <Label layoutX="11.0" layoutY="428.0" text="Customer ID">
          <font>
             <Font size="14.0" />
          </font></Label>
-        <Label layoutX="15.0" layoutY="497.0" text="User ID">
+        <Label layoutX="11.0" layoutY="463.0" text="User ID">
          <font>
             <Font size="14.0" />
          </font></Label>
-        <TextField fx:id="addAppointTitle" layoutX="160.0" layoutY="138.0" />
-        <TextField fx:id="addAppointID" layoutX="161.0" layoutY="102.0" />
-        <TextField fx:id="addAppointDescription" layoutX="160.0" layoutY="169.0" />
-        <TextField fx:id="addAppointLocation" layoutX="160.0" layoutY="203.0" />
-        <TextField fx:id="addAppointUserID" layoutX="161.0" layoutY="494.0" />
-        <ComboBox fx:id="addAppointStartTime" layoutX="161.0" layoutY="384.0" prefHeight="25.0" prefWidth="149.0" />
-        <ComboBox fx:id="addAppointContact" layoutX="160.0" layoutY="239.0" prefWidth="150.0" />
-        <Button fx:id="saveButton" layoutX="181.0" layoutY="530.0" mnemonicParsing="false" onAction="#saveButtonClicked" text="Save" />
-        <Button fx:id="cancelButton" layoutX="254.0" layoutY="530.0" mnemonicParsing="false" onAction="#cancelButtonClicked" text="Cancel" />
-        <TextField fx:id="addAppointType" layoutX="160.0" layoutY="281.0" prefHeight="25.0" prefWidth="150.0" />
-        <TextField fx:id="addAppointCustomerID" layoutX="161.0" layoutY="463.0" />
-        <DatePicker fx:id="addAppointStartDate" layoutX="161.0" layoutY="321.0" prefHeight="25.0" prefWidth="150.0" />
-        <DatePicker fx:id="addAppointEndDate" layoutX="161.0" layoutY="351.0" prefHeight="25.0" prefWidth="150.0" />
-        <ComboBox fx:id="addAppointEndTime" layoutX="160.0" layoutY="422.0" prefHeight="25.0" prefWidth="149.0" />
+        <TextField fx:id="addAppointID" editable="false" layoutX="148.0" layoutY="67.0" promptText="Auto Gen - Disabled" />
+        <TextField fx:id="addAppointTitle" layoutX="148.0" layoutY="103.0" />
+        <TextField fx:id="addAppointDescription" layoutX="148.0" layoutY="140.0" />
+        <TextField fx:id="addAppointLocation" layoutX="148.0" layoutY="171.0" />
+        <ComboBox fx:id="addAppointContact" layoutX="148.0" layoutY="203.0" prefWidth="150.0" />
+        <TextField fx:id="addAppointType" layoutX="148.0" layoutY="241.0" prefHeight="25.0" prefWidth="150.0" />
+        <DatePicker fx:id="addAppointStartDate" layoutX="148.0" layoutY="275.0" prefHeight="25.0" prefWidth="150.0" />
+        <DatePicker fx:id="addAppointEndDate" layoutX="148.0" layoutY="315.0" prefHeight="25.0" prefWidth="150.0" />
+        <ComboBox fx:id="addAppointStartTime" layoutX="148.0" layoutY="352.0" prefHeight="25.0" prefWidth="149.0" />
+        <ComboBox fx:id="addAppointEndTime" layoutX="148.0" layoutY="391.0" prefHeight="25.0" prefWidth="149.0" />
+        <TextField fx:id="addAppointCustomerID" layoutX="148.0" layoutY="426.0" />
+        <TextField fx:id="addAppointUserID" layoutX="148.0" layoutY="461.0" />
+        <Button fx:id="saveButton" layoutX="161.0" layoutY="496.0" mnemonicParsing="false" onAction="#saveButtonClicked" text="Save" />
+        <Button fx:id="cancelButton" layoutX="222.0" layoutY="496.0" mnemonicParsing="false" onAction="#cancelButtonClicked" text="Cancel" />
     </children>
 </AnchorPane>

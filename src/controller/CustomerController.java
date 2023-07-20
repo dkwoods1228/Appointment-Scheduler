@@ -123,6 +123,14 @@ public class CustomerController implements Initializable {
             Customer customerClicked = (Customer) customerTable.getSelectionModel().getSelectedItem();
             String division = "", country = "";
 
+            if (customerClicked == null) {
+                Alert unselectedCustomer = new Alert(Alert.AlertType.ERROR);
+                unselectedCustomer.setTitle("Customer not Selected");
+                unselectedCustomer.setContentText("You must select a customer to update their records.");
+                unselectedCustomer.showAndWait();
+                return;
+            }
+
             if (customerClicked != null) {
                 ObservableList<CountryDAO> getCountries = CountryDAO.getCountries();
                 ObservableList<DivisionDAO> getDivisions = DivisionDAO.getDivisions();

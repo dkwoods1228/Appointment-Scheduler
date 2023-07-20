@@ -17,10 +17,7 @@ import model.*;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -30,6 +27,7 @@ import java.util.ResourceBundle;
 import static main.Timezone.timeAndDateToUTC;
 
 public class AppointmentController implements Initializable {
+    @FXML private Button updateAppointmentButton;
     @FXML
     private Button exitButton;
     @FXML
@@ -106,8 +104,71 @@ public class AppointmentController implements Initializable {
     private TableColumn<?, ?> userID;
 
 
+
+    @FXML void updateAppointmentButtonClicked(ActionEvent actionEvent) {
+        try {
+            DBConnect.openConnection();
+            Appointment appointClicked = appointmentTable.getSelectionModel().getSelectedItem();
+
+            if (appointClicked == null) {
+                Alert unselectedAppoint = new Alert(Alert.AlertType.ERROR);
+                unselectedAppoint.setTitle("Appointment not Selected");
+                unselectedAppoint.setContentText("You must select an appointment to update before continuing.");
+                unselectedAppoint.showAndWait();
+                return;
+            }
+
+            if (appointClicked != null) {
+                ObservableList<Contact> maintainContacts = ContactDAO.getContacts();
+                ObservableList<String> contacts = FXCollections.observableArrayList();
+                String showContact = "";
+
+                maintainContacts.forEach(contact -> contacts.add(contact.getContactName()));
+                updateAppointContact.setItems(contacts);
+
+                for (Contact cont : maintainContacts) {
+                    if (appointClicked.getContactID() == cont.getContactID()) {
+                        showContact = cont.getContactName();
+                    }
+                }
+                updateAppointID.setText(String.valueOf(appointClicked.getAppointID()));
+                updateAppointTitle.setText(appointClicked.getAppointTitle());
+                updateAppointDescription.setText(appointClicked.getAppointDescription());
+                updateAppointLocation.setText(appointClicked.getAppointLocation());
+                updateAppointContact.setValue(showContact);
+                updateAppointType.setText(appointClicked.getAppointType());
+                updateAppointStartDate.setValue(appointClicked.getStart().toLocalDate());
+                updateAppointEndDate.setValue(appointClicked.getEnd().toLocalDate());
+                updateAppointStartTime.setValue(String.valueOf(appointClicked.getStart().toLocalTime()));
+                updateAppointEndTime.setValue(String.valueOf(appointClicked.getEnd().toLocalTime()));
+                updateAppointCustomerID.setText(String.valueOf(appointClicked.getAppointCustomerID()));
+                updateAppointUserID.setText(String.valueOf(appointClicked.getUserID()));
+
+                ObservableList<String> times = FXCollections.observableArrayList();
+                LocalTime min = LocalTime.MIN.plusHours(8);
+                LocalTime max = LocalTime.MAX.minusHours(1).minusMinutes(45);
+
+                if (!min.equals(0) || !max.equals(0)) {
+                    while (min.isBefore(max)) {
+                        times.add(String.valueOf(min));
+                        min = min.plusMinutes(15);
+                    }
+                }
+                updateAppointStartTime.setItems(times);
+                updateAppointEndTime.setItems(times);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
     @FXML
-    void addAppointButtonClicked(ActionEvent actionEvent) {
+    void addAppointButtonClicked(ActionEvent actionEvent) throws IOException {
+       Parent addAppoint = FXMLLoader.load(getClass().getResource("/view/AddAppointment.fxml"));
+       Scene newScene = new Scene(addAppoint);
+       Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+       window.setScene(newScene);
+       window.show();
+       window.centerOnScreen();
     }
 
     @FXML
@@ -213,7 +274,7 @@ public class AppointmentController implements Initializable {
                 String utcStart = timeAndDateToUTC(dateStart + " " + timeStart + ":00");
                 String utcEnd = timeAndDateToUTC(dateEnd + " " + timeEnd + ":00");
 
-                String sqlCommand = "UPDATE appointments SET Appointment_ID = ?, Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Last_Update = ?, Last_updated_By = ?, Customer_ID = ?, User_ID = ?, Contact_ID = ? WHERE Appointment_ID = ?";
+                String sqlCommand = "UPDATE appointments SET Appointment_ID = ?, Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Last_Update = ?, Last_Updated_By = ?, Customer_ID = ?, User_ID = ?, Contact_ID = ? WHERE Appointment_ID = ?";
                 DBConnect.setPreparedStatement(DBConnect.getConnection(), sqlCommand);
                 PreparedStatement prepare = DBConnect.getPreparedStatement();
 
@@ -232,6 +293,15 @@ public class AppointmentController implements Initializable {
                 prepare.setInt(13, Integer.parseInt(updateAppointID.getText()));
                 prepare.execute();
 
+                updateAppointID.clear();
+                updateAppointTitle.clear();
+                updateAppointDescription.clear();
+                updateAppointLocation.clear();
+                updateAppointType.clear();
+                updateAppointCustomerID.clear();
+                updateAppointUserID.clear();
+
+
                 ObservableList<Appointment> listOfAppointments = AppointmentDAO.getAppointments();
                 appointmentTable.setItems(listOfAppointments);
             }
@@ -244,7 +314,7 @@ public class AppointmentController implements Initializable {
                 Connection connection = DBConnect.openConnection();
                 int delID = appointmentTable.getSelectionModel().getSelectedItem().getAppointID();
                 String delType = appointmentTable.getSelectionModel().getSelectedItem().getAppointType();
-                Alert delIDAndType = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you would like to delete the appointment containing appointment id of " + delID + " and appointment type of " + delType + "?");
+                Alert delIDAndType = new Alert(Alert.AlertType.CONFIRMATION, "Delete the appointment with the following information? Appointment ID: " + delID + " | Appointment Type: " + delType + ".");
                 Optional<ButtonType> validate = delIDAndType.showAndWait();
                 if (validate.isPresent() && validate.get() == ButtonType.OK) {
                     AppointmentDAO.deleteAppoint(delID, connection);
@@ -356,5 +426,7 @@ public class AppointmentController implements Initializable {
         }
 
     }
+
+
 }
 
