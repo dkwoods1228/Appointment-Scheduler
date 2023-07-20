@@ -9,7 +9,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="566.0" prefWidth="893.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ReportsController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="566.0" prefWidth="939.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ReportsController">
    <children>
       <TableView fx:id="appointmentTable" layoutX="26.0" layoutY="70.0" prefHeight="200.0" prefWidth="742.0">
         <columns>
@@ -46,25 +46,44 @@
           <TableColumn fx:id="reportsTotalAmountMonthColumn" prefWidth="100.0" text="Total Amount" />
         </columns>
       </TableView>
-      <TableView fx:id="customersCountryRelationTable" layoutX="542.0" layoutY="344.0" prefHeight="200.0" prefWidth="333.0">
+      <TableView fx:id="customersCountryRelationTable" layoutX="542.0" layoutY="344.0" onDragEntered="#customerCountryRelation" prefHeight="200.0" prefWidth="382.0">
         <columns>
-          <TableColumn fx:id="country" prefWidth="133.0" text="Country " />
-          <TableColumn fx:id="totalAmountCountry" prefWidth="199.0" text="Total Amount of Customers" />
+          <TableColumn fx:id="country" prefWidth="177.0" text="Country " />
+          <TableColumn fx:id="totalAmountCountry" prefWidth="204.0" text="Total Amount of Customers" />
         </columns>
       </TableView>
-      <Label layoutX="105.0" layoutY="307.0" text="Total Number of Customer Appointments">
+      <Label layoutX="14.0" layoutY="313.0" text="Total Number of Customer Appointments by Type and Month">
          <font>
-            <Font size="18.0" />
+            <Font size="14.0" />
          </font>
       </Label>
-      <Label layoutX="553.0" layoutY="307.0" text="Total Amount of Customers by Country">
+      <Label layoutX="542.0" layoutY="310.0" prefHeight="25.0" prefWidth="247.0" text="Total Amount of Customers by Country">
          <font>
-            <Font size="18.0" />
+            <Font size="14.0" />
          </font>
       </Label>
-      <Button fx:id="returnToMainMenuButton" layoutX="783.0" layoutY="134.0" mnemonicParsing="false" onAction="#returnToMainMenuButtonClicked" prefHeight="25.0" prefWidth="82.0" text="Main Menu" />
+      <Button fx:id="returnToMainMenuButton" layoutX="805.0" layoutY="157.0" mnemonicParsing="false" onAction="#returnToMainMenuButtonClicked" prefHeight="43.0" prefWidth="114.0" text="Main Menu">
+         <font>
+            <Font size="14.0" />
+         </font></Button>
       <Line endX="657.0" layoutX="330.0" layoutY="290.0" startX="-339.0" stroke="#0000004b" />
       <Line endX="10.5" endY="-27.5" layoutX="523.0" layoutY="319.0" startX="10.5" startY="290.0" stroke="#0000004b" />
-      <Button fx:id="exitButton" layoutX="783.0" layoutY="182.0" mnemonicParsing="false" onAction="#exitButtonClicked" prefHeight="25.0" prefWidth="82.0" text="Exit" />
+      <Button fx:id="exitButton" layoutX="805.0" layoutY="216.0" mnemonicParsing="false" onAction="#exitButtonClicked" prefHeight="43.0" prefWidth="114.0" text="Exit">
+         <font>
+            <Font size="14.0" />
+         </font></Button>
+      <Button fx:id="appointMonthAndTypeTotalsButton" layoutX="417.0" layoutY="310.0" mnemonicParsing="false" onAction="#appointMonthAndTypeTotalsButtonClicked" prefHeight="25.0" prefWidth="107.0" text="View Amounts" />
+      <Button fx:id="customerCountryRelation" layoutX="805.0" layoutY="310.0" mnemonicParsing="false" onAction="#customerCountryRelation" prefHeight="25.0" prefWidth="120.0" text="View Amount" />
+      <Button fx:id="goToAppointButton" layoutX="805.0" layoutY="36.0" mnemonicParsing="false" onAction="#goToAppointButtonClicked" prefHeight="43.0" prefWidth="114.0" text="Appointments">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="goToCustomersButton" layoutX="805.0" layoutY="96.0" mnemonicParsing="false" onAction="#goToCustomersButtonClicked" prefHeight="43.0" prefWidth="114.0" text="Customers">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Line endX="10.5" endY="-27.5" layoutX="778.0" layoutY="14.0" startX="10.5" startY="276.5" stroke="#0000004b" />
    </children>
 </AnchorPane>

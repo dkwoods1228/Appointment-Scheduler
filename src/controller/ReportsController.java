@@ -55,12 +55,12 @@ public class ReportsController {
         appointEnd.setCellValueFactory(new PropertyValueFactory<>("end"));
         appointCustomerID.setCellValueFactory(new PropertyValueFactory<>("appointCustomerID"));
 
-        reportsAppointTypeColumn.setCellValueFactory(new PropertyValueFactory<>("appointType"));
-        reportsTotalAmountTypeColumn.setCellValueFactory(new PropertyValueFactory<>("appointTotal"));
-        reportsAppointByMonthColumn.setCellValueFactory(new PropertyValueFactory<>("appointMonth"));
-        reportsTotalAmountMonthColumn.setCellValueFactory(new PropertyValueFactory<>("appointTotal"));
+        reportsAppointTypeColumn.setCellValueFactory(new PropertyValueFactory<>("appointByType"));
+        reportsTotalAmountTypeColumn.setCellValueFactory(new PropertyValueFactory<>("appointByTypeTotal"));
+        reportsAppointByMonthColumn.setCellValueFactory(new PropertyValueFactory<>("appointByMonth"));
+        reportsTotalAmountMonthColumn.setCellValueFactory(new PropertyValueFactory<>("appointByMonthTotal"));
 
-        country.setCellValueFactory(new PropertyValueFactory<>("country"));
+        country.setCellValueFactory(new PropertyValueFactory<>("Country"));
         totalAmountCountry.setCellValueFactory(new PropertyValueFactory<>("totalAmountCountry"));
 
 
@@ -93,7 +93,7 @@ public class ReportsController {
         }
     }
 
-    @FXML public void appointMonthAndTypeTotals() throws SQLException {
+    @FXML public void appointMonthAndTypeTotalsButtonClicked() throws SQLException {
         try {
             ObservableList<Month> monthly = FXCollections.observableArrayList();
             ObservableList<Month> newMonth = FXCollections.observableArrayList();
@@ -178,6 +178,32 @@ public class ReportsController {
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+        }
+    }
+
+    public void goToAppointButtonClicked(ActionEvent actionEvent) throws IOException {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure sure you would like to go to Appointments?");
+        Optional<ButtonType> validate = alert.showAndWait();
+        if (validate.isPresent() && validate.get() == ButtonType.OK) {
+            Parent root = FXMLLoader.load(getClass().getResource("/view/Appointment.fxml"));
+            Scene newScene = new Scene(root);
+            Stage returnToMain = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            returnToMain.setScene(newScene);
+            returnToMain.show();
+            returnToMain.centerOnScreen();
+        }
+    }
+
+    public void goToCustomersButtonClicked(ActionEvent actionEvent) throws IOException {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you would like to go to Customer Records?");
+        Optional<ButtonType> validate = alert.showAndWait();
+        if (validate.isPresent() && validate.get() == ButtonType.OK) {
+            Parent root = FXMLLoader.load(getClass().getResource("/view/Customer.fxml"));
+            Scene newScene = new Scene(root);
+            Stage returnToMain = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            returnToMain.setScene(newScene);
+            returnToMain.show();
+            returnToMain.centerOnScreen();
         }
     }
 }

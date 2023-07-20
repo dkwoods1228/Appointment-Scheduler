@@ -4,8 +4,8 @@ public class Report {
     private String country;
     private int totalAmountCountry;
 
-    public Report(String countryName, int totalAmountCountry) {
-        this.country = countryName;
+    public Report(String country, int totalAmountCountry) {
+        this.country = country;
         this.totalAmountCountry = totalAmountCountry;
     }
 
@@ -13,7 +13,7 @@ public class Report {
         return country;
     }
 
-    public void setCountryName(String countryName) {
+    public void setCountry(String country) {
         this.country = country;
     }
 
