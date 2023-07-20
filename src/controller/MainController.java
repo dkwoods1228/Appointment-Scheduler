@@ -18,7 +18,8 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("Initialized");
+
+        System.out.println("Welcome to the Client Scheduler! Hope you have a great experience!");
     }
 
     public void mainViewAppointmentsButtonClicked(ActionEvent actionEvent) throws IOException {

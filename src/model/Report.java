@@ -1,20 +1,20 @@
 package model;
 
 public class Report {
-    private String countryName;
+    private String country;
     private int totalAmountCountry;
 
     public Report(String countryName, int totalAmountCountry) {
-        this.countryName = countryName;
+        this.country = countryName;
         this.totalAmountCountry = totalAmountCountry;
     }
 
-    public String getCountryName() {
-        return countryName;
+    public String getCountry() {
+        return country;
     }
 
     public void setCountryName(String countryName) {
-        this.countryName = countryName;
+        this.country = country;
     }
 
     public int getTotalAmountCountry() {

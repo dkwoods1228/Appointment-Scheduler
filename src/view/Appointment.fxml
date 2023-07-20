@@ -65,7 +65,6 @@
         <TextField fx:id="updateAppointUserID" layoutX="913.0" layoutY="462.0" prefHeight="25.0" prefWidth="187.0" />
         <Line endX="60.0" endY="-131.0" layoutX="835.0" layoutY="115.0" startX="60.0" startY="425.5" stroke="#0000004b" />
         <Button fx:id="updateSaveAppointmentButton" layoutX="916.0" layoutY="496.0" mnemonicParsing="false" onAction="#updateSaveButtonClicked" text="Save Updated Appointment" />
-        <Button fx:id="cancelButton" layoutX="933.0" layoutY="521.0" mnemonicParsing="false" onAction="#cancelButtonClicked" text="Cancel" />
         <Button fx:id="addAppointButton" layoutX="25.0" layoutY="418.0" mnemonicParsing="false" onAction="#addAppointButtonClicked" prefHeight="30.0" prefWidth="256.0" text="Add Appointment">
          <font>
             <Font size="14.0" />
@@ -74,27 +73,27 @@
          <font>
             <Font size="14.0" />
          </font></Button>
-        <Button fx:id="returnToMainMenuButton" layoutX="605.0" layoutY="418.0" mnemonicParsing="false" onAction="#returnToMainMenuButtonClicked" prefHeight="30.0" prefWidth="256.0" text="Main Menu">
+        <Button fx:id="updateAppointmentButton" layoutX="605.0" layoutY="418.0" mnemonicParsing="false" onAction="#updateAppointmentButtonClicked" prefHeight="30.0" prefWidth="256.0" text="Update Appointment">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Button>
+        <Button fx:id="returnToMainMenuButton" layoutX="189.0" layoutY="481.0" mnemonicParsing="false" onAction="#returnToMainMenuButtonClicked" prefHeight="30.0" prefWidth="256.0" text="Main Menu">
          <font>
             <Font size="14.0" />
          </font></Button>
-
-
+        <Button fx:id="exitButton" layoutX="491.0" layoutY="481.0" mnemonicParsing="false" onAction="#exitButtonClicked" prefHeight="30.0" prefWidth="256.0" text="Exit">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Button>
       <RadioButton fx:id="appointWeekRadioButton" layoutX="317.0" layoutY="57.0" mnemonicParsing="false" onAction="#appointWeekRadioButtonClicked" text="View Appointments by Week">
          <toggleGroup>
             <ToggleGroup fx:id="toggle" />
          </toggleGroup></RadioButton>
       <RadioButton fx:id="appointMonthRadioButton" layoutX="519.0" layoutY="56.0" mnemonicParsing="false" onAction="#appointMonthRadioButtonClicked" text="View Appointments by Month" toggleGroup="$toggle" />
       <RadioButton fx:id="allAppointRadioButton" layoutX="719.0" layoutY="57.0" mnemonicParsing="false" onAction="#allAppointRadioButtonClicked" selected="true" text="View All Appointments" toggleGroup="$toggle" />
-      <Button fx:id="exitButton" layoutX="605.0" layoutY="481.0" mnemonicParsing="false" onAction="#exitButtonClicked" prefHeight="30.0" prefWidth="256.0" text="Exit">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Button>
-      <Button fx:id="updateAppointmentButton" layoutX="335.0" layoutY="481.0" mnemonicParsing="false" onAction="#updateAppointmentButtonClicked" prefHeight="30.0" prefWidth="256.0" text="Update Appointment">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Button>
+
+
     </children>
 </AnchorPane>

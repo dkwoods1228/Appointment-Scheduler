@@ -335,9 +335,6 @@ public class AppointmentController implements Initializable {
                 }
             }
 
-        @FXML void cancelButtonClicked (ActionEvent actionEvent){
-        }
-
         @FXML void returnToMainMenuButtonClicked (ActionEvent actionEvent) throws IOException {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you would like to return to the main menu?");
             Optional<ButtonType> validate = alert.showAndWait();

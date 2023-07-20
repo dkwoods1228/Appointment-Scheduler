@@ -47,13 +47,13 @@
       <ComboBox fx:id="updateCustomerCountry" layoutX="646.0" layoutY="327.0" onAction="#updateCustomerCountryComboBox" prefHeight="25.0" prefWidth="235.0" />
       <ComboBox fx:id="updateCustomerStateProv" layoutX="646.0" layoutY="379.0" prefHeight="25.0" prefWidth="235.0" />
       <Line endX="60.0" endY="-44.0" layoutX="571.0" layoutY="44.0" startX="60.0" startY="425.5" stroke="#0000004b" />
-      <Button fx:id="customerSaveButton" layoutX="750.0" layoutY="420.0" mnemonicParsing="false" onAction="#customerSaveButtonClicked" prefHeight="30.0" prefWidth="133.0" text="Save Updated Record" />
-      <Button fx:id="addCustomerButton" layoutX="646.0" layoutY="420.0" mnemonicParsing="false" onAction="#addCustomerButtonClicked" prefHeight="30.0" prefWidth="95.0" text="Add Customer" />
-      <Button fx:id="updateCustomerRecordsButton" layoutX="350.0" layoutY="356.0" mnemonicParsing="false" onAction="#updateCustomerRecordsButtonClicked" prefHeight="25.0" prefWidth="252.0" text="Update Customer Records">
-         <font>
-            <Font size="14.0" />
-         </font></Button>
-      <Button fx:id="deleteCustomerButton" layoutX="33.0" layoutY="356.0" mnemonicParsing="false" onAction="#deleteCustomerButtonClicked" prefHeight="25.0" prefWidth="252.0" text="Delete Customer">
+       <Button fx:id="addCustomerButton" layoutX="646.0" layoutY="420.0" mnemonicParsing="false" onAction="#addCustomerButtonClicked" prefHeight="30.0" prefWidth="95.0" text="Add Customer" />
+       <Button fx:id="customerSaveButton" layoutX="750.0" layoutY="420.0" mnemonicParsing="false" onAction="#customerSaveButtonClicked" prefHeight="30.0" prefWidth="133.0" text="Save Updated Record" />
+       <Button fx:id="deleteCustomerButton" layoutX="33.0" layoutY="356.0" mnemonicParsing="false" onAction="#deleteCustomerButtonClicked" prefHeight="25.0" prefWidth="252.0" text="Delete Customer">
+           <font>
+               <Font size="14.0" />
+           </font></Button>
+       <Button fx:id="updateCustomerRecordsButton" layoutX="350.0" layoutY="356.0" mnemonicParsing="false" onAction="#updateCustomerRecordsButtonClicked" prefHeight="25.0" prefWidth="252.0" text="Update Customer Records">
          <font>
             <Font size="14.0" />
          </font></Button>
