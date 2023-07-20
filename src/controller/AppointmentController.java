@@ -309,39 +309,47 @@ public class AppointmentController implements Initializable {
             e.printStackTrace();
         }
     }
-        @FXML void deleteButtonClicked (ActionEvent actionEvent){
+        @FXML void deleteButtonClicked (ActionEvent actionEvent) {
             try {
+                Appointment appointClicked = appointmentTable.getSelectionModel().getSelectedItem();
                 Connection connection = DBConnect.openConnection();
-                int delID = appointmentTable.getSelectionModel().getSelectedItem().getAppointID();
-                String delType = appointmentTable.getSelectionModel().getSelectedItem().getAppointType();
-                Alert delIDAndType = new Alert(Alert.AlertType.CONFIRMATION, "Delete the appointment with the following information? Appointment ID: " + delID + " | Appointment Type: " + delType + ".");
-                Optional<ButtonType> validate = delIDAndType.showAndWait();
-                if (validate.isPresent() && validate.get() == ButtonType.OK) {
-                    AppointmentDAO.deleteAppoint(delID, connection);
+                if (appointClicked == null) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Appointment not Selected");
+                    alert.setContentText("You must select an appointment to delete.");
+                    alert.show();
+                } else {
+                    int delID = appointmentTable.getSelectionModel().getSelectedItem().getAppointID();
+                    String delType = appointmentTable.getSelectionModel().getSelectedItem().getAppointType();
+                    Alert delIDAndType = new Alert(Alert.AlertType.CONFIRMATION, "Delete the appointment with the following information? Appointment ID: " + delID + " | Appointment Type: " + delType + ".");
+                    Optional<ButtonType> validate = delIDAndType.showAndWait();
+                    if (validate.isPresent() && validate.get() == ButtonType.OK) {
+                        AppointmentDAO.deleteAppoint(delID, connection);
 
-                    ObservableList<Appointment> maintainAppointments = AppointmentDAO.getAppointments();
-                    appointmentTable.setItems(maintainAppointments);
+                        ObservableList<Appointment> maintainAppointments = AppointmentDAO.getAppointments();
+                        appointmentTable.setItems(maintainAppointments);
+                    }
                 }
-
-            } catch (SQLException e) {
-                e.printStackTrace();
+                } catch(SQLException e){
+                    e.printStackTrace();
+                }
             }
-        }
 
         @FXML void cancelButtonClicked (ActionEvent actionEvent){
         }
 
         @FXML void returnToMainMenuButtonClicked (ActionEvent actionEvent) throws IOException {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you would like to return to the main menu?");
-            alert.showAndWait();
-            Parent root = FXMLLoader.load(getClass().getResource("/view/Main.fxml"));
-            Scene newScene = new Scene(root);
-            Stage returnToMain = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-            returnToMain.setScene(newScene);
-            returnToMain.show();
-            returnToMain.centerOnScreen();
+            Optional<ButtonType> validate = alert.showAndWait();
+            if (validate.isPresent() && validate.get() == ButtonType.OK) {
+                Parent root = FXMLLoader.load(getClass().getResource("/view/Main.fxml"));
+                Scene newScene = new Scene(root);
+                Stage returnToMain = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                returnToMain.setScene(newScene);
+                returnToMain.show();
+                returnToMain.centerOnScreen();
+            }
         }
-
         @FXML void appointWeekRadioButtonClicked (ActionEvent actionEvent){
             try {
                 ObservableList<Appointment> maintainAppointments = AppointmentDAO.getAppointments();
@@ -397,13 +405,14 @@ public class AppointmentController implements Initializable {
             }
         }
 
-        public void exitButtonClicked (ActionEvent actionEvent){
+        public void exitButtonClicked (ActionEvent actionEvent) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you would like to exit this program?");
-            alert.showAndWait();
-            Stage exitProgram = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-            exitProgram.close();
+            Optional<ButtonType> validate = alert.showAndWait();
+            if (validate.isPresent() && validate.get() == ButtonType.OK) {
+                Stage exitProgram = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                exitProgram.close();
+            }
         }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {

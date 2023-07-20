@@ -75,7 +75,7 @@ public class CustomerController implements Initializable {
             if (updateCustomerName.getText().isEmpty() || updateCustomerAddress.getText().isEmpty() || updateCustomerPostalCode.getText().isEmpty() || updateCustomerPhoneNumber.getText().isEmpty() || updateCustomerCountry.getValue().isEmpty() || updateCustomerStateProv.getValue().isEmpty()) {
                 Alert missingFields = new Alert(Alert.AlertType.ERROR);
                 missingFields.setTitle("Missing Information");
-                missingFields.setContentText("You must enter information in all fields to add an appointment.");
+                missingFields.setContentText("You must enter information in all fields to add a customer.");
                 missingFields.showAndWait();
 
             } else if (!updateCustomerName.getText().isEmpty() || !updateCustomerAddress.getText().isEmpty() || !updateCustomerPostalCode.getText().isEmpty() || !updateCustomerPhoneNumber.getText().isEmpty() || !updateCustomerCountry.getValue().isEmpty() || !updateCustomerStateProv.getValue().isEmpty()) {
@@ -209,32 +209,39 @@ public class CustomerController implements Initializable {
 
     @FXML
     void deleteCustomerButtonClicked(ActionEvent actionEvent) throws SQLException {
+        Customer customerClicked = customerTable.getSelectionModel().getSelectedItem();
         Connection connection = DBConnect.openConnection();
-        ObservableList<Appointment> maintainAppointments = AppointmentDAO.getAppointments();
-        Alert deleteCustomerAlert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you would like to delete this customer and their corresponding appointments?");
-        Optional<ButtonType> validate = deleteCustomerAlert.showAndWait();
-        if (validate.isPresent() && validate.get() == ButtonType.OK) {
-            int delCustomID = customerTable.getSelectionModel().getSelectedItem().getCustomerID();
-            AppointmentDAO.deleteAppoint(delCustomID, connection);
+        if (customerClicked == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Customer not Selected");
+            alert.setContentText("You must select a customer to delete.");
+            alert.show();
+        } else {
+            ObservableList<Appointment> maintainAppointments = AppointmentDAO.getAppointments();
+            Alert deleteCustomerAlert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you would like to delete this customer and their corresponding appointments?");
+            Optional<ButtonType> validate = deleteCustomerAlert.showAndWait();
+            if (validate.isPresent() && validate.get() == ButtonType.OK) {
+                int delCustomID = customerTable.getSelectionModel().getSelectedItem().getCustomerID();
+                AppointmentDAO.deleteAppoint(delCustomID, connection);
 
-            String sqlCommand = "DELETE FROM customers WHERE Customer_ID = ?";
-            DBConnect.setPreparedStatement(DBConnect.getConnection(), sqlCommand);
-            PreparedStatement prepare = DBConnect.getPreparedStatement();
-            int deleteCustomer = customerTable.getSelectionModel().getSelectedItem().getCustomerID();
+                String sqlCommand = "DELETE FROM customers WHERE Customer_ID = ?";
+                DBConnect.setPreparedStatement(DBConnect.getConnection(), sqlCommand);
+                PreparedStatement prepare = DBConnect.getPreparedStatement();
+                int deleteCustomer = customerTable.getSelectionModel().getSelectedItem().getCustomerID();
 
-            for (Appointment appoint : maintainAppointments) {
-                int customerIDAppoint = appoint.getAppointCustomerID();
-                if (deleteCustomer == customerIDAppoint) {
-                    String sqlCommand2 = "DELETE FROM appointments WHERE Appointment_ID = ?";
-                    DBConnect.setPreparedStatement(DBConnect.getConnection(), sqlCommand2);
+                for (Appointment appoint : maintainAppointments) {
+                    int customerIDAppoint = appoint.getAppointCustomerID();
+                    if (deleteCustomer == customerIDAppoint) {
+                        String sqlCommand2 = "DELETE FROM appointments WHERE Appointment_ID = ?";
+                        DBConnect.setPreparedStatement(DBConnect.getConnection(), sqlCommand2);
+                    }
                 }
+                prepare.setInt(1, deleteCustomer);
+                prepare.execute();
+                ObservableList<Customer> newCustomersTable = CustomerDAO.getCustomers(connection);
+                customerTable.setItems(newCustomersTable);
             }
-            prepare.setInt(1, deleteCustomer);
-            prepare.execute();
-            ObservableList<Customer> newCustomersTable = CustomerDAO.getCustomers(connection);
-            customerTable.setItems(newCustomersTable);
         }
-
     }
 
     public void updateCustomerCountryComboBox(ActionEvent actionEvent) throws SQLException {
@@ -271,15 +278,16 @@ public class CustomerController implements Initializable {
 
     public void customerToMainMenuButtonClicked(ActionEvent actionEvent) throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you would like to return to the main menu?");
-        alert.showAndWait();
-        Parent root = FXMLLoader.load(getClass().getResource("/view/Main.fxml"));
-        Scene newScene = new Scene(root);
-        Stage returnToMain = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        returnToMain.setScene(newScene);
-        returnToMain.show();
-        returnToMain.centerOnScreen();
+        Optional<ButtonType> validate = alert.showAndWait();
+        if (validate.isPresent() && validate.get() == ButtonType.OK) {
+            Parent root = FXMLLoader.load(getClass().getResource("/view/Main.fxml"));
+            Scene newScene = new Scene(root);
+            Stage returnToMain = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            returnToMain.setScene(newScene);
+            returnToMain.show();
+            returnToMain.centerOnScreen();
+        }
     }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
@@ -311,9 +319,11 @@ public class CustomerController implements Initializable {
     }
 
     public void exitButtonClicked(ActionEvent actionEvent) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"Are you sure you would like to exit this program?");
-        alert.showAndWait();
-        Stage exitProgram = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        exitProgram.close();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you would like to exit this program?");
+        Optional<ButtonType> validate = alert.showAndWait();
+        if (validate.isPresent() && validate.get() == ButtonType.OK) {
+            Stage exitProgram = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            exitProgram.close();
+        }
     }
 }

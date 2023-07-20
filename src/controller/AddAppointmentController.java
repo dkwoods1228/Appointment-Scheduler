@@ -45,7 +45,12 @@ public class AddAppointmentController {
     @FXML void saveButtonClicked(ActionEvent actionEvent) {
         try {
             Connection connection = DBConnect.openConnection();
-
+            if (addAppointTitle.getText().isEmpty() && addAppointDescription.getText().isEmpty() && addAppointLocation.getText().isEmpty() && addAppointType.getText().isEmpty() && addAppointStartDate.getValue() == null && addAppointEndDate.getValue() == null && addAppointStartTime.getValue().isEmpty() && addAppointEndTime.getValue().isEmpty() && addAppointCustomerID.getText().isEmpty()) {
+                Alert missingFields = new Alert(Alert.AlertType.ERROR);
+                missingFields.setTitle("Missing Information");
+                missingFields.setContentText("You must enter information in all fields to add an appointment.");
+                missingFields.showAndWait();
+            }
             if (!addAppointTitle.getText().isEmpty() && !addAppointDescription.getText().isEmpty() && !addAppointLocation.getText().isEmpty() && !addAppointType.getText().isEmpty() && addAppointStartDate.getValue() != null && addAppointEndDate.getValue() != null && !addAppointStartTime.getValue().isEmpty() && !addAppointEndTime.getValue().isEmpty() && !addAppointCustomerID.getText().isEmpty()) {
                 ObservableList<Customer> maintainCustomers = CustomerDAO.getCustomers(connection);
                 ObservableList<Integer> maintainCustomID = FXCollections.observableArrayList();
