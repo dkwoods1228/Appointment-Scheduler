@@ -10,19 +10,19 @@ import java.sql.SQLException;
 
 public class UserDAO extends User {
     public UserDAO(int userID, String username, String password) {
-        super(userID, username, password);
+        super();
     }
 
-    public static int confirmUserLogin(String username, String password)
+    public static int confirmUserLogin(String userName, String passWord) throws SQLException
     {
         try
         {
-            String sqlCommand = "SELECT * FROM users WHERE user_name = ' " + username + " ' AND password = ' " + password + "'";
+            String sqlCommand = "SELECT * FROM users WHERE user_name = '" + userName + "' AND password = '" + passWord +"'";
             PreparedStatement prepare = DBConnect.getConnection().prepareStatement(sqlCommand);
             ResultSet results = prepare.executeQuery();
             results.next();
-            if (results.getString("User_Name").equals(username)) {
-                if (results.getString("Password").equals(password)) {
+            if (results.getString("User_Name").equals(userName)) {
+                if (results.getString("Password").equals(passWord)) {
                     return results.getInt("User_ID");
                 }
             }

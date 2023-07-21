@@ -8,22 +8,22 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="402.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
    <children>
-      <Label layoutX="166.0" layoutY="46.0" text="Login">
+      <Label fx:id="loginLabel" layoutX="166.0" layoutY="46.0" text="Login">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <Label layoutX="57.0" layoutY="116.0" text="Username">
+      <Label fx:id="usernameLabel" layoutX="57.0" layoutY="116.0" text="Username">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Label layoutX="57.0" layoutY="168.0" text="Password">
+      <Label fx:id="passwordLabel" layoutX="57.0" layoutY="168.0" text="Password">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Label layoutX="56.0" layoutY="275.0" text="Time Zone">
+      <Label fx:id="timezoneLabel" layoutX="56.0" layoutY="275.0" text="Time Zone">
          <font>
             <Font size="14.0" />
          </font>
