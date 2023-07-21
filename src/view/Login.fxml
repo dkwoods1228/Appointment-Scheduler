@@ -30,8 +30,8 @@
       </Label>
       <TextField fx:id="usernameLogin" layoutX="151.0" layoutY="114.0" />
       <TextField fx:id="passwordLogin" layoutX="151.0" layoutY="166.0" />
-      <TextField fx:id="loginTimeZone" layoutX="151.0" layoutY="272.0" />
       <Button fx:id="loginButton" layoutX="166.0" layoutY="215.0" mnemonicParsing="false" onAction="#loginButtonClicked" text="Login" />
       <Button fx:id="exitButton" layoutX="226.0" layoutY="215.0" mnemonicParsing="false" onAction="#exitButtonClicked" prefHeight="25.0" prefWidth="46.0" text="Exit" />
+      <TextField fx:id="loginTimeZone" layoutX="151.0" layoutY="272.0" />
    </children>
 </AnchorPane>
