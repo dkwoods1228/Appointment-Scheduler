@@ -2,6 +2,7 @@ package controller;
 
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -26,17 +27,17 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
-    public TextField usernameLogin;
-    public TextField passwordLogin;
-    public Button loginButton;
-    public Button exitButton;
-    public TextField loginTimeZone;
-    public Label loginLabel;
-    public Label usernameLabel;
-    public Label passwordLabel;
-    public Label timezoneLabel;
+    @FXML private TextField usernameLogin;
+    @FXML private TextField passwordLogin;
+    @FXML private Button loginButton;
+    @FXML private Button exitButton;
+    @FXML private TextField loginTimeZone;
+    @FXML private Label loginLabel;
+    @FXML private Label usernameLabel;
+    @FXML private Label passwordLabel;
+    @FXML private Label timezoneLabel;
 
-    public void loginButtonClicked(ActionEvent actionEvent) throws SQLException, IOException, Exception {
+    @FXML private void loginButtonClicked(ActionEvent actionEvent) {
         try {
             ObservableList<Appointment> maintainAppointments = AppointmentDAO.getAppointments();
             LocalDateTime subtract15 = LocalDateTime.now().minusMinutes(15);
@@ -65,6 +66,12 @@ public class LoginController implements Initializable {
 
                 printFile.print("There was a successful login by " + userName + " at " + Timestamp.valueOf(LocalDateTime.now()) + "\n");
 
+                if (usernameLogin.getText().isEmpty() || passwordLogin.getText().isEmpty()) {
+                    Alert missingFields = new Alert(Alert.AlertType.ERROR);
+                    missingFields.setHeaderText("Missing Login Information");
+                    missingFields.setContentText("You must enter information in both the username and password fields.");
+                    missingFields.show();
+                }
                 for (Appointment appoint : maintainAppointments) {
                     enterProgram = appoint.getStart();
                     if ((enterProgram.isAfter(subtract15) || enterProgram.isEqual(subtract15)) && (enterProgram.isBefore(add15) || (enterProgram.isEqual(add15)))) {
@@ -78,15 +85,18 @@ public class LoginController implements Initializable {
                     appointSoon.setTitle("Appointment Reminder");
                     appointSoon.setHeaderText("Upcoming Appointment");
                     appointSoon.setContentText("The following appointment(s) take place within the next 15 minutes.    Appointment ID:" + maintainAppointID + "Appointment Start Time: " + showTime);
+                    appointSoon.showAndWait();
                 } else {
                     Alert noAppointsSoon = new Alert(Alert.AlertType.WARNING);
                     noAppointsSoon.setTitle("No Appointments");
                     noAppointsSoon.setContentText("There are no upcoming appointments.");
+                    noAppointsSoon.showAndWait();
                 }
             } else if (userID < 0) {
                 Alert invalidCred = new Alert(Alert.AlertType.ERROR);
-                invalidCred.setTitle(resource.getString("Error"));
-                invalidCred.setTitle(resource.getString("Invalid"));
+                invalidCred.setTitle(resource.getString("Wrong"));
+                invalidCred.setHeaderText(resource.getString("Restricted"));
+                invalidCred.setContentText(resource.getString("Invalid"));
                 invalidCred.show();
 
                 printFile.print("user: " + userName + " failed login attempt at: " + Timestamp.valueOf(LocalDateTime.now()) + "\n");

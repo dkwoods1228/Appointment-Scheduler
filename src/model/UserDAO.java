@@ -3,6 +3,7 @@ package model;
 import database.DBConnect;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,11 +11,9 @@ import java.sql.SQLException;
 
 public class UserDAO extends User {
     public UserDAO(int userID, String username, String password) {
-        super();
     }
 
-    public static int confirmUserLogin(String userName, String passWord) throws SQLException
-    {
+    public static int confirmUserLogin(String userName, String passWord) {
         try
         {
             String sqlCommand = "SELECT * FROM users WHERE user_name = '" + userName + "' AND password = '" + passWord +"'";
@@ -24,6 +23,12 @@ public class UserDAO extends User {
             if (results.getString("User_Name").equals(userName)) {
                 if (results.getString("Password").equals(passWord)) {
                     return results.getInt("User_ID");
+                }
+            } else if (!results.getString("User_Name").equals(userName)) {
+                if (!results.getString("Password").equals(passWord)) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid Credentials");
+                    alert.show();
+
                 }
             }
         } catch (SQLException e) {
