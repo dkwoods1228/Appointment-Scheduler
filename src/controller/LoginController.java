@@ -68,8 +68,8 @@ public class LoginController implements Initializable {
 
                 if (usernameLogin.getText().isEmpty() || passwordLogin.getText().isEmpty()) {
                     Alert missingFields = new Alert(Alert.AlertType.ERROR);
-                    missingFields.setHeaderText("Missing Login Information");
-                    missingFields.setContentText("You must enter information in both the username and password fields.");
+                    missingFields.setHeaderText("Missing");
+                    missingFields.setContentText("UserPass");
                     missingFields.show();
                 }
                 for (Appointment appoint : maintainAppointments) {
@@ -82,14 +82,14 @@ public class LoginController implements Initializable {
                 }
                 if (notifyAppoint15 != false) {
                     Alert appointSoon = new Alert(Alert.AlertType.WARNING);
-                    appointSoon.setTitle("Appointment Reminder");
-                    appointSoon.setHeaderText("Upcoming Appointment");
-                    appointSoon.setContentText("The following appointment(s) take place within the next 15 minutes.    Appointment ID:" + maintainAppointID + "Appointment Start Time: " + showTime);
+                    appointSoon.setTitle("AppointmentReminder");
+                    appointSoon.setHeaderText("Upcoming");
+                    appointSoon.setContentText("AppointmentsSoon");
                     appointSoon.showAndWait();
                 } else {
                     Alert noAppointsSoon = new Alert(Alert.AlertType.WARNING);
-                    noAppointsSoon.setTitle("No Appointments");
-                    noAppointsSoon.setContentText("There are no upcoming appointments.");
+                    noAppointsSoon.setTitle("NoAppointments");
+                    noAppointsSoon.setContentText("NoUpcoming");
                     noAppointsSoon.showAndWait();
                 }
             } else if (userID < 0) {
