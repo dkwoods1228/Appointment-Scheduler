@@ -182,7 +182,7 @@ public class ReportsController {
     }
 
     public void goToAppointButtonClicked(ActionEvent actionEvent) throws IOException {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure sure you would like to go to Appointments?");
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you would like to go to Appointments?");
         Optional<ButtonType> validate = alert.showAndWait();
         if (validate.isPresent() && validate.get() == ButtonType.OK) {
             Parent root = FXMLLoader.load(getClass().getResource("/view/Appointment.fxml"));

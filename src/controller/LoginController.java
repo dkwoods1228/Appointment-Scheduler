@@ -64,7 +64,7 @@ public class LoginController implements Initializable {
                 stage.setScene(newScene);
                 stage.show();
 
-                printFile.print("There was a successful login by " + userName + " at " + Timestamp.valueOf(LocalDateTime.now()) + "\n");
+                printFile.print("There was a successful login by " + userName + " during the date and time of " + Timestamp.valueOf(LocalDateTime.now()) + "\n");
 
                 if (usernameLogin.getText().isEmpty() || passwordLogin.getText().isEmpty()) {
                     Alert missingFields = new Alert(Alert.AlertType.ERROR);
@@ -99,7 +99,7 @@ public class LoginController implements Initializable {
                 invalidCred.setContentText(resource.getString("Invalid"));
                 invalidCred.show();
 
-                printFile.print("user: " + userName + " failed login attempt at: " + Timestamp.valueOf(LocalDateTime.now()) + "\n");
+                printFile.print("There was a failed login attempt by " + userName + " during the date of time of " + Timestamp.valueOf(LocalDateTime.now()) + "\n");
             }
             printFile.close();
 

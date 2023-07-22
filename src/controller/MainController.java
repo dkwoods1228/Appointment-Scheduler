@@ -7,10 +7,12 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
@@ -50,9 +52,26 @@ public class MainController implements Initializable {
     }
 
     public void mainExitButtonClicked(ActionEvent actionEvent) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"Are you sure you would like to exit this program?");
-        alert.showAndWait();
-        Stage exitProgram = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        exitProgram.close();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you would like to exit this program?");
+        Optional<ButtonType> validate = alert.showAndWait();
+        if (validate.isPresent() && validate.get() == ButtonType.OK) {
+            Stage exitProgram = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            exitProgram.close();
+        }
+    }
+
+    public void logOutButtonClicked(ActionEvent actionEvent) throws IOException {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Log out");
+        alert.setContentText("Log out of this program?");
+        Optional<ButtonType> validate = alert.showAndWait();
+        if (validate.isPresent() && validate.get() == ButtonType.OK) {
+            Parent root = FXMLLoader.load(getClass().getResource("/view/Login.fxml"));
+            Scene newScene = new Scene(root);
+            Stage goToLogin = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            goToLogin.setScene(newScene);
+            goToLogin.show();
+            goToLogin.centerOnScreen();
+        }
     }
 }
