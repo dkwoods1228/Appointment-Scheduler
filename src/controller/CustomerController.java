@@ -74,7 +74,8 @@ public class CustomerController implements Initializable {
             Connection connection = DBConnect.openConnection();
             if (updateCustomerName.getText().isEmpty() || updateCustomerAddress.getText().isEmpty() || updateCustomerPostalCode.getText().isEmpty() || updateCustomerPhoneNumber.getText().isEmpty() || updateCustomerCountry.getValue().isEmpty() || updateCustomerStateProv.getValue().isEmpty()) {
                 Alert missingFields = new Alert(Alert.AlertType.ERROR);
-                missingFields.setTitle("Missing Information");
+                missingFields.setTitle("Error");
+                missingFields.setHeaderText("Missing Information");
                 missingFields.setContentText("You must enter information in all fields to add a customer.");
                 missingFields.showAndWait();
 
@@ -125,7 +126,8 @@ public class CustomerController implements Initializable {
 
             if (customerClicked == null) {
                 Alert unselectedCustomer = new Alert(Alert.AlertType.ERROR);
-                unselectedCustomer.setTitle("Customer not Selected");
+                unselectedCustomer.setTitle("Error");
+                unselectedCustomer.setHeaderText("Customer not Selected");
                 unselectedCustomer.setContentText("You must select a customer to update their records.");
                 unselectedCustomer.showAndWait();
                 return;
@@ -213,7 +215,8 @@ public class CustomerController implements Initializable {
         Connection connection = DBConnect.openConnection();
         if (customerClicked == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Customer not Selected");
+            alert.setTitle("Error");
+            alert.setHeaderText("Customer not Selected");
             alert.setContentText("You must select a customer to delete.");
             alert.show();
         } else {

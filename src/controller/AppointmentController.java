@@ -112,7 +112,8 @@ public class AppointmentController implements Initializable {
 
             if (appointClicked == null) {
                 Alert unselectedAppoint = new Alert(Alert.AlertType.ERROR);
-                unselectedAppoint.setTitle("Appointment not Selected");
+                unselectedAppoint.setTitle("Error");
+                unselectedAppoint.setHeaderText("Appointment not Selected");
                 unselectedAppoint.setContentText("You must select an appointment to update before continuing.");
                 unselectedAppoint.showAndWait();
                 return;
@@ -207,7 +208,8 @@ public class AppointmentController implements Initializable {
                         endToEasternTime.toLocalDate().getDayOfWeek().getValue() == (DayOfWeek.SUNDAY.getValue()) ||
                         endToEasternTime.toLocalDate().getDayOfWeek().getValue() == (DayOfWeek.SATURDAY.getValue())) {
                     Alert outsideBusiness = new Alert(Alert.AlertType.ERROR);
-                    outsideBusiness.setTitle("Outside Business Operations");
+                    outsideBusiness.setTitle("Error");
+                    outsideBusiness.setHeaderText("Outside Business Operations");
                     outsideBusiness.setContentText("You have selected a day outside of business operations. Business days are normally Monday-Friday.");
                     outsideBusiness.showAndWait();
                     return;
@@ -215,7 +217,8 @@ public class AppointmentController implements Initializable {
                 if (startToEasternTime.toLocalTime().isBefore(LocalTime.of(8, 0, 0)) || startToEasternTime.toLocalTime().isAfter(LocalTime.of(22, 0, 0))
                         || endToEasternTime.toLocalTime().isBefore(LocalTime.of(8, 0, 0)) || endToEasternTime.toLocalTime().isAfter(LocalTime.of(22, 0, 0))) {
                     Alert timeOutsideBusiness = new Alert(Alert.AlertType.ERROR);
-                    timeOutsideBusiness.setTitle("Outside Business Operations");
+                    timeOutsideBusiness.setTitle("Error");
+                    timeOutsideBusiness.setHeaderText("Outside Business Operations");
                     timeOutsideBusiness.setContentText("You have selected a time outside of business operations. Business hours are normally 8:00am-10:00pm.");
                     timeOutsideBusiness.showAndWait();
                     return;
@@ -226,14 +229,16 @@ public class AppointmentController implements Initializable {
 
                 if (endLocalAll.isBefore(startLocalAll)) {
                     Alert valueError = new Alert(Alert.AlertType.ERROR);
-                    valueError.setTitle("Start Time After End Time");
+                    valueError.setTitle("Error");
+                    valueError.setHeaderText("Start Time After End Time");
                     valueError.setContentText("The selected start time cannot be after the selected end time.");
                     valueError.showAndWait();
                     return;
                 }
                 if (endLocalAll.isEqual(startLocalAll)) {
                     Alert sameTimes = new Alert(Alert.AlertType.ERROR);
-                    sameTimes.setTitle("Same Start and End Times");
+                    sameTimes.setTitle("Error");
+                    sameTimes.setHeaderText("Same Start and End Times");
                     sameTimes.setContentText("The appointment has the same start and end times. End time must be later than start time.");
                     sameTimes.showAndWait();
                     return;
@@ -245,7 +250,8 @@ public class AppointmentController implements Initializable {
                     if ((alteredCustomID == appointment.getAppointCustomerID()) && (appointID != appointment.getAppointID()) &&
                             (startLocalAll.isBefore(startAppointVerify)) && (endLocalAll.isAfter(endAppointVerify))) {
                         Alert overlapAppoint = new Alert(Alert.AlertType.ERROR);
-                        overlapAppoint.setTitle("Overlapping Appointment");
+                        overlapAppoint.setTitle("Error");
+                        overlapAppoint.setHeaderText("Overlapping Appointment");
                         overlapAppoint.setContentText("This appointment will overlap with an existing appointment.");
                         overlapAppoint.showAndWait();
                         return;
@@ -253,7 +259,8 @@ public class AppointmentController implements Initializable {
                     if ((alteredCustomID == appointment.getAppointCustomerID()) && (appointID != appointment.getAppointID()) &&
                             (startLocalAll.isAfter(startAppointVerify)) && (startLocalAll.isBefore(endAppointVerify))) {
                         Alert overlapStartTime = new Alert(Alert.AlertType.ERROR);
-                        overlapStartTime.setTitle("Overlapping Appointment");
+                        overlapStartTime.setTitle("Error");
+                        overlapStartTime.setHeaderText("Overlapping Appointment");
                         overlapStartTime.setContentText("The start time of this appointment will overlap with an existing appointment.");
                         overlapStartTime.showAndWait();
                         return;
@@ -261,7 +268,8 @@ public class AppointmentController implements Initializable {
                     if ((alteredCustomID == appointment.getAppointCustomerID()) && (appointID != appointment.getAppointID()) &&
                             (endLocalAll.isAfter(startAppointVerify)) && (endLocalAll.isBefore(endAppointVerify))) {
                         Alert overlapStartTime = new Alert(Alert.AlertType.ERROR);
-                        overlapStartTime.setTitle("Overlapping Appointment");
+                        overlapStartTime.setTitle("Error");
+                        overlapStartTime.setHeaderText("Overlapping Appointment");
                         overlapStartTime.setContentText("The end time of this appointment will overlap with an existing appointment.");
                         overlapStartTime.showAndWait();
                         return;
@@ -315,7 +323,8 @@ public class AppointmentController implements Initializable {
                 Connection connection = DBConnect.openConnection();
                 if (appointClicked == null) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Appointment not Selected");
+                    alert.setTitle("Error");
+                    alert.setHeaderText("Appointment not Selected");
                     alert.setContentText("You must select an appointment to delete.");
                     alert.show();
                 } else {
@@ -390,7 +399,7 @@ public class AppointmentController implements Initializable {
 
                 if (maintainAppointments != null) {
                     maintainAppointments.forEach(appointment -> {
-                        if (appointment.getEnd().isBefore(endMonthNow) && appointment.getEnd().isAfter(startMonthNow)) {
+                        if (appointment.getEnd().isAfter(startMonthNow) && appointment.getEnd().isBefore(endMonthNow)) {
                             maintainMonthlyAppointments.add(appointment);
                         }
                         appointmentTable.setItems(maintainMonthlyAppointments);

@@ -45,13 +45,14 @@ public class AddAppointmentController {
     @FXML void saveButtonClicked(ActionEvent actionEvent) {
         try {
             Connection connection = DBConnect.openConnection();
-            if (addAppointTitle.getText().isEmpty() && addAppointDescription.getText().isEmpty() && addAppointLocation.getText().isEmpty() && addAppointType.getText().isEmpty() && addAppointStartDate.getValue() == null && addAppointEndDate.getValue() == null && addAppointStartTime.getValue().isEmpty() && addAppointEndTime.getValue().isEmpty() && addAppointCustomerID.getText().isEmpty()) {
+            if (addAppointTitle.getText().isEmpty() || addAppointDescription.getText().isEmpty() || addAppointLocation.getText().isEmpty() || addAppointType.getText().isEmpty() || addAppointStartDate.getValue() == null || addAppointEndDate.getValue() == null || addAppointStartTime.getValue().isEmpty() || addAppointEndTime.getValue().isEmpty() && addAppointCustomerID.getText().isEmpty()) {
                 Alert missingFields = new Alert(Alert.AlertType.ERROR);
-                missingFields.setTitle("Missing Information");
+                missingFields.setTitle("Error");
+                missingFields.setHeaderText("Missing Information");
                 missingFields.setContentText("You must enter information in all fields to add an appointment.");
                 missingFields.showAndWait();
             }
-            if (!addAppointTitle.getText().isEmpty() && !addAppointDescription.getText().isEmpty() && !addAppointLocation.getText().isEmpty() && !addAppointType.getText().isEmpty() && addAppointStartDate.getValue() != null && addAppointEndDate.getValue() != null && !addAppointStartTime.getValue().isEmpty() && !addAppointEndTime.getValue().isEmpty() && !addAppointCustomerID.getText().isEmpty()) {
+            else if (!addAppointTitle.getText().isEmpty() && !addAppointDescription.getText().isEmpty() && !addAppointLocation.getText().isEmpty() && !addAppointType.getText().isEmpty() && addAppointStartDate.getValue() != null && addAppointEndDate.getValue() != null && !addAppointStartTime.getValue().isEmpty() && !addAppointEndTime.getValue().isEmpty() && !addAppointCustomerID.getText().isEmpty()) {
                 ObservableList<Customer> maintainCustomers = CustomerDAO.getCustomers(connection);
                 ObservableList<Integer> maintainCustomID = FXCollections.observableArrayList();
                 ObservableList<UserDAO> maintainUsers = UserDAO.getUsers();
@@ -93,7 +94,8 @@ public class AddAppointmentController {
                         endToEasternTime.toLocalDate().getDayOfWeek().getValue() == (DayOfWeek.SUNDAY.getValue()) ||
                         endToEasternTime.toLocalDate().getDayOfWeek().getValue() == (DayOfWeek.SATURDAY.getValue())) {
                     Alert outsideBusiness = new Alert(Alert.AlertType.ERROR);
-                    outsideBusiness.setTitle("Outside Business Operations");
+                    outsideBusiness.setTitle("Error");
+                    outsideBusiness.setHeaderText("Outside of Business Operations");
                     outsideBusiness.setContentText("You have selected a day outside of business operations. Business days are normally Monday-Friday.");
                     outsideBusiness.showAndWait();
                     return;
@@ -101,7 +103,8 @@ public class AddAppointmentController {
                 if (startToEasternTime.toLocalTime().isBefore(LocalTime.of(8, 0, 0)) || startToEasternTime.toLocalTime().isAfter(LocalTime.of(22, 0, 0))
                         || endToEasternTime.toLocalTime().isBefore(LocalTime.of(8, 0, 0)) || endToEasternTime.toLocalTime().isAfter(LocalTime.of(22, 0, 0))) {
                     Alert timeOutsideBusiness = new Alert(Alert.AlertType.ERROR);
-                    timeOutsideBusiness.setTitle("Outside Business Operations");
+                    timeOutsideBusiness.setTitle("Error");
+                    timeOutsideBusiness.setHeaderText("Outside Business Operations");
                     timeOutsideBusiness.setContentText("You have selected a time outside of business operations. Business hours are normally 8:00am-10:00pm.");
                     timeOutsideBusiness.showAndWait();
                     return;
@@ -112,14 +115,16 @@ public class AddAppointmentController {
 
                 if (endLocalAll.isBefore(startLocalAll)) {
                     Alert valueError = new Alert(Alert.AlertType.ERROR);
-                    valueError.setTitle("Start Time After End Time");
+                    valueError.setTitle("Error");
+                    valueError.setHeaderText("Start Time After End Time");
                     valueError.setContentText("The selected start time cannot be after the selected end time.");
                     valueError.showAndWait();
                     return;
                 }
                 if (endLocalAll.isEqual(startLocalAll)) {
                     Alert sameTimes = new Alert(Alert.AlertType.ERROR);
-                    sameTimes.setTitle("Same Start and End Times");
+                    sameTimes.setTitle("Error");
+                    sameTimes.setHeaderText("Same Start and End Times");
                     sameTimes.setContentText("The appointment has the same start and end times. End time must be later than start time.");
                     sameTimes.showAndWait();
                     return;
@@ -131,7 +136,8 @@ public class AddAppointmentController {
                     if ((alteredCustomID == appointment.getAppointCustomerID()) && (disabledID != appointment.getAppointID()) &&
                             (startLocalAll.isBefore(startAppointVerify)) && (endLocalAll.isAfter(endAppointVerify))) {
                         Alert overlapAppoint = new Alert(Alert.AlertType.ERROR);
-                        overlapAppoint.setTitle("Overlapping Appointment");
+                        overlapAppoint.setTitle("Error");
+                        overlapAppoint.setHeaderText("Overlapping Appointment");
                         overlapAppoint.setContentText("This appointment will overlap with an existing appointment.");
                         overlapAppoint.showAndWait();
                         return;
@@ -139,17 +145,19 @@ public class AddAppointmentController {
                     if ((alteredCustomID == appointment.getAppointCustomerID()) && (disabledID != appointment.getAppointID()) &&
                             (startLocalAll.isAfter(startAppointVerify)) && (startLocalAll.isBefore(endAppointVerify))) {
                         Alert overlapStartTime = new Alert(Alert.AlertType.ERROR);
-                        overlapStartTime.setTitle("Overlapping Appointment");
+                        overlapStartTime.setTitle("Error");
+                        overlapStartTime.setHeaderText("Overlapping Appointment");
                         overlapStartTime.setContentText("The start time of this appointment will overlap with an existing appointment.");
                         overlapStartTime.showAndWait();
                         return;
                     }
                     if ((alteredCustomID == appointment.getAppointCustomerID()) && (disabledID != appointment.getAppointID()) &&
                             (endLocalAll.isAfter(startAppointVerify)) && (endLocalAll.isBefore(endAppointVerify))) {
-                        Alert overlapStartTime = new Alert(Alert.AlertType.ERROR);
-                        overlapStartTime.setTitle("Overlapping Appointment");
-                        overlapStartTime.setContentText("The end time of this appointment will overlap with an existing appointment.");
-                        overlapStartTime.showAndWait();
+                        Alert overlapEndTime = new Alert(Alert.AlertType.ERROR);
+                        overlapEndTime.setTitle("Error");
+                        overlapEndTime.setHeaderText("Overlapping Appointment");
+                        overlapEndTime.setContentText("The end time of this appointment will overlap with an existing appointment.");
+                        overlapEndTime.showAndWait();
                         return;
                     }
                 }

@@ -62,7 +62,8 @@ public class MainController implements Initializable {
 
     public void logOutButtonClicked(ActionEvent actionEvent) throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Log out");
+        alert.setTitle("Logout");
+        alert.setHeaderText("Proceed to Logout");
         alert.setContentText("Log out of this program?");
         Optional<ButtonType> validate = alert.showAndWait();
         if (validate.isPresent() && validate.get() == ButtonType.OK) {

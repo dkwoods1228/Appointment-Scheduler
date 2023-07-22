@@ -87,11 +87,11 @@
                 <Font size="14.0" />
             </font>
         </Button>
-      <RadioButton fx:id="appointWeekRadioButton" layoutX="317.0" layoutY="57.0" mnemonicParsing="false" onAction="#appointWeekRadioButtonClicked" text="View Appointments by Week">
+      <RadioButton fx:id="appointWeekRadioButton" layoutX="452.0" layoutY="57.0" mnemonicParsing="false" onAction="#appointWeekRadioButtonClicked" text="Current Week">
          <toggleGroup>
             <ToggleGroup fx:id="toggle" />
          </toggleGroup></RadioButton>
-      <RadioButton fx:id="appointMonthRadioButton" layoutX="519.0" layoutY="56.0" mnemonicParsing="false" onAction="#appointMonthRadioButtonClicked" text="View Appointments by Month" toggleGroup="$toggle" />
+      <RadioButton fx:id="appointMonthRadioButton" layoutX="580.0" layoutY="57.0" mnemonicParsing="false" onAction="#appointMonthRadioButtonClicked" text="Current Month" toggleGroup="$toggle" />
       <RadioButton fx:id="allAppointRadioButton" layoutX="719.0" layoutY="57.0" mnemonicParsing="false" onAction="#allAppointRadioButtonClicked" selected="true" text="View All Appointments" toggleGroup="$toggle" />
 
 

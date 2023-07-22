@@ -68,8 +68,8 @@ public class LoginController implements Initializable {
 
                 if (usernameLogin.getText().isEmpty() || passwordLogin.getText().isEmpty()) {
                     Alert missingFields = new Alert(Alert.AlertType.ERROR);
-                    missingFields.setHeaderText("Missing");
-                    missingFields.setContentText("UserPass");
+                    missingFields.setHeaderText(resource.getString("Missing"));
+                    missingFields.setContentText(resource.getString("UserPass"));
                     missingFields.show();
                 }
                 for (Appointment appoint : maintainAppointments) {
@@ -82,14 +82,14 @@ public class LoginController implements Initializable {
                 }
                 if (notifyAppoint15 != false) {
                     Alert appointSoon = new Alert(Alert.AlertType.WARNING);
-                    appointSoon.setTitle("AppointmentReminder");
-                    appointSoon.setHeaderText("Upcoming");
-                    appointSoon.setContentText("AppointmentsSoon");
+                    appointSoon.setTitle(resource.getString("AppointmentReminder"));
+                    appointSoon.setHeaderText(resource.getString("Upcoming"));
+                    appointSoon.setContentText(resource.getString("AppointmentsSoon"));
                     appointSoon.showAndWait();
                 } else {
                     Alert noAppointsSoon = new Alert(Alert.AlertType.WARNING);
-                    noAppointsSoon.setTitle("NoAppointments");
-                    noAppointsSoon.setContentText("NoUpcoming");
+                    noAppointsSoon.setTitle(resource.getString("NoAppointments"));
+                    noAppointsSoon.setContentText(resource.getString("NoUpcoming"));
                     noAppointsSoon.showAndWait();
                 }
             } else if (userID < 0) {
