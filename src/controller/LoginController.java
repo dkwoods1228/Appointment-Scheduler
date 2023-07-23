@@ -47,15 +47,15 @@ public class LoginController implements Initializable {
             LocalDateTime showTime = null;
             int maintainAppointID = 0;
 
-            ResourceBundle resource = ResourceBundle.getBundle("loglang/login", Locale.getDefault());
-            String userName = usernameLogin.getText();
-            String passWord = passwordLogin.getText();
-            int userID = UserDAO.confirmUserLogin(userName, passWord);
+            ResourceBundle resource = ResourceBundle.getBundle("log_lang/login", Locale.getDefault());
+            String user = usernameLogin.getText();
+            String pass = passwordLogin.getText();
+            boolean tryLogin = UserDAO.confirmUserLogin(user, pass);
 
             FileWriter writeFile = new FileWriter("login_activity.txt", true);
             PrintWriter printFile = new PrintWriter(writeFile);
 
-            if (userID > 0) {
+            if (tryLogin) {
                 FXMLLoader loads = new FXMLLoader();
                 loads.setLocation(getClass().getResource("/view/Main.fxml"));
                 Parent login = loads.load();
@@ -64,7 +64,7 @@ public class LoginController implements Initializable {
                 stage.setScene(newScene);
                 stage.show();
 
-                printFile.print("There was a successful login by " + userName + " during the date and time of " + Timestamp.valueOf(LocalDateTime.now()) + "\n");
+                printFile.print("There was a successful login by " + user + " during the date and time of " + Timestamp.valueOf(LocalDateTime.now()) + "\n");
 
                 if (usernameLogin.getText().isEmpty() || passwordLogin.getText().isEmpty()) {
                     Alert missingFields = new Alert(Alert.AlertType.ERROR);
@@ -84,7 +84,7 @@ public class LoginController implements Initializable {
                     Alert appointSoon = new Alert(Alert.AlertType.WARNING);
                     appointSoon.setTitle(resource.getString("AppointmentReminder"));
                     appointSoon.setHeaderText(resource.getString("Upcoming"));
-                    appointSoon.setContentText(resource.getString("AppointmentsSoon"));
+                    appointSoon.setContentText("The following appointment(s) take place within the next 15 minutes.    Appointment ID:" + maintainAppointID + "Appointment Start Time: " + showTime);
                     appointSoon.showAndWait();
                 } else {
                     Alert noAppointsSoon = new Alert(Alert.AlertType.WARNING);
@@ -98,14 +98,14 @@ public class LoginController implements Initializable {
                 missingFields.setContentText(resource.getString("UserPass"));
                 missingFields.show();
             }
-            else if (userID < 0) {
+            else {
                 Alert invalidCred = new Alert(Alert.AlertType.ERROR);
                 invalidCred.setTitle(resource.getString("Wrong"));
                 invalidCred.setHeaderText(resource.getString("Restricted"));
                 invalidCred.setContentText(resource.getString("Invalid"));
                 invalidCred.show();
 
-                printFile.print("There was a failed login attempt by " + userName + " during the date of time of " + Timestamp.valueOf(LocalDateTime.now()) + "\n");
+                printFile.print("There was a failed login attempt by " + user + " during the date and time of " + Timestamp.valueOf(LocalDateTime.now()) + "\n");
             }
             printFile.close();
 
@@ -132,7 +132,7 @@ public class LoginController implements Initializable {
 
             loginTimeZone.setText(String.valueOf(getZone));
 
-            resource = ResourceBundle.getBundle("loglang/login", Locale.getDefault());
+            resource = ResourceBundle.getBundle("log_lang/login", Locale.getDefault());
             loginLabel.setText(resource.getString("Login"));
             usernameLabel.setText(resource.getString("Username"));
             passwordLabel.setText(resource.getString("Password"));

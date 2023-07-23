@@ -51,6 +51,7 @@ public class AddAppointmentController {
                 missingFields.setHeaderText("Missing Information");
                 missingFields.setContentText("You must enter information in all fields to add an appointment.");
                 missingFields.showAndWait();
+                return;
             }
             else if (!addAppointTitle.getText().isEmpty() && !addAppointDescription.getText().isEmpty() && !addAppointLocation.getText().isEmpty() && !addAppointType.getText().isEmpty() && addAppointStartDate.getValue() != null && addAppointEndDate.getValue() != null && !addAppointStartTime.getValue().isEmpty() && !addAppointEndTime.getValue().isEmpty() && !addAppointCustomerID.getText().isEmpty()) {
                 ObservableList<Customer> maintainCustomers = CustomerDAO.getCustomers(connection);
@@ -72,23 +73,8 @@ public class AddAppointmentController {
 
                 ZonedDateTime startZone = ZonedDateTime.of(startLocalAll, ZoneId.systemDefault());
                 ZonedDateTime endZone = ZonedDateTime.of(endLocalAll, ZoneId.systemDefault());
-                ZonedDateTime startToEasternTime = startZone.withZoneSameInstant(ZoneId.of("America/New_York"));
-                ZonedDateTime endToEasternTime = endZone.withZoneSameInstant(ZoneId.of("America/New_York"));
-
-                LocalTime appointStartTime = startToEasternTime.toLocalTime();
-                LocalTime appointEndTime = endToEasternTime.toLocalTime();
-
-                DayOfWeek appointStartDay = startToEasternTime.toLocalDate().getDayOfWeek();
-                DayOfWeek appointEndDay = endToEasternTime.toLocalDate().getDayOfWeek();
-
-                int intAppointStart = appointStartDay.getValue();
-                int intAppointEnd = appointEndDay.getValue();
-                int getStartBusinessDays = DayOfWeek.MONDAY.getValue();
-                int getEndBusinessDays = DayOfWeek.FRIDAY.getValue();
-                LocalTime getStartBusinessHours = LocalTime.of(8, 0, 0);
-                LocalTime getEndBusinessHours = LocalTime.of(22, 0, 0);
-
-
+                ZonedDateTime startToEasternTime = startZone.withZoneSameInstant(ZoneId.of("America/Chicago"));
+                ZonedDateTime endToEasternTime = endZone.withZoneSameInstant(ZoneId.of("America/Chicago"));
                 if (startToEasternTime.toLocalDate().getDayOfWeek().getValue() == (DayOfWeek.SUNDAY.getValue()) ||
                         startToEasternTime.toLocalDate().getDayOfWeek().getValue() == (DayOfWeek.SATURDAY.getValue()) ||
                         endToEasternTime.toLocalDate().getDayOfWeek().getValue() == (DayOfWeek.SUNDAY.getValue()) ||
@@ -194,6 +180,7 @@ public class AddAppointmentController {
             Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             stage.setScene(newScene);
             stage.show();
+            stage.centerOnScreen();
 
         } catch (SQLException | IOException e) {
             e.printStackTrace();
@@ -207,6 +194,7 @@ public class AddAppointmentController {
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.setScene(newScene);
         stage.show();
+        stage.centerOnScreen();
 
     }
 

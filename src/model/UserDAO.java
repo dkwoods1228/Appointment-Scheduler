@@ -3,40 +3,36 @@ package model;
 import database.DBConnect;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.Alert;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserDAO extends User {
+    private static User loggedIn;
     public UserDAO(int userID, String username, String password) {
+        super();
+
     }
 
-    public static int confirmUserLogin(String userName, String passWord) {
-        try
-        {
-            String sqlCommand = "SELECT * FROM users WHERE User_Name = '" + userName + "' AND Password = '" + passWord +"'";
-            PreparedStatement prepare = DBConnect.getConnection().prepareStatement(sqlCommand);
-            ResultSet results = prepare.executeQuery();
-            results.next();
-            if (results.getString("User_Name").equals(userName)) {
-                if (results.getString("Password").equals(passWord)) {
-                    return results.getInt("User_ID");
-                }
-            } else if (!results.getString("User_Name").equals(userName)) {
-                if (!results.getString("Password").equals(passWord)) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid Credentials");
-                    alert.show();
-                    return -1;
-
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+    public static boolean confirmUserLogin(String user, String pass) throws SQLException {
+        Connection connection = DBConnect.getConnection();
+        PreparedStatement prepare = connection.prepareStatement("SELECT * FROM users WHERE " + "User_Name = ? AND Password = ?");
+        prepare.setString(1, user);
+        prepare.setString(2, pass);
+        ResultSet results = prepare.executeQuery();
+        if (!results.next()) {
+            prepare.close();
+            return false;
+        } else {
+            loggedIn = new UserDAO(results.getInt("User_ID"), results.getString("User_Name"), results.getString("Password"));
+            prepare.close();
+            return true;
         }
-        return -1;
     }
+
+
 
     public static ObservableList<UserDAO> getUsers() throws SQLException {
         ObservableList<UserDAO> maintainUsers = FXCollections.observableArrayList();
