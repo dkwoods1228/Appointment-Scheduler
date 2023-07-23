@@ -92,7 +92,13 @@ public class LoginController implements Initializable {
                     noAppointsSoon.setContentText(resource.getString("NoUpcoming"));
                     noAppointsSoon.showAndWait();
                 }
-            } else if (userID < 0) {
+            } else if (usernameLogin.getText().isEmpty() || passwordLogin.getText().isEmpty()) {
+                Alert missingFields = new Alert(Alert.AlertType.ERROR);
+                missingFields.setHeaderText(resource.getString("Missing"));
+                missingFields.setContentText(resource.getString("UserPass"));
+                missingFields.show();
+            }
+            else if (userID < 0) {
                 Alert invalidCred = new Alert(Alert.AlertType.ERROR);
                 invalidCred.setTitle(resource.getString("Wrong"));
                 invalidCred.setHeaderText(resource.getString("Restricted"));

@@ -16,7 +16,7 @@ public class UserDAO extends User {
     public static int confirmUserLogin(String userName, String passWord) {
         try
         {
-            String sqlCommand = "SELECT * FROM users WHERE user_name = '" + userName + "' AND password = '" + passWord +"'";
+            String sqlCommand = "SELECT * FROM users WHERE User_Name = '" + userName + "' AND Password = '" + passWord +"'";
             PreparedStatement prepare = DBConnect.getConnection().prepareStatement(sqlCommand);
             ResultSet results = prepare.executeQuery();
             results.next();
@@ -28,6 +28,7 @@ public class UserDAO extends User {
                 if (!results.getString("Password").equals(passWord)) {
                     Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid Credentials");
                     alert.show();
+                    return -1;
 
                 }
             }
