@@ -7,15 +7,15 @@ public class Appointment {
     private String appointTitle;
     private String appointDescription;
     private String appointLocation;
-    private int contactID;
+    public int contactID;
     private String appointType;
     private LocalDateTime start;
     private LocalDateTime end;
-    private int appointCustomerID;
-    private int userID;
+    public int customerID;
+    public int userID;
 
     public Appointment(int appointID, String appointTitle, String appointDescription, String appointLocation, int contactID,
-                       String appointType, LocalDateTime start, LocalDateTime end, int appointCustomerID, int userID) {
+                       String appointType, LocalDateTime start, LocalDateTime end, int customerID, int userID) {
         this.appointID = appointID;
         this.appointTitle = appointTitle;
         this.appointDescription = appointDescription;
@@ -24,7 +24,7 @@ public class Appointment {
         this.appointType = appointType;
         this.start = start;
         this.end = end;
-        this.appointCustomerID = appointCustomerID;
+        this.customerID = customerID;
         this.userID = userID;
     }
 
@@ -92,12 +92,12 @@ public class Appointment {
         this.end = end;
     }
 
-    public int getAppointCustomerID() {
-        return appointCustomerID;
+    public int getCustomerID() {
+        return customerID;
     }
 
-    public void setAppointCustomerID(int appointCustomerID) {
-        this.appointCustomerID = appointCustomerID;
+    public void setCustomerID(int customerID) {
+        this.customerID = customerID;
     }
 
     public int getUserID() {

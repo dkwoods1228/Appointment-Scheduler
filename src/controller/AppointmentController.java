@@ -59,9 +59,9 @@ public class AppointmentController implements Initializable {
     @FXML
     private TextField updateAppointType;
     @FXML
-    private TextField updateAppointCustomerID;
+    private ComboBox<Integer> updateAppointCustomerID;
     @FXML
-    private TextField updateAppointUserID;
+    private ComboBox<Integer> updateAppointUserID;
     @FXML
     private Button updateSaveAppointmentButton;
     @FXML
@@ -99,7 +99,7 @@ public class AppointmentController implements Initializable {
     @FXML
     private TableColumn<?, ?> appointEnd;
     @FXML
-    private TableColumn<?, ?> appointCustomerID;
+    private TableColumn<?, ?> customerID;
     @FXML
     private TableColumn<?, ?> userID;
 
@@ -123,6 +123,11 @@ public class AppointmentController implements Initializable {
                 ObservableList<Contact> maintainContacts = ContactDAO.getContacts();
                 ObservableList<String> contacts = FXCollections.observableArrayList();
                 String showContact = "";
+                ObservableList<Integer> user = FXCollections.observableArrayList();
+                String showUsers = "";
+                updateAppointUserID.setItems(user);
+
+
 
                 maintainContacts.forEach(contact -> contacts.add(contact.getContactName()));
                 updateAppointContact.setItems(contacts);
@@ -142,8 +147,12 @@ public class AppointmentController implements Initializable {
                 updateAppointEndDate.setValue(appointClicked.getEnd().toLocalDate());
                 updateAppointStartTime.setValue(String.valueOf(appointClicked.getStart().toLocalTime()));
                 updateAppointEndTime.setValue(String.valueOf(appointClicked.getEnd().toLocalTime()));
-                updateAppointCustomerID.setText(String.valueOf(appointClicked.getAppointCustomerID()));
-                updateAppointUserID.setText(String.valueOf(appointClicked.getUserID()));
+                updateAppointCustomerID.setItems(CustomerDAO.getEveryCustomerID());
+                updateAppointCustomerID.getSelectionModel().select(appointClicked.getCustomerID());
+                updateAppointCustomerID.setValue(appointClicked.getCustomerID());
+                updateAppointUserID.setItems(UserDAO.getEveryUserID());
+                updateAppointUserID.getSelectionModel().select(appointClicked.getUserID());
+                updateAppointUserID.setValue(appointClicked.getUserID());
 
                 ObservableList<String> times = FXCollections.observableArrayList();
                 LocalTime min = LocalTime.MIN.plusHours(8);
@@ -157,6 +166,7 @@ public class AppointmentController implements Initializable {
                 }
                 updateAppointStartTime.setItems(times);
                 updateAppointEndTime.setItems(times);
+
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -177,7 +187,7 @@ public class AppointmentController implements Initializable {
         try {
             Connection connection = DBConnect.openConnection();
 
-            if (!updateAppointTitle.getText().isEmpty() && !updateAppointDescription.getText().isEmpty() && !updateAppointLocation.getText().isEmpty() && !updateAppointType.getText().isEmpty() && updateAppointStartDate.getValue() != null && updateAppointEndDate.getValue() != null && !updateAppointStartTime.getValue().isEmpty() && !updateAppointEndTime.getValue().isEmpty() && !updateAppointCustomerID.getText().isEmpty()) {
+            if (!updateAppointTitle.getText().isEmpty() && !updateAppointDescription.getText().isEmpty() && !updateAppointLocation.getText().isEmpty() && !updateAppointType.getText().isEmpty() && updateAppointStartDate.getValue() != null && updateAppointEndDate.getValue() != null && !updateAppointStartTime.getValue().isEmpty() && !updateAppointEndTime.getValue().isEmpty() && updateAppointCustomerID.getValue() != null) {
                 ObservableList<Customer> maintainCustomers = CustomerDAO.getCustomers(connection);
                 ObservableList<Integer> maintainCustomID = FXCollections.observableArrayList();
                 ObservableList<UserDAO> maintainUsers = UserDAO.getUsers();
@@ -200,8 +210,8 @@ public class AppointmentController implements Initializable {
                 ZonedDateTime startZone = ZonedDateTime.of(startLocalAll, ZoneId.systemDefault());
                 ZonedDateTime endZone = ZonedDateTime.of(endLocalAll, ZoneId.systemDefault());
 
-                ZonedDateTime startToEasternTime = startZone.withZoneSameInstant(ZoneId.of("America/New_York"));
-                ZonedDateTime endToEasternTime = endZone.withZoneSameInstant(ZoneId.of("America/New_York"));
+                ZonedDateTime startToEasternTime = startZone.withZoneSameInstant(ZoneId.of("America/Chicago"));
+                ZonedDateTime endToEasternTime = endZone.withZoneSameInstant(ZoneId.of("America/Chicago"));
 
                 if (startToEasternTime.toLocalDate().getDayOfWeek().getValue() == (DayOfWeek.SUNDAY.getValue()) ||
                         startToEasternTime.toLocalDate().getDayOfWeek().getValue() == (DayOfWeek.SATURDAY.getValue()) ||
@@ -219,12 +229,12 @@ public class AppointmentController implements Initializable {
                     Alert timeOutsideBusiness = new Alert(Alert.AlertType.ERROR);
                     timeOutsideBusiness.setTitle("Error");
                     timeOutsideBusiness.setHeaderText("Outside Business Operations");
-                    timeOutsideBusiness.setContentText("You have selected a time outside of business operations. Business hours are normally 8:00am-10:00pm.");
+                    timeOutsideBusiness.setContentText("You have selected a time outside of business operations. Business hours are normally 8:00am-10:00pm EST.");
                     timeOutsideBusiness.showAndWait();
                     return;
                 }
 
-                int alteredCustomID = Integer.parseInt(updateAppointCustomerID.getText());
+                int alteredCustomID = (updateAppointCustomerID.getValue());
                 int appointID = Integer.parseInt(updateAppointID.getText());
 
                 if (endLocalAll.isBefore(startLocalAll)) {
@@ -247,7 +257,7 @@ public class AppointmentController implements Initializable {
                     LocalDateTime startAppointVerify = appointment.getStart();
                     LocalDateTime endAppointVerify = appointment.getEnd();
 
-                    if ((alteredCustomID == appointment.getAppointCustomerID()) && (appointID != appointment.getAppointID()) &&
+                    if ((alteredCustomID == appointment.getCustomerID()) && (appointID != appointment.getAppointID()) &&
                             (startLocalAll.isBefore(startAppointVerify)) && (endLocalAll.isAfter(endAppointVerify))) {
                         Alert overlapAppoint = new Alert(Alert.AlertType.ERROR);
                         overlapAppoint.setTitle("Error");
@@ -256,7 +266,7 @@ public class AppointmentController implements Initializable {
                         overlapAppoint.showAndWait();
                         return;
                     }
-                    if ((alteredCustomID == appointment.getAppointCustomerID()) && (appointID != appointment.getAppointID()) &&
+                    if ((alteredCustomID == appointment.getCustomerID()) && (appointID != appointment.getAppointID()) &&
                             (startLocalAll.isAfter(startAppointVerify)) && (startLocalAll.isBefore(endAppointVerify))) {
                         Alert overlapStartTime = new Alert(Alert.AlertType.ERROR);
                         overlapStartTime.setTitle("Error");
@@ -265,7 +275,7 @@ public class AppointmentController implements Initializable {
                         overlapStartTime.showAndWait();
                         return;
                     }
-                    if ((alteredCustomID == appointment.getAppointCustomerID()) && (appointID != appointment.getAppointID()) &&
+                    if ((alteredCustomID == appointment.getCustomerID()) && (appointID != appointment.getAppointID()) &&
                             (endLocalAll.isAfter(startAppointVerify)) && (endLocalAll.isBefore(endAppointVerify))) {
                         Alert overlapStartTime = new Alert(Alert.AlertType.ERROR);
                         overlapStartTime.setTitle("Error");
@@ -285,6 +295,7 @@ public class AppointmentController implements Initializable {
                 String sqlCommand = "UPDATE appointments SET Appointment_ID = ?, Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Last_Update = ?, Last_Updated_By = ?, Customer_ID = ?, User_ID = ?, Contact_ID = ? WHERE Appointment_ID = ?";
                 DBConnect.setPreparedStatement(DBConnect.getConnection(), sqlCommand);
                 PreparedStatement prepare = DBConnect.getPreparedStatement();
+                updateAppointUserID.setItems(UserDAO.getEveryUserID());
 
                 prepare.setInt(1, Integer.parseInt(updateAppointID.getText()));
                 prepare.setString(2, updateAppointTitle.getText());
@@ -295,8 +306,8 @@ public class AppointmentController implements Initializable {
                 prepare.setString(7, utcEnd);
                 prepare.setTimestamp(8, Timestamp.valueOf(LocalDateTime.now()));
                 prepare.setString(9, "admin");
-                prepare.setInt(10, Integer.parseInt(updateAppointCustomerID.getText()));
-                prepare.setInt(11, Integer.parseInt(updateAppointUserID.getText()));
+                prepare.setInt(10, updateAppointCustomerID.getValue());
+                prepare.setInt(11, updateAppointUserID.getValue());
                 prepare.setInt(12, Integer.parseInt(ContactDAO.tryContactID(updateAppointContact.getValue())));
                 prepare.setInt(13, Integer.parseInt(updateAppointID.getText()));
                 prepare.execute();
@@ -306,8 +317,13 @@ public class AppointmentController implements Initializable {
                 updateAppointDescription.clear();
                 updateAppointLocation.clear();
                 updateAppointType.clear();
-                updateAppointCustomerID.clear();
-                updateAppointUserID.clear();
+                updateAppointContact.getSelectionModel().clearSelection();
+                updateAppointStartDate.getEditor().clear();
+                updateAppointStartTime.getSelectionModel().clearSelection();
+                updateAppointEndDate.getEditor().clear();
+                updateAppointEndTime.getSelectionModel().clearSelection();
+                updateAppointCustomerID.getSelectionModel().clearSelection();
+                updateAppointUserID.getSelectionModel().clearSelection();
 
 
                 ObservableList<Appointment> listOfAppointments = AppointmentDAO.getAppointments();
@@ -431,7 +447,7 @@ public class AppointmentController implements Initializable {
             appointType.setCellValueFactory(new PropertyValueFactory<>("appointType"));
             appointStart.setCellValueFactory(new PropertyValueFactory<>("start"));
             appointEnd.setCellValueFactory(new PropertyValueFactory<>("end"));
-            appointCustomerID.setCellValueFactory(new PropertyValueFactory<>("appointCustomerID"));
+            customerID.setCellValueFactory(new PropertyValueFactory<>("customerID"));
             userID.setCellValueFactory(new PropertyValueFactory<>("userID"));
 
             appointmentTable.setItems(maintainAppointments);

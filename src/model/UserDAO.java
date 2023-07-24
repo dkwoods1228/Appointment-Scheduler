@@ -48,4 +48,16 @@ public class UserDAO extends User {
         }
         return maintainUsers;
     }
+
+    public static ObservableList<Integer> getEveryUserID() throws SQLException {
+        ObservableList<Integer> everyUserID = FXCollections.observableArrayList();
+        PreparedStatement sql = DBConnect.getConnection().prepareStatement("SELECT DISTINCT User_ID FROM users;");
+        ResultSet result = sql.executeQuery();
+
+        while (result.next()) {
+            everyUserID.add(result.getInt("User_ID"));
+        }
+        sql.close();
+        return everyUserID;
+    }
 }

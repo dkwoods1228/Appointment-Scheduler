@@ -30,7 +30,7 @@
                 <TableColumn fx:id="appointType" prefWidth="69.0" text="Type" />
             <TableColumn fx:id="appointStart" prefWidth="103.0" text="Start Date/Time" />
             <TableColumn fx:id="appointEnd" prefWidth="103.0" text="End Date/Time" />
-            <TableColumn fx:id="appointCustomerID" prefWidth="76.0" text="Customer ID" />
+            <TableColumn fx:id="customerID" prefWidth="76.0" text="Customer ID" />
             <TableColumn fx:id="userID" prefWidth="76.0" text="User ID" />
             </columns>
         </TableView>
@@ -61,8 +61,7 @@
         <DatePicker fx:id="updateAppointEndDate" layoutX="1045.0" layoutY="328.0" prefHeight="25.0" prefWidth="99.0" />
         <ComboBox fx:id="updateAppointStartTime" layoutX="913.0" layoutY="372.0" prefHeight="25.0" prefWidth="99.0" />
         <ComboBox fx:id="updateAppointEndTime" layoutX="1045.0" layoutY="372.0" prefHeight="25.0" prefWidth="99.0" />
-        <TextField fx:id="updateAppointCustomerID" alignment="BASELINE_LEFT" layoutX="913.0" layoutY="420.0" prefHeight="25.0" prefWidth="187.0" promptText="Enter 1, 2, or 3" />
-        <TextField fx:id="updateAppointUserID" layoutX="913.0" layoutY="462.0" prefHeight="25.0" prefWidth="187.0" promptText="Enter 1 or 2" />
+        <ComboBox fx:id="updateAppointUserID" layoutX="913.0" layoutY="462.0" prefHeight="25.0" prefWidth="187.0" />
         <Line endX="60.0" endY="-131.0" layoutX="835.0" layoutY="115.0" startX="60.0" startY="425.5" stroke="#0000004b" />
         <Button fx:id="updateSaveAppointmentButton" layoutX="916.0" layoutY="496.0" mnemonicParsing="false" onAction="#updateSaveButtonClicked" text="Save Updated Appointment" />
         <Button fx:id="addAppointButton" layoutX="25.0" layoutY="418.0" mnemonicParsing="false" onAction="#addAppointButtonClicked" prefHeight="30.0" prefWidth="256.0" text="Add Appointment">
@@ -93,6 +92,8 @@
          </toggleGroup></RadioButton>
       <RadioButton fx:id="appointMonthRadioButton" layoutX="580.0" layoutY="57.0" mnemonicParsing="false" onAction="#appointMonthRadioButtonClicked" text="Current Month" toggleGroup="$toggle" />
       <RadioButton fx:id="allAppointRadioButton" layoutX="719.0" layoutY="57.0" mnemonicParsing="false" onAction="#allAppointRadioButtonClicked" selected="true" text="View All Appointments" toggleGroup="$toggle" />
+      <ComboBox fx:id="updateAppointCustomerID" layoutX="913.0" layoutY="421.0" prefHeight="25.0" prefWidth="187.0" />
+
 
 
     </children>

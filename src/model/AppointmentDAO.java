@@ -4,7 +4,6 @@ import database.DBConnect;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.lang.module.ResolutionException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -34,12 +33,26 @@ public class AppointmentDAO {
         }
         return maintainAppointments;
     }
+
     public static int deleteAppoint(int customer, Connection connection) throws SQLException {
-        String sqlCommand = "DELETE FROM appointments WHERE Appointment_ID=?";
+        String sqlCommand = "DELETE FROM appointments WHERE Appointment_ID = ?";
         PreparedStatement prepare = connection.prepareStatement(sqlCommand);
         prepare.setInt(1, customer);
         int outcome = prepare.executeUpdate();
         prepare.close();
         return outcome;
+    }
+
+    public static Boolean deleteAppointAndCustomer(Integer customerID) throws SQLException {
+        PreparedStatement sql = DBConnect.getConnection().prepareStatement("DELETE FROM appointments WHERE Customer_ID = ?");
+        sql.setInt(1, customerID);
+        try {
+            sql.executeUpdate();
+            sql.close();
+            return true;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return false;
+        }
     }
 }

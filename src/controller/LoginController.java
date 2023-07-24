@@ -84,7 +84,7 @@ public class LoginController implements Initializable {
                     Alert appointSoon = new Alert(Alert.AlertType.WARNING);
                     appointSoon.setTitle(resource.getString("AppointmentReminder"));
                     appointSoon.setHeaderText(resource.getString("Upcoming"));
-                    appointSoon.setContentText("The following appointment(s) take place within the next 15 minutes.    Appointment ID:" + maintainAppointID + "Appointment Start Time: " + showTime);
+                    appointSoon.setContentText("The following appointment(s) take place within the next 15 minutes. --->    Appointment ID: " + maintainAppointID + " | Appointment Start Date/Time: " + showTime);
                     appointSoon.showAndWait();
                 } else {
                     Alert noAppointsSoon = new Alert(Alert.AlertType.WARNING);

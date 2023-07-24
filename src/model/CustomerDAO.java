@@ -28,4 +28,30 @@ public class CustomerDAO {
         }
         return maintainCustomers;
     }
+
+    public static Boolean deleteCustomer(Integer customerID) throws SQLException {
+        PreparedStatement sql = DBConnect.openConnection().prepareStatement("DELETE FROM customers WHERE Customer_ID = ?");
+        sql.setInt(1, customerID);
+        try {
+            sql.executeUpdate();
+            sql.close();
+            return true;
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public static ObservableList<Integer> getEveryCustomerID() throws SQLException {
+        ObservableList<Integer> everyCustomerID = FXCollections.observableArrayList();
+        PreparedStatement sql = DBConnect.getConnection().prepareStatement("SELECT DISTINCT Customer_ID FROM customers;");
+        ResultSet result = sql.executeQuery();
+
+        while (result.next()) {
+            everyCustomerID.add(result.getInt("Customer_ID"));
+        }
+        sql.close();
+        return everyCustomerID;
+    }
+
 }

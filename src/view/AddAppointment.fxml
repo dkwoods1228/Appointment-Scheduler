@@ -73,9 +73,9 @@
         <DatePicker fx:id="addAppointEndDate" layoutX="148.0" layoutY="315.0" prefHeight="25.0" prefWidth="150.0" />
         <ComboBox fx:id="addAppointStartTime" layoutX="148.0" layoutY="352.0" prefHeight="25.0" prefWidth="149.0" />
         <ComboBox fx:id="addAppointEndTime" layoutX="148.0" layoutY="391.0" prefHeight="25.0" prefWidth="149.0" />
-        <TextField fx:id="addAppointUserID" layoutX="149.0" layoutY="461.0" promptText="Enter 1 or 2" />
         <Button fx:id="saveButton" layoutX="161.0" layoutY="496.0" mnemonicParsing="false" onAction="#saveButtonClicked" text="Save" />
         <Button fx:id="cancelButton" layoutX="222.0" layoutY="496.0" mnemonicParsing="false" onAction="#cancelButtonClicked" text="Cancel" />
-      <TextField fx:id="addAppointCustomerID" layoutX="148.0" layoutY="426.0" />
+      <ComboBox fx:id="addAppointUserID" layoutX="148.0" layoutY="461.0" prefHeight="25.0" prefWidth="149.0" />
+      <ComboBox fx:id="addAppointCustomerID" layoutX="148.0" layoutY="426.0" prefHeight="25.0" prefWidth="149.0" />
     </children>
 </AnchorPane>

@@ -220,36 +220,31 @@ public class CustomerController implements Initializable {
             alert.setContentText("You must select a customer to delete.");
             alert.show();
         } else {
-            ObservableList<Appointment> maintainAppointments = AppointmentDAO.getAppointments();
             Alert deleteCustomerAlert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you would like to delete this customer and their corresponding appointments?");
             Optional<ButtonType> validate = deleteCustomerAlert.showAndWait();
             if (validate.isPresent() && validate.get() == ButtonType.OK) {
-                int delCustomID = customerTable.getSelectionModel().getSelectedItem().getCustomerID();
-                AppointmentDAO.deleteAppoint(delCustomID, connection);
-            }
+                Boolean appointDelete = AppointmentDAO.deleteAppointAndCustomer(customerClicked.getCustomerID());
+                Boolean customerDelete = CustomerDAO.deleteCustomer(customerClicked.getCustomerID());
 
-
-                String sqlCommand = "DELETE FROM customers WHERE Customer_ID = ?";
-                DBConnect.setPreparedStatement(DBConnect.getConnection(), sqlCommand);
-                PreparedStatement prepare = DBConnect.getPreparedStatement();
-                int deleteCustomer = customerTable.getSelectionModel().getSelectedItem().getCustomerID();
-
-                for (Appointment appoint : maintainAppointments) {
-                    int customerIDAppoint = appoint.getAppointCustomerID();
-                    if (deleteCustomer == customerIDAppoint) {
-                        String sqlCommand2 = "DELETE FROM appointments WHERE Appointment_ID = ?";
-                        DBConnect.setPreparedStatement(DBConnect.getConnection(), sqlCommand2);
-
-                    }
+                if (appointDelete && customerDelete) {
+                    ButtonType ok = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+                    Alert customerDeleted = new Alert(Alert.AlertType.CONFIRMATION, "Selected customer and their corresponding appointments have been deleted.", ok);
+                    customerDeleted.showAndWait();
+                } else {
+                    ButtonType ok = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+                    Alert unsuccessfulDelete = new Alert(Alert.AlertType.WARNING, "Failed to delete customer or related appointments.", ok);
+                    unsuccessfulDelete.showAndWait();
+                    return;
                 }
-
-                prepare.setInt(1, deleteCustomer);
-                prepare.execute();
-                ObservableList<Customer> newCustomersTable = CustomerDAO.getCustomers(connection);
-                customerTable.setItems(newCustomersTable);
+                try {
+                    ObservableList<Customer> newCustomersTable = CustomerDAO.getCustomers(connection);
+                    customerTable.setItems(newCustomersTable);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         }
-
+    }
 
     public void updateCustomerCountryComboBox(ActionEvent actionEvent) throws SQLException {
         try {

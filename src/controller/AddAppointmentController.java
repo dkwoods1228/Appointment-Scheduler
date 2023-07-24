@@ -39,22 +39,22 @@ public class AddAppointmentController {
     @FXML private DatePicker addAppointEndDate;
     @FXML private ComboBox<String> addAppointStartTime;
     @FXML private ComboBox<String> addAppointEndTime;
-    @FXML private TextField addAppointCustomerID;
-    @FXML private TextField addAppointUserID;
+    @FXML private ComboBox<Integer> addAppointCustomerID;
+    @FXML private ComboBox<Integer> addAppointUserID;
     @FXML private Button saveButton;
     @FXML private Button cancelButton;
 
     @FXML void saveButtonClicked(ActionEvent actionEvent) {
         try {
             Connection connection = DBConnect.openConnection();
-            if (addAppointTitle.getText().isEmpty() || addAppointDescription.getText().isEmpty() || addAppointLocation.getText().isEmpty() || addAppointType.getText().isEmpty() || addAppointStartDate.getValue() == null || addAppointEndDate.getValue() == null || addAppointStartTime.getValue().isEmpty() || addAppointEndTime.getValue().isEmpty() || addAppointCustomerID.getText().isEmpty()) {
+            if (addAppointTitle.getText().isEmpty() || addAppointDescription.getText().isEmpty() || addAppointLocation.getText().isEmpty() || addAppointType.getText().isEmpty() || addAppointStartDate.getValue() == null || addAppointEndDate.getValue() == null || addAppointStartTime.getValue().isEmpty() || addAppointEndTime.getValue().isEmpty() || addAppointCustomerID.getValue() == null) {
                 Alert missingFields = new Alert(Alert.AlertType.ERROR);
                 missingFields.setTitle("Error");
                 missingFields.setHeaderText("Missing Information");
                 missingFields.setContentText("You must enter information in all fields to add an appointment.");
                 missingFields.showAndWait();
                 return;
-            } else if (!addAppointTitle.getText().isEmpty() && !addAppointDescription.getText().isEmpty() && !addAppointLocation.getText().isEmpty() && !addAppointType.getText().isEmpty() && addAppointStartDate.getValue() != null && addAppointEndDate.getValue() != null && !addAppointStartTime.getValue().isEmpty() && !addAppointEndTime.getValue().isEmpty() && !addAppointCustomerID.getText().isEmpty()) {
+            } else if (!addAppointTitle.getText().isEmpty() && !addAppointDescription.getText().isEmpty() && !addAppointLocation.getText().isEmpty() && !addAppointType.getText().isEmpty() && addAppointStartDate.getValue() != null && addAppointEndDate.getValue() != null && !addAppointStartTime.getValue().isEmpty() && !addAppointEndTime.getValue().isEmpty() && addAppointCustomerID.getValue() != null ) {
                 ObservableList<Customer> maintainCustomers = CustomerDAO.getCustomers(connection);
                 ObservableList<Integer> maintainCustomID = FXCollections.observableArrayList();
                 ObservableList<UserDAO> maintainUsers = UserDAO.getUsers();
@@ -98,7 +98,7 @@ public class AddAppointmentController {
                     return;
                 }
 
-                int alteredCustomID = Integer.parseInt(String.valueOf(addAppointCustomerID.getText()));
+                int alteredCustomID = Integer.parseInt(String.valueOf(addAppointCustomerID.getValue()));
                 int disabledID = Integer.parseInt(String.valueOf((int) (Math.random() * 50)));
 
 
@@ -125,7 +125,7 @@ public class AddAppointmentController {
                         LocalDateTime startAppointVerify = appointment.getStart();
                         LocalDateTime endAppointVerify = appointment.getEnd();
 
-                        if ((alteredCustomID == appointment.getAppointCustomerID()) && (disabledID != appointment.getAppointID()) &&
+                        if ((alteredCustomID == appointment.getCustomerID()) && (disabledID != appointment.getAppointID()) &&
                                 (startLocalAll.isBefore(startAppointVerify)) && (endLocalAll.isAfter(endAppointVerify))) {
                             Alert overlapAppoint = new Alert(Alert.AlertType.ERROR);
                             overlapAppoint.setTitle("Error");
@@ -134,7 +134,7 @@ public class AddAppointmentController {
                             overlapAppoint.showAndWait();
                             return;
                         }
-                        if ((alteredCustomID == appointment.getAppointCustomerID()) && (disabledID != appointment.getAppointID()) &&
+                        if ((alteredCustomID == appointment.getCustomerID()) && (disabledID != appointment.getAppointID()) &&
                                 (startLocalAll.isAfter(startAppointVerify)) && (startLocalAll.isBefore(endAppointVerify))) {
                             Alert overlapStartTime = new Alert(Alert.AlertType.ERROR);
                             overlapStartTime.setTitle("Error");
@@ -143,7 +143,7 @@ public class AddAppointmentController {
                             overlapStartTime.showAndWait();
                             return;
                         }
-                        if ((alteredCustomID == appointment.getAppointCustomerID()) && (disabledID != appointment.getAppointID()) &&
+                        if ((alteredCustomID == appointment.getCustomerID()) && (disabledID != appointment.getAppointID()) &&
                                 (endLocalAll.isAfter(startAppointVerify)) && (endLocalAll.isBefore(endAppointVerify))) {
                             Alert overlapEndTime = new Alert(Alert.AlertType.ERROR);
                             overlapEndTime.setTitle("Error");
@@ -175,9 +175,9 @@ public class AddAppointmentController {
                     prepare.setString(9, "admin");
                     prepare.setTimestamp(10, Timestamp.valueOf(LocalDateTime.now()));
                     prepare.setInt(11, 1);
-                    prepare.setInt(12, Integer.parseInt(addAppointCustomerID.getText()));
+                    prepare.setInt(12, addAppointCustomerID.getValue());
                     prepare.setInt(13, Integer.parseInt(ContactDAO.tryContactID(addAppointContact.getValue())));
-                    prepare.setInt(14, Integer.parseInt(ContactDAO.tryContactID(addAppointUserID.getText())));
+                    prepare.setInt(14, addAppointUserID.getValue());
                     prepare.execute();
 
                 }
@@ -190,12 +190,10 @@ public class AddAppointmentController {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "Appointment has been added.");
                 alert.showAndWait();
 
-            } catch (SQLException sqlException) {
+            } catch (SQLException | IOException sqlException) {
             sqlException.printStackTrace();
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
         }
-        }
+    }
 
 
     @FXML
@@ -228,6 +226,8 @@ public class AddAppointmentController {
         addAppointContact.setItems(contacts);
         addAppointStartTime.setItems(times);
         addAppointEndTime.setItems(times);
+        addAppointUserID.setItems(UserDAO.getEveryUserID());
+        addAppointCustomerID.setItems(CustomerDAO.getEveryCustomerID());
 
     }
 }
