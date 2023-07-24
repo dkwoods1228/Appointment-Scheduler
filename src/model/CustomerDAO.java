@@ -3,7 +3,6 @@ package model;
 import database.DBConnect;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.util.converter.CurrencyStringConverter;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

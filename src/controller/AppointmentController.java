@@ -290,7 +290,7 @@ public class AppointmentController implements Initializable {
                 prepare.setString(2, updateAppointTitle.getText());
                 prepare.setString(3, updateAppointDescription.getText());
                 prepare.setString(4, updateAppointLocation.getText());
-                prepare.setString(5, updateAppointDescription.getText());
+                prepare.setString(5, updateAppointType.getText());
                 prepare.setString(6, utcStart);
                 prepare.setString(7, utcEnd);
                 prepare.setTimestamp(8, Timestamp.valueOf(LocalDateTime.now()));

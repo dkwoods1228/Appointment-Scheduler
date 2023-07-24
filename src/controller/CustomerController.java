@@ -226,6 +226,8 @@ public class CustomerController implements Initializable {
             if (validate.isPresent() && validate.get() == ButtonType.OK) {
                 int delCustomID = customerTable.getSelectionModel().getSelectedItem().getCustomerID();
                 AppointmentDAO.deleteAppoint(delCustomID, connection);
+            }
+
 
                 String sqlCommand = "DELETE FROM customers WHERE Customer_ID = ?";
                 DBConnect.setPreparedStatement(DBConnect.getConnection(), sqlCommand);
@@ -237,15 +239,17 @@ public class CustomerController implements Initializable {
                     if (deleteCustomer == customerIDAppoint) {
                         String sqlCommand2 = "DELETE FROM appointments WHERE Appointment_ID = ?";
                         DBConnect.setPreparedStatement(DBConnect.getConnection(), sqlCommand2);
+
                     }
                 }
+
                 prepare.setInt(1, deleteCustomer);
                 prepare.execute();
                 ObservableList<Customer> newCustomersTable = CustomerDAO.getCustomers(connection);
                 customerTable.setItems(newCustomersTable);
             }
         }
-    }
+
 
     public void updateCustomerCountryComboBox(ActionEvent actionEvent) throws SQLException {
         try {
