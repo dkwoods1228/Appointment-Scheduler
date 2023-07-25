@@ -1,10 +1,13 @@
 package model;
-
+/** Class provided to describe objects within Users.*/
 public class User {
     public int userID;
     public String username;
     public String password;
 
+    /**
+     * Lists information within User.
+     */
     public User() {
         this.userID = userID;
         this.username = username;
@@ -12,17 +15,23 @@ public class User {
     }
 
 
-
-
-
+    /**
+     * @return userID
+     */
     public int getUserID() {
         return userID;
     }
 
+    /**
+     * @param userID setter for userID
+     */
     public void setUserID(int userID) {
         this.userID = userID;
     }
 
+    /**
+     * @return username
+     */
     public String getUsername() {
         return username;
     }
@@ -31,10 +40,16 @@ public class User {
         this.username = username;
     }
 
+    /**
+     * @return password
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     * @param password setter for password
+     */
     public void setPassword(String password) {
         this.password = password;
     }

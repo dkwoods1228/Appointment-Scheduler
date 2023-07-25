@@ -7,9 +7,13 @@ import javafx.collections.ObservableList;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+/**Class used to manipulate/obtain data from Contacts table within the database.*/
 public class ContactDAO {
-
+    /**
+     * Observable List used to pull/manipulate contact data from the database.
+     * @return maintainContacts
+     * @throws SQLException
+     */
     public static ObservableList<Contact> getContacts() throws SQLException {
         ObservableList<Contact> maintainContacts = FXCollections.observableArrayList();
         String sqlCommand = "SELECT * from contacts";
@@ -24,6 +28,13 @@ public class ContactDAO {
         }
         return maintainContacts;
     }
+
+    /**
+     * Used to fill contact ComboBox and match contact IDs to contact names.
+     * @param contactID
+     * @return contactID
+     * @throws SQLException
+     */
     public static String tryContactID(String contactID) throws SQLException {
         PreparedStatement prepare = DBConnect.getConnection().prepareStatement("SELECT * FROM contacts WHERE Contact_Name = ?");
         prepare.setString(1, contactID);

@@ -14,16 +14,25 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
-
+/**Class used to allow the user direction to the different screens of the program.*/
 public class MainController implements Initializable {
 
-
+    /**
+     * Prints welcome message within terminal after logging in.
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         System.out.println("Welcome to the Client Scheduler! Hope you have a great experience!");
     }
 
+    /**
+     * Takes user to the Appointments page when clicked.
+     * @param actionEvent
+     * @throws IOException
+     */
     public void mainViewAppointmentsButtonClicked(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/view/Appointment.fxml"));
         Scene newScene = new Scene(root);
@@ -33,6 +42,11 @@ public class MainController implements Initializable {
         goToAppointments.centerOnScreen();
     }
 
+    /**
+     * Takes user to the Customers page when clicked.
+     * @param actionEvent
+     * @throws IOException
+     */
     public void mainViewCustomerButtonClicked(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/view/Customer.fxml"));
         Scene newScene = new Scene(root);
@@ -42,6 +56,11 @@ public class MainController implements Initializable {
         goToCustomer.centerOnScreen();
     }
 
+    /**
+     * Takes user to the reports page when clicked.
+     * @param actionEvent
+     * @throws IOException
+     */
     public void mainViewReportsButtonClicked(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/view/Reports.fxml"));
         Scene newScene = new Scene(root);
@@ -51,6 +70,10 @@ public class MainController implements Initializable {
         goToReports.centerOnScreen();
     }
 
+    /**
+     * Exits the program when clicked.
+     * @param actionEvent
+     */
     public void mainExitButtonClicked(ActionEvent actionEvent) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you would like to exit this program?");
         Optional<ButtonType> validate = alert.showAndWait();
@@ -60,6 +83,11 @@ public class MainController implements Initializable {
         }
     }
 
+    /**
+     * Logs the user out when clicked.
+     * @param actionEvent
+     * @throws IOException
+     */
     public void logOutButtonClicked(ActionEvent actionEvent) throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Logout");

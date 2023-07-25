@@ -25,7 +25,7 @@ import java.time.ZoneId;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
-
+/**Class used to confirm (or deny) user log in. Every log in attempt is logged as successful or failure. Also features a french language setting.*/
 public class LoginController implements Initializable {
     @FXML private TextField usernameLogin;
     @FXML private TextField passwordLogin;
@@ -37,6 +37,11 @@ public class LoginController implements Initializable {
     @FXML private Label passwordLabel;
     @FXML private Label timezoneLabel;
 
+    /**
+     * Logs the user in if the username and password is correct.
+     * If not correct, user is notified.
+     * @param actionEvent
+     */
     @FXML private void loginButtonClicked(ActionEvent actionEvent) {
         try {
             ObservableList<Appointment> maintainAppointments = AppointmentDAO.getAppointments();
@@ -114,6 +119,10 @@ public class LoginController implements Initializable {
         }
     }
 
+    /**
+     * Exits the program when clicked.
+     * @param actionEvent
+     */
     public void exitButtonClicked(ActionEvent actionEvent) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you would like to exit this program?");
         Optional<ButtonType> validate = alert.showAndWait();
@@ -123,6 +132,11 @@ public class LoginController implements Initializable {
         }
     }
 
+    /**
+     * Initializes the labels and buttons to appear as either English or French (if computer language settings are French-based.)
+     * @param url
+     * @param resource
+     */
     @Override
     public void initialize(URL url, ResourceBundle resource) {
         try {

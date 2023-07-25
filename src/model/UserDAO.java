@@ -8,7 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+/**Class used to manipulate/obtain data from Users table within the database.*/
 public class UserDAO extends User {
     private static User loggedIn;
     public UserDAO(int userID, String username, String password) {
@@ -16,6 +16,13 @@ public class UserDAO extends User {
 
     }
 
+    /**
+     * Boolean used to confirm user is verified to login with accurate credentials.
+     * @param user
+     * @param pass
+     * @return true/false
+     * @throws SQLException
+     */
     public static boolean confirmUserLogin(String user, String pass) throws SQLException {
         Connection connection = DBConnect.getConnection();
         PreparedStatement prepare = connection.prepareStatement("SELECT * FROM users WHERE " + "User_Name = ? AND Password = ?");
@@ -33,7 +40,11 @@ public class UserDAO extends User {
     }
 
 
-
+    /**
+     *  Observable List used to pull/manipulate division data from the database.
+     * @return maintainUsers
+     * @throws SQLException
+     */
     public static ObservableList<UserDAO> getUsers() throws SQLException {
         ObservableList<UserDAO> maintainUsers = FXCollections.observableArrayList();
         String sqlCommand = "SELECT * from users";
@@ -49,6 +60,11 @@ public class UserDAO extends User {
         return maintainUsers;
     }
 
+    /**
+     * Observable list to pull every user ID was the database to use for User ComboBoxes.
+     * @return everyUserID
+     * @throws SQLException
+     */
     public static ObservableList<Integer> getEveryUserID() throws SQLException {
         ObservableList<Integer> everyUserID = FXCollections.observableArrayList();
         PreparedStatement sql = DBConnect.getConnection().prepareStatement("SELECT DISTINCT User_ID FROM users ORDER BY User_ID ASC;");

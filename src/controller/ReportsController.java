@@ -22,7 +22,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.ResourceBundle;
-
+/**Class used to showcase a number of reports gathered from appointment and customer data*/
 public class ReportsController {
     @FXML private TableView<Appointment> appointmentTable;
     @FXML private TableColumn<?,?> appointID;
@@ -45,6 +45,10 @@ public class ReportsController {
     @FXML private Button exitButton;
     @FXML private Button returnToMainMenuButton;
 
+    /**
+     * Populates the tables featured on the page.
+     * @throws SQLException
+     */
     public void initialize() throws SQLException {
 
         appointID.setCellValueFactory(new PropertyValueFactory<>("appointID"));
@@ -72,6 +76,10 @@ public class ReportsController {
 
     }
 
+    /**
+     * 3rd Chosen Report: Finds the number of customers from the 3 different countries(US, UK, Canada).
+     * @throws SQLException
+     */
     @FXML public void customerCountryRelation() throws SQLException {
         try {
             ObservableList<Report> maintainCountries = ReportDAO.getCountries();
@@ -84,6 +92,11 @@ public class ReportsController {
             throwables.printStackTrace();
         }
     }
+
+    /**
+     * Exits the program.
+     * @param actionEvent
+     */
         @FXML public void exitButtonClicked(ActionEvent actionEvent) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you would like to exit this program?");
         Optional<ButtonType> validate = alert.showAndWait();
@@ -93,6 +106,10 @@ public class ReportsController {
         }
     }
 
+    /**
+     * Gathers data from appointments to detect the number of appointments by month and by type.
+     * @throws SQLException
+     */
     @FXML public void appointMonthAndTypeTotalsButtonClicked() throws SQLException {
         try {
             ObservableList<Month> monthly = FXCollections.observableArrayList();
@@ -141,6 +158,11 @@ public class ReportsController {
         }
     }
 
+    /**
+     * Returns to main menu if clicked.
+     * @param actionEvent
+     * @throws IOException
+     */
     @FXML public void returnToMainMenuButtonClicked(ActionEvent actionEvent) throws IOException {
             Parent root = FXMLLoader.load(getClass().getResource("/view/Main.fxml"));
             Scene newScene = new Scene(root);
@@ -150,6 +172,10 @@ public class ReportsController {
             returnToMain.centerOnScreen();
     }
 
+    /**
+     * Fill the contacts combo box from appointments to show the appointments that are linked to specific contacts.
+     * @param actionEvent
+     */
     public void contactsComboBoxClicked(ActionEvent actionEvent) {
         try {
             ObservableList<Appointment> maintainAppointments = AppointmentDAO.getAppointments();
@@ -177,6 +203,11 @@ public class ReportsController {
         }
     }
 
+    /**
+     * Takes user to the Appointments page if clicked.
+     * @param actionEvent
+     * @throws IOException
+     */
     public void goToAppointButtonClicked(ActionEvent actionEvent) throws IOException {
             Parent root = FXMLLoader.load(getClass().getResource("/view/Appointment.fxml"));
             Scene newScene = new Scene(root);
@@ -186,7 +217,11 @@ public class ReportsController {
             returnToMain.centerOnScreen();
         }
 
-
+    /**
+     * Takes user to the Customer Records page if clicked.
+     * @param actionEvent
+     * @throws IOException
+     */
     public void goToCustomersButtonClicked(ActionEvent actionEvent) throws IOException {
             Parent root = FXMLLoader.load(getClass().getResource("/view/Customer.fxml"));
             Scene newScene = new Scene(root);

@@ -27,7 +27,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static main.Timezone.timeAndDateToUTC;
-
+/**Class used to control the addition of an appointment to the appointment table.*/
 public class AddAppointmentController {
     @FXML private TextField addAppointTitle;
     @FXML private TextField addAppointID;
@@ -44,9 +44,14 @@ public class AddAppointmentController {
     @FXML private Button saveButton;
     @FXML private Button cancelButton;
 
+    /**
+     * When pressing the Save Button, it saves the appointment that the user has inputted and adds the appointment to the appointment table.
+     * @param actionEvent
+     */
     @FXML void saveButtonClicked(ActionEvent actionEvent) {
         try {
             Connection connection = DBConnect.openConnection();
+            //ensures all fields are used
             if (addAppointTitle.getText().isEmpty() || addAppointDescription.getText().isEmpty() || addAppointLocation.getText().isEmpty() || addAppointType.getText().isEmpty() || addAppointStartDate.getValue() == null || addAppointEndDate.getValue() == null || addAppointStartTime.getValue().isEmpty() || addAppointEndTime.getValue().isEmpty() || addAppointCustomerID.getValue() == null) {
                 Alert missingFields = new Alert(Alert.AlertType.ERROR);
                 missingFields.setTitle("Error");
@@ -64,7 +69,7 @@ public class AddAppointmentController {
                 maintainUsers.stream().map(User::getUserID).forEach(maintainUserID::add);
 
                 maintainCustomers.stream().map(Customer::getCustomerID).forEach(maintainCustomID::add);
-
+                //date and time conversions
                 LocalDate startLocalDate = addAppointStartDate.getValue();
                 LocalDate endLocalDate = addAppointEndDate.getValue();
                 DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
@@ -77,6 +82,7 @@ public class AddAppointmentController {
                 ZonedDateTime endZone = ZonedDateTime.of(endLocalAll, ZoneId.systemDefault());
                 ZonedDateTime startToEasternTime = startZone.withZoneSameInstant(ZoneId.of("America/Chicago"));
                 ZonedDateTime endToEasternTime = endZone.withZoneSameInstant(ZoneId.of("America/Chicago"));
+                //if any of these scenarios/errors occur, return user to the same page.
                 if (startToEasternTime.toLocalDate().getDayOfWeek().getValue() == (DayOfWeek.SUNDAY.getValue()) ||
                         startToEasternTime.toLocalDate().getDayOfWeek().getValue() == (DayOfWeek.SATURDAY.getValue()) ||
                         endToEasternTime.toLocalDate().getDayOfWeek().getValue() == (DayOfWeek.SUNDAY.getValue()) ||
@@ -99,10 +105,8 @@ public class AddAppointmentController {
                 }
 
                 int alteredCustomID = Integer.parseInt(String.valueOf(addAppointCustomerID.getValue()));
+                //Allows for 50 different appointment IDs
                 int disabledID = Integer.parseInt(String.valueOf((int) (Math.random() * 50)));
-
-
-                //if & else if statement (with return;) to avoid user from entering unavailable customer ID.
 
 
                     if (endLocalAll.isBefore(startLocalAll)) {
@@ -125,6 +129,7 @@ public class AddAppointmentController {
                         LocalDateTime startAppointVerify = appointment.getStart();
                         LocalDateTime endAppointVerify = appointment.getEnd();
 
+                        //overlapping appointments
                         if ((alteredCustomID == appointment.getCustomerID()) && (disabledID != appointment.getAppointID()) &&
                                 (startLocalAll.isBefore(startAppointVerify)) && (endLocalAll.isAfter(endAppointVerify))) {
                             Alert overlapAppoint = new Alert(Alert.AlertType.ERROR);
@@ -160,6 +165,7 @@ public class AddAppointmentController {
                     String utcStart = timeAndDateToUTC(dateStart + " " + timeStart + ":00");
                     String utcEnd = timeAndDateToUTC(dateEnd + " " + timeEnd + ":00");
 
+                    //adds new appointment to the database
                     String sqlCommand = "INSERT INTO appointments (Appointment_ID, Title, Description, Location, Type, Start, End, Create_Date, Created_By, Last_Update, Last_Updated_By, Customer_ID, User_ID, Contact_ID) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
                     DBConnect.setPreparedStatement(DBConnect.getConnection(), sqlCommand);
                     PreparedStatement prepare = DBConnect.getPreparedStatement();
@@ -187,6 +193,7 @@ public class AddAppointmentController {
                 stage.setScene(newScene);
                 stage.show();
                 stage.centerOnScreen();
+                //After scene message appears
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "Appointment has been added.");
                 alert.showAndWait();
 
@@ -195,7 +202,11 @@ public class AddAppointmentController {
         }
     }
 
-
+    /**
+     * When user clicks cancel button, the user is taken back to the appointments page.
+     * @param actionEvent
+     * @throws IOException
+     */
     @FXML
     void cancelButtonClicked(ActionEvent actionEvent) throws IOException {
         Parent goToAppoint = FXMLLoader.load(getClass().getResource("/view/Appointment.fxml"));
@@ -207,6 +218,10 @@ public class AddAppointmentController {
 
     }
 
+    /**
+     * Initializes and sets/fills ComboBoxes
+     * @throws SQLException
+     */
     @FXML
     public void initialize() throws SQLException {
         ObservableList<Contact> maintainContacts = ContactDAO.getContacts();

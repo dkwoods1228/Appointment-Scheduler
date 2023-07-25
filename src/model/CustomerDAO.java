@@ -8,8 +8,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+/**Class used to manipulate/obtain data from Customers table within the database.*/
 public class CustomerDAO {
+    /**
+     * Observable List used to pull/manipulate customer data from the database.
+     * @param connection
+     * @return maintainCustomers
+     * @throws SQLException
+     */
     public static ObservableList<Customer> getCustomers(Connection connection) throws SQLException {
         String sqlCommand = "SELECT customers.Customer_ID, customers.Customer_Name, customers.Address, customers.Postal_Code, customers.Phone, customers.Division_ID, first_level_divisions.Division from customers INNER JOIN first_level_divisions ON customers.Division_ID = first_level_divisions.Division_ID";
         PreparedStatement prepare = DBConnect.getConnection().prepareStatement(sqlCommand);
@@ -29,6 +35,12 @@ public class CustomerDAO {
         return maintainCustomers;
     }
 
+    /**
+     * Boolean used to delete customer based on customerID.
+     * @param customerID
+     * @return true/false
+     * @throws SQLException
+     */
     public static Boolean deleteCustomer(Integer customerID) throws SQLException {
         PreparedStatement sql = DBConnect.openConnection().prepareStatement("DELETE FROM customers WHERE Customer_ID = ?");
         sql.setInt(1, customerID);

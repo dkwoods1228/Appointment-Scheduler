@@ -68,6 +68,10 @@ public class CustomerController implements Initializable {
     @FXML
     private TableColumn<?, ?> customerFirstLevelColumn;
 
+    /**
+     * After entering data for a new customer into text fields and combo boxes, the user will click the add button, which will add the created customer to the customer table.
+     * @param actionEvent
+     */
     @FXML
     void addCustomerButtonClicked(ActionEvent actionEvent) {
         try {
@@ -88,6 +92,7 @@ public class CustomerController implements Initializable {
                         division = division1.getDivisionID();
                     }
                 }
+                //inserts added customer to the database table
                 String sqlCommand = "INSERT INTO customers (Customer_ID, Customer_Name, Address, Postal_Code, Phone, Create_Date, Created_By, Last_Update, Last_Updated_By, Division_ID) VALUES (?,?,?,?,?,?,?,?,?,?)";
                 DBConnect.setPreparedStatement(DBConnect.getConnection(), sqlCommand);
                 PreparedStatement prepare = DBConnect.getPreparedStatement();
@@ -102,7 +107,7 @@ public class CustomerController implements Initializable {
                 prepare.setString(9, "admin");
                 prepare.setInt(10, division);
                 prepare.execute();
-
+                //clears fields once customer is added to the customers table.
                 updateCustomerID.clear();
                 updateCustomerName.clear();
                 updateCustomerAddress.clear();
@@ -119,6 +124,10 @@ public class CustomerController implements Initializable {
         }
     }
 
+    /**
+     * When the Update Customer Records button is clicked, the components of the selected customer will fill into the text fields and ComboBoxes under the update appointment section to the right of the screen.
+     * @param actionEvent
+     */
     @FXML
     void updateCustomerRecordsButtonClicked(ActionEvent actionEvent) {
         try {
@@ -169,6 +178,10 @@ public class CustomerController implements Initializable {
         }
     }
 
+    /**
+     * Saves the updated customer record that the user altered.
+     * @param actionEvent
+     */
     @FXML
     void customerSaveButtonClicked(ActionEvent actionEvent) {
         try {
@@ -195,7 +208,7 @@ public class CustomerController implements Initializable {
                 prepare.setInt(10, division);
                 prepare.setInt(11, Integer.parseInt((updateCustomerID.getText())));
                 prepare.execute();
-
+                //clear text fields and combo boxes after updated customer is back into the customer table
                 updateCustomerID.clear();
                 updateCustomerName.clear();
                 updateCustomerAddress.clear();
@@ -212,7 +225,11 @@ public class CustomerController implements Initializable {
         }
     }
 
-
+    /**
+     * Deletes customer from the database, along with the customer's appointments.
+     * @param actionEvent
+     * @throws SQLException
+     */
     @FXML
     void deleteCustomerButtonClicked(ActionEvent actionEvent) throws SQLException {
         Customer customerClicked = customerTable.getSelectionModel().getSelectedItem();
@@ -251,6 +268,11 @@ public class CustomerController implements Initializable {
 
     }
 
+    /**
+     * Creation and entry of the country and state/province combo boxes.
+     * @param actionEvent
+     * @throws SQLException
+     */
     public void updateCustomerCountryComboBox(ActionEvent actionEvent) throws SQLException {
         try {
             DBConnect.openConnection();
@@ -287,6 +309,11 @@ public class CustomerController implements Initializable {
 
     }
 
+    /**
+     * Takes user to the customers page when clicked.
+     * @param actionEvent
+     * @throws IOException
+     */
     public void customerToMainMenuButtonClicked(ActionEvent actionEvent) throws IOException {
             Parent root = FXMLLoader.load(getClass().getResource("/view/Main.fxml"));
             Scene newScene = new Scene(root);
@@ -296,6 +323,11 @@ public class CustomerController implements Initializable {
             returnToMain.centerOnScreen();
         }
 
+    /**
+     * Initializes data within the customers table.
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {

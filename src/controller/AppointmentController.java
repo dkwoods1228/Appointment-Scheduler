@@ -104,7 +104,10 @@ public class AppointmentController implements Initializable {
     @FXML
     private TableColumn<?, ?> userID;
 
-
+    /**
+     * When Update Appointment button is clicked, the components of the selected appointment will fill into the text fields and ComboBoxes under the update appointment section to the right of the screen.
+     * @param actionEvent
+     */
     @FXML
     void updateAppointmentButtonClicked(ActionEvent actionEvent) {
         try {
@@ -173,6 +176,11 @@ public class AppointmentController implements Initializable {
         }
     }
 
+    /**
+     * Takes user to the add appointment screen.
+     * @param actionEvent
+     * @throws IOException
+     */
     @FXML
     void addAppointButtonClicked(ActionEvent actionEvent) throws IOException {
         Parent addAppoint = FXMLLoader.load(getClass().getResource("/view/AddAppointment.fxml"));
@@ -183,6 +191,11 @@ public class AppointmentController implements Initializable {
         window.centerOnScreen();
     }
 
+    /**
+     * When clicking the Save Updated Appointment button, the appointment the user updated is saved and updated in the appointment table.
+     * @param actionEvent
+     * @throws IOException
+     */
     @FXML
     void updateSaveButtonClicked(ActionEvent actionEvent) throws IOException {
         try {
@@ -194,10 +207,10 @@ public class AppointmentController implements Initializable {
                 ObservableList<UserDAO> maintainUsers = UserDAO.getUsers();
                 ObservableList<Integer> maintainUserID = FXCollections.observableArrayList();
                 ObservableList<Appointment> maintainAppointments = AppointmentDAO.getAppointments();
-
+                //get customers and users data added
                 maintainCustomers.stream().map(Customer::getCustomerID).forEach(maintainCustomID::add);
                 maintainUsers.stream().map(User::getUserID).forEach(maintainUserID::add);
-
+                //time conversions
                 LocalDate startLocalDate = updateAppointStartDate.getValue();
                 LocalDate endLocalDate = updateAppointEndDate.getValue();
                 DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
@@ -213,7 +226,7 @@ public class AppointmentController implements Initializable {
 
                 ZonedDateTime startToEasternTime = startZone.withZoneSameInstant(ZoneId.of("America/Chicago"));
                 ZonedDateTime endToEasternTime = endZone.withZoneSameInstant(ZoneId.of("America/Chicago"));
-
+                //avoids scheduling an appointment on Saturdays and Sundays
                 if (startToEasternTime.toLocalDate().getDayOfWeek().getValue() == (DayOfWeek.SUNDAY.getValue()) ||
                         startToEasternTime.toLocalDate().getDayOfWeek().getValue() == (DayOfWeek.SATURDAY.getValue()) ||
                         endToEasternTime.toLocalDate().getDayOfWeek().getValue() == (DayOfWeek.SUNDAY.getValue()) ||
@@ -225,6 +238,7 @@ public class AppointmentController implements Initializable {
                     outsideBusiness.showAndWait();
                     return;
                 }
+                //Avoids scheduling an appointment outside of business hours
                 if (startToEasternTime.toLocalTime().isBefore(LocalTime.of(8, 0, 0)) || startToEasternTime.toLocalTime().isAfter(LocalTime.of(22, 0, 0))
                         || endToEasternTime.toLocalTime().isBefore(LocalTime.of(8, 0, 0)) || endToEasternTime.toLocalTime().isAfter(LocalTime.of(22, 0, 0))) {
                     Alert timeOutsideBusiness = new Alert(Alert.AlertType.ERROR);
@@ -292,7 +306,7 @@ public class AppointmentController implements Initializable {
                 String dateEnd = updateAppointEndDate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                 String utcStart = timeAndDateToUTC(dateStart + " " + timeStart + ":00");
                 String utcEnd = timeAndDateToUTC(dateEnd + " " + timeEnd + ":00");
-
+                //updates appointments within the database when an appointment is updated in the program
                 String sqlCommand = "UPDATE appointments SET Appointment_ID = ?, Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Last_Update = ?, Last_Updated_By = ?, Customer_ID = ?, User_ID = ?, Contact_ID = ? WHERE Appointment_ID = ?";
                 DBConnect.setPreparedStatement(DBConnect.getConnection(), sqlCommand);
                 PreparedStatement prepare = DBConnect.getPreparedStatement();
@@ -312,7 +326,7 @@ public class AppointmentController implements Initializable {
                 prepare.setInt(12, Integer.parseInt(ContactDAO.tryContactID(updateAppointContact.getValue())));
                 prepare.setInt(13, Integer.parseInt(updateAppointID.getText()));
                 prepare.execute();
-
+                //clears data from text fields and combo boxes after appointment is updated into the appointment table
                 updateAppointID.clear();
                 updateAppointTitle.clear();
                 updateAppointDescription.clear();
@@ -337,6 +351,10 @@ public class AppointmentController implements Initializable {
         }
     }
 
+    /**
+     * Deletes appointment from appointment table and database.
+     * @param actionEvent
+     */
     @FXML
     void deleteButtonClicked(ActionEvent actionEvent) {
         try {
@@ -367,6 +385,11 @@ public class AppointmentController implements Initializable {
         }
     }
 
+    /**
+     * Takes user to Reports page when clicked.
+     * @param actionEvent
+     * @throws IOException
+     */
     @FXML
     void viewReportsButtonClicked(ActionEvent actionEvent) throws IOException {
             Parent root = FXMLLoader.load(getClass().getResource("/view/Reports.fxml"));
@@ -377,6 +400,10 @@ public class AppointmentController implements Initializable {
             viewReports.centerOnScreen();
         }
 
+    /**
+     * When this radio button is chosen, the appointments within the current week will appear in the appointment table.
+     * @param actionEvent
+     */
     @FXML
     void appointWeekRadioButtonClicked(ActionEvent actionEvent) {
         try {
@@ -400,6 +427,10 @@ public class AppointmentController implements Initializable {
 
     }
 
+    /**
+     * When this radio button is chosen, all appointments (regardless of appointment date) will appear within the appointment table. This is the default setting.
+     * @param actionEvent
+     */
     @FXML
     void allAppointRadioButtonClicked(ActionEvent actionEvent) {
         try {
@@ -413,6 +444,10 @@ public class AppointmentController implements Initializable {
         }
     }
 
+    /**
+     * When this radio button is chosen, the appointments within the current month will appear in the appointment table.
+     * @param actionEvent
+     */
     @FXML
     void appointMonthRadioButtonClicked(ActionEvent actionEvent) {
         try {
@@ -434,6 +469,10 @@ public class AppointmentController implements Initializable {
         }
     }
 
+    /**
+     * Exits the program when clicked.
+     * @param actionEvent
+     */
     public void exitButtonClicked(ActionEvent actionEvent) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you would like to exit this program?");
         Optional<ButtonType> validate = alert.showAndWait();
@@ -443,6 +482,11 @@ public class AppointmentController implements Initializable {
         }
     }
 
+    /**
+     * Initializes data within the appointment table.
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
@@ -466,7 +510,11 @@ public class AppointmentController implements Initializable {
 
     }
 
-
+    /**
+     * Takes user to the Customer Records page when clicked.
+     * @param actionEvent
+     * @throws IOException
+     */
     public void viewCustomersButtonClicked(ActionEvent actionEvent) throws IOException {
             Parent root = FXMLLoader.load(getClass().getResource("/view/Customer.fxml"));
             Scene newScene = new Scene(root);
