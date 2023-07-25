@@ -330,6 +330,8 @@ public class AppointmentController implements Initializable {
                 ObservableList<Appointment> listOfAppointments = AppointmentDAO.getAppointments();
                 appointmentTable.setItems(listOfAppointments);
             }
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "The selected appointment has been updated.");
+            alert.showAndWait();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -358,6 +360,8 @@ public class AppointmentController implements Initializable {
                     appointmentTable.setItems(maintainAppointments);
                 }
             }
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "The selected appointment has been deleted.");
+            alert.showAndWait();
         } catch (SQLException e) {
             e.printStackTrace();
         }

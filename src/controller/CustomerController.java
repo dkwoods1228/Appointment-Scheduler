@@ -108,12 +108,12 @@ public class CustomerController implements Initializable {
                 updateCustomerAddress.clear();
                 updateCustomerPostalCode.clear();
                 updateCustomerPhoneNumber.clear();
-                updateCustomerCountry.getSelectionModel().clearSelection();
-                updateCustomerStateProv.getSelectionModel().clearSelection();
+
 
                 ObservableList<Customer> newCustomersTable = CustomerDAO.getCustomers(connection);
                 customerTable.setItems(newCustomersTable);
-            }
+            }  Alert alert = new Alert(Alert.AlertType.INFORMATION, "New customer record has been added.");
+            alert.showAndWait();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -201,12 +201,12 @@ public class CustomerController implements Initializable {
                 updateCustomerAddress.clear();
                 updateCustomerPostalCode.clear();
                 updateCustomerPhoneNumber.clear();
-                updateCustomerCountry.getSelectionModel().clearSelection();
-                updateCustomerStateProv.getSelectionModel().clearSelection();
+
 
                 ObservableList<Customer> newCustomersTable = CustomerDAO.getCustomers(connection);
                 customerTable.setItems(newCustomersTable);
-            }
+            }  Alert alert = new Alert(Alert.AlertType.INFORMATION, "The record of the selected customer has been updated.");
+            alert.showAndWait();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -248,6 +248,7 @@ public class CustomerController implements Initializable {
                 }
             }
         }
+
     }
 
     public void updateCustomerCountryComboBox(ActionEvent actionEvent) throws SQLException {
@@ -268,12 +269,16 @@ public class CustomerController implements Initializable {
                     Canada.add(Division.getDivision());
                 }
             });
-            if (countryClicked.equals("U.S")) {
-                updateCustomerStateProv.setItems(US);
-            } else if (countryClicked.equals("UK")) {
-                updateCustomerStateProv.setItems(UK);
-            } else if (countryClicked.equals("Canada")) {
-                updateCustomerStateProv.setItems(Canada);
+            switch (countryClicked) {
+                case "U.S":
+                    updateCustomerStateProv.setItems(US);
+                    break;
+                case "UK":
+                    updateCustomerStateProv.setItems(UK);
+                    break;
+                case "Canada":
+                    updateCustomerStateProv.setItems(Canada);
+                    break;
             }
 
         } catch (Exception e) {
