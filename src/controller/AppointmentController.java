@@ -109,7 +109,7 @@ public class AppointmentController implements Initializable {
      * @param actionEvent
      */
     @FXML
-    void updateAppointmentButtonClicked(ActionEvent actionEvent) {
+    public void updateAppointmentButtonClicked(ActionEvent actionEvent) {
         try {
             DBConnect.openConnection();
             Appointment appointClicked = appointmentTable.getSelectionModel().getSelectedItem();
@@ -182,7 +182,7 @@ public class AppointmentController implements Initializable {
      * @throws IOException
      */
     @FXML
-    void addAppointButtonClicked(ActionEvent actionEvent) throws IOException {
+    public void addAppointButtonClicked(ActionEvent actionEvent) throws IOException {
         Parent addAppoint = FXMLLoader.load(getClass().getResource("/view/AddAppointment.fxml"));
         Scene newScene = new Scene(addAppoint);
         Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -197,7 +197,7 @@ public class AppointmentController implements Initializable {
      * @throws IOException
      */
     @FXML
-    void updateSaveButtonClicked(ActionEvent actionEvent) throws IOException {
+    public void updateSaveButtonClicked(ActionEvent actionEvent) throws IOException {
         try {
             Connection connection = DBConnect.openConnection();
 
@@ -356,7 +356,7 @@ public class AppointmentController implements Initializable {
      * @param actionEvent
      */
     @FXML
-    void deleteButtonClicked(ActionEvent actionEvent) {
+    public void deleteButtonClicked(ActionEvent actionEvent) {
         try {
             Appointment appointClicked = appointmentTable.getSelectionModel().getSelectedItem();
             Connection connection = DBConnect.openConnection();
@@ -391,7 +391,7 @@ public class AppointmentController implements Initializable {
      * @throws IOException
      */
     @FXML
-    void viewReportsButtonClicked(ActionEvent actionEvent) throws IOException {
+    public void viewReportsButtonClicked(ActionEvent actionEvent) throws IOException {
             Parent root = FXMLLoader.load(getClass().getResource("/view/Reports.fxml"));
             Scene newScene = new Scene(root);
             Stage viewReports = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -402,11 +402,14 @@ public class AppointmentController implements Initializable {
 
     /**
      * When this radio button is chosen, the appointments within the week will appear in the appointment table.
-     * Lambda Expression - Fills the maintainWeeklyAppointments observable list with the results of the if condition. Ultimately, adds result to the list if applicable.
+     * <br><br>
+     * <p>
+     * <b>Lambda Expression</b> fills the maintainWeeklyAppointments observable list with the results of the if condition. Ultimately, adds result to the list if applicable.
+     * </p>
      * @param actionEvent
      */
     @FXML
-    void appointWeekRadioButtonClicked(ActionEvent actionEvent) {
+    public void appointWeekRadioButtonClicked(ActionEvent actionEvent) {
         try {
             ObservableList<Appointment> maintainAppointments = AppointmentDAO.getAppointments();
             ObservableList<Appointment> maintainWeeklyAppointments = FXCollections.observableArrayList();
@@ -433,7 +436,7 @@ public class AppointmentController implements Initializable {
      * @param actionEvent
      */
     @FXML
-    void allAppointRadioButtonClicked(ActionEvent actionEvent) {
+    public void allAppointRadioButtonClicked(ActionEvent actionEvent) {
         try {
             ObservableList<Appointment> maintainAppointments = AppointmentDAO.getAppointments();
             if (maintainAppointments != null)
@@ -447,11 +450,14 @@ public class AppointmentController implements Initializable {
 
     /**
      * When this radio button is chosen, the appointments within the month will appear in the appointment table.
-     * Lambda Expression - Fills the maintainMonthlyAppointments observable list with the results of the if condition, if applicable.
+     * <br><br>
+     * <p>
+     * <b>Lambda Expression</b> fills the maintainMonthlyAppointments observable list with the results of the if condition, if applicable.
+     * </p>
      * @param actionEvent
      */
     @FXML
-    void appointMonthRadioButtonClicked(ActionEvent actionEvent) {
+     public void appointMonthRadioButtonClicked(ActionEvent actionEvent) {
         try {
             ObservableList<Appointment> maintainAppointments = AppointmentDAO.getAppointments();
             ObservableList<Appointment> maintainMonthlyAppointments = FXCollections.observableArrayList();

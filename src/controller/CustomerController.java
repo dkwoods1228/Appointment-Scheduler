@@ -73,7 +73,7 @@ public class CustomerController implements Initializable {
      * @param actionEvent
      */
     @FXML
-    void addCustomerButtonClicked(ActionEvent actionEvent) {
+    public void addCustomerButtonClicked(ActionEvent actionEvent) {
         try {
             Connection connection = DBConnect.openConnection();
             if (updateCustomerName.getText().isEmpty() || updateCustomerAddress.getText().isEmpty() || updateCustomerPostalCode.getText().isEmpty() || updateCustomerPhoneNumber.getText().isEmpty() || updateCustomerCountry.getValue().isEmpty() || updateCustomerStateProv.getValue().isEmpty()) {
@@ -129,7 +129,7 @@ public class CustomerController implements Initializable {
      * @param actionEvent
      */
     @FXML
-    void updateCustomerRecordsButtonClicked(ActionEvent actionEvent) {
+    public void updateCustomerRecordsButtonClicked(ActionEvent actionEvent) {
         try {
             DBConnect.openConnection();
             Customer customerClicked = (Customer) customerTable.getSelectionModel().getSelectedItem();
@@ -183,7 +183,7 @@ public class CustomerController implements Initializable {
      * @param actionEvent
      */
     @FXML
-    void customerSaveButtonClicked(ActionEvent actionEvent) {
+    public void customerSaveButtonClicked(ActionEvent actionEvent) {
         try {
             Connection connection = DBConnect.openConnection();
             if (!updateCustomerName.getText().isEmpty() || !updateCustomerAddress.getText().isEmpty() || !updateCustomerPostalCode.getText().isEmpty() || !updateCustomerPhoneNumber.getText().isEmpty() || !updateCustomerCountry.getValue().isEmpty() || !updateCustomerStateProv.getValue().isEmpty()) {
@@ -231,7 +231,7 @@ public class CustomerController implements Initializable {
      * @throws SQLException
      */
     @FXML
-    void deleteCustomerButtonClicked(ActionEvent actionEvent) throws SQLException {
+    public void deleteCustomerButtonClicked(ActionEvent actionEvent) throws SQLException {
         Customer customerClicked = customerTable.getSelectionModel().getSelectedItem();
         Connection connection = DBConnect.openConnection();
         if (customerClicked == null) {

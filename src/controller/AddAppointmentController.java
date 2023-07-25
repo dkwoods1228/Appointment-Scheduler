@@ -48,7 +48,7 @@ public class AddAppointmentController {
      * When pressing the Save Button, it saves the appointment that the user has inputted and adds the appointment to the appointment table.
      * @param actionEvent
      */
-    @FXML void saveButtonClicked(ActionEvent actionEvent) {
+    @FXML public void saveButtonClicked(ActionEvent actionEvent) {
         try {
             Connection connection = DBConnect.openConnection();
             //ensures all fields have information added
@@ -208,7 +208,7 @@ public class AddAppointmentController {
      * @throws IOException
      */
     @FXML
-    void cancelButtonClicked(ActionEvent actionEvent) throws IOException {
+    public void cancelButtonClicked(ActionEvent actionEvent) throws IOException {
         Parent goToAppoint = FXMLLoader.load(getClass().getResource("/view/Appointment.fxml"));
         Scene newScene = new Scene(goToAppoint);
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();

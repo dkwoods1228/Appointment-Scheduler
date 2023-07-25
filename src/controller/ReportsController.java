@@ -108,7 +108,10 @@ public class ReportsController {
 
     /**
      * Gathers data from appointments to detect the number of appointments by month and by type.
-     * Lambda Expression --> Used to efficiently fill the maintainAppointments observable list with data from appointments. Shortens code to do so.
+     * <br><br>
+     * <p>
+     * <b>Lambda Expression </b> used to efficiently fill the maintainAppointments observable list with data from appointments. Shortens code to do so.
+     * </p>
      * @throws SQLException
      */
     @FXML public void appointMonthAndTypeTotalsButtonClicked() throws SQLException {

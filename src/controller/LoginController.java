@@ -42,7 +42,7 @@ public class LoginController implements Initializable {
      * If not correct, user is notified.
      * @param actionEvent
      */
-    @FXML private void loginButtonClicked(ActionEvent actionEvent) {
+    @FXML public void loginButtonClicked(ActionEvent actionEvent) {
         try {
             ObservableList<Appointment> maintainAppointments = AppointmentDAO.getAppointments();
             LocalDateTime subtract15 = LocalDateTime.now().minusMinutes(15);
