@@ -108,6 +108,7 @@ public class ReportsController {
 
     /**
      * Gathers data from appointments to detect the number of appointments by month and by type.
+     * Lambda Expression --> Used to efficiently fill the maintainAppointments observable list with data from appointments. Shortens code to do so.
      * @throws SQLException
      */
     @FXML public void appointMonthAndTypeTotalsButtonClicked() throws SQLException {
@@ -119,15 +120,15 @@ public class ReportsController {
             ObservableList<String> newAppoint = FXCollections.observableArrayList();
             ObservableList<ReportByMonth> monthlyReport = FXCollections.observableArrayList();
             ObservableList<ReportByType> typeReport = FXCollections.observableArrayList();
-
+            //Lambda Expression for observable list
             maintainAppointments.forEach(appointment -> {
                 type.add(appointment.getAppointType());
             });
-
+            //Also lambda
             maintainAppointments.stream().map(appointment -> {
                 return appointment.getStart().getMonth();
             }).forEach(monthly::add);
-
+            //Also lambda
             monthly.stream().filter(month -> {
                 return !newMonth.contains(month);
             })  .forEach(newMonth::add);

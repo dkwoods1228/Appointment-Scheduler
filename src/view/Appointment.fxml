@@ -91,11 +91,11 @@
                 <Font size="14.0" />
             </font>
         </Button>
-      <RadioButton fx:id="appointWeekRadioButton" layoutX="452.0" layoutY="57.0" mnemonicParsing="false" onAction="#appointWeekRadioButtonClicked" text="Current Week">
+      <RadioButton fx:id="appointWeekRadioButton" layoutX="452.0" layoutY="57.0" mnemonicParsing="false" onAction="#appointWeekRadioButtonClicked" text="Within Week">
          <toggleGroup>
             <ToggleGroup fx:id="toggle" />
          </toggleGroup></RadioButton>
-      <RadioButton fx:id="appointMonthRadioButton" layoutX="580.0" layoutY="57.0" mnemonicParsing="false" onAction="#appointMonthRadioButtonClicked" text="Current Month" toggleGroup="$toggle" />
+      <RadioButton fx:id="appointMonthRadioButton" layoutX="580.0" layoutY="57.0" mnemonicParsing="false" onAction="#appointMonthRadioButtonClicked" text="Within Month" toggleGroup="$toggle" />
       <RadioButton fx:id="allAppointRadioButton" layoutX="719.0" layoutY="57.0" mnemonicParsing="false" onAction="#allAppointRadioButtonClicked" selected="true" text="View All Appointments" toggleGroup="$toggle" />
       <ComboBox fx:id="updateAppointCustomerID" layoutX="913.0" layoutY="421.0" prefHeight="25.0" prefWidth="187.0" />
 

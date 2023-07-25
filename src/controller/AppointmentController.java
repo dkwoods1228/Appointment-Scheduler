@@ -373,13 +373,13 @@ public class AppointmentController implements Initializable {
                 Optional<ButtonType> validate = delIDAndType.showAndWait();
                 if (validate.isPresent() && validate.get() == ButtonType.OK) {
                     AppointmentDAO.deleteAppoint(delID, connection);
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION, "The selected appointment with appointment ID: " + delID + " | appointment type: " + delType + " has successfully been deleted.");
+                    alert.showAndWait();
 
                     ObservableList<Appointment> maintainAppointments = AppointmentDAO.getAppointments();
                     appointmentTable.setItems(maintainAppointments);
                 }
             }
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "The selected appointment has been deleted.");
-            alert.showAndWait();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -401,7 +401,8 @@ public class AppointmentController implements Initializable {
         }
 
     /**
-     * When this radio button is chosen, the appointments within the current week will appear in the appointment table.
+     * When this radio button is chosen, the appointments within the week will appear in the appointment table.
+     * Lambda Expression - Fills the maintainWeeklyAppointments observable list with the results of the if condition. Ultimately, adds result to the list if applicable.
      * @param actionEvent
      */
     @FXML
@@ -411,7 +412,7 @@ public class AppointmentController implements Initializable {
             ObservableList<Appointment> maintainWeeklyAppointments = FXCollections.observableArrayList();
             LocalDateTime startWeekNow = LocalDateTime.now().minusWeeks(1);
             LocalDateTime endWeekNow = LocalDateTime.now().plusWeeks(1);
-
+            //Lambda Expression for observable list. If appointment falls between start of and end of week, it is applied to the weekly appointment observable list.
             if (maintainAppointments != null) {
                 maintainAppointments.forEach(appointment -> {
                     if (appointment.getEnd().isBefore(endWeekNow) && appointment.getEnd().isAfter(startWeekNow)) {
@@ -445,7 +446,8 @@ public class AppointmentController implements Initializable {
     }
 
     /**
-     * When this radio button is chosen, the appointments within the current month will appear in the appointment table.
+     * When this radio button is chosen, the appointments within the month will appear in the appointment table.
+     * Lambda Expression - Fills the maintainMonthlyAppointments observable list with the results of the if condition, if applicable.
      * @param actionEvent
      */
     @FXML
@@ -455,7 +457,7 @@ public class AppointmentController implements Initializable {
             ObservableList<Appointment> maintainMonthlyAppointments = FXCollections.observableArrayList();
             LocalDateTime startMonthNow = LocalDateTime.now().minusMonths(1);
             LocalDateTime endMonthNow = LocalDateTime.now().plusMonths(1);
-
+            //Lambda Expression for observable list. If appointment falls between the start of and end of month, it is applied to the monthly appointment observable list.
             if (maintainAppointments != null)
             maintainAppointments.forEach(appointment -> {
                 if (appointment.getEnd().isBefore(endMonthNow) && appointment.getEnd().isAfter(startMonthNow)) {

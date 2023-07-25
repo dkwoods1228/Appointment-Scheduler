@@ -51,7 +51,7 @@ public class AddAppointmentController {
     @FXML void saveButtonClicked(ActionEvent actionEvent) {
         try {
             Connection connection = DBConnect.openConnection();
-            //ensures all fields are used
+            //ensures all fields have information added
             if (addAppointTitle.getText().isEmpty() || addAppointDescription.getText().isEmpty() || addAppointLocation.getText().isEmpty() || addAppointType.getText().isEmpty() || addAppointStartDate.getValue() == null || addAppointEndDate.getValue() == null || addAppointStartTime.getValue().isEmpty() || addAppointEndTime.getValue().isEmpty() || addAppointCustomerID.getValue() == null) {
                 Alert missingFields = new Alert(Alert.AlertType.ERROR);
                 missingFields.setTitle("Error");
@@ -194,7 +194,7 @@ public class AddAppointmentController {
                 stage.show();
                 stage.centerOnScreen();
                 //After scene message appears
-                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Appointment has been added.");
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Appointment has successfully been added.");
                 alert.showAndWait();
 
             } catch (SQLException | IOException sqlException) {
