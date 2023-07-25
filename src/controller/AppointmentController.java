@@ -25,7 +25,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import static main.Timezone.timeAndDateToUTC;
-
+/**Class used to showcase imported data from the database into a table of appointment information. Also allows the updating of appointments.*/
 public class AppointmentController implements Initializable {
     @FXML
     private Button updateAppointmentButton;

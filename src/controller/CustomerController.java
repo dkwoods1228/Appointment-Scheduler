@@ -25,7 +25,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
-
+/**Class used to showcase imported data from the database into a table of customer information. Also allows the user to add a customer and update customer records.*/
 public class CustomerController implements Initializable {
     @FXML
     private TextField updateCustomerID;
@@ -358,6 +358,10 @@ public class CustomerController implements Initializable {
         }
     }
 
+    /**
+     * Exits the program.
+     * @param actionEvent
+     */
     public void exitButtonClicked(ActionEvent actionEvent) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you would like to exit this program?");
         Optional<ButtonType> validate = alert.showAndWait();
@@ -367,6 +371,11 @@ public class CustomerController implements Initializable {
         }
     }
 
+    /**
+     * Takes user to the Reports page when clicked.
+     * @param actionEvent
+     * @throws IOException
+     */
     public void viewReportsButtonClicked(ActionEvent actionEvent) throws IOException {
             Parent root = FXMLLoader.load(getClass().getResource("/view/Reports.fxml"));
             Scene newScene = new Scene(root);
@@ -376,7 +385,11 @@ public class CustomerController implements Initializable {
             returnToReports.centerOnScreen();
         }
 
-
+    /**
+     * Takes user to the Appointments page when clicked.
+     * @param actionEvent
+     * @throws IOException
+     */
     public void viewAppointmentsButtonClicked(ActionEvent actionEvent) throws IOException {
             Parent root = FXMLLoader.load(getClass().getResource("/view/Appointment.fxml"));
             Scene newScene = new Scene(root);

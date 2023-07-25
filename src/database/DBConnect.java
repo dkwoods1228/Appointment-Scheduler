@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-
+/**Connection to the database*/
 public class DBConnect {
     private static PreparedStatement preparedStatement;
     private static final String protocol = "jdbc";
@@ -17,6 +17,10 @@ public class DBConnect {
     private static String password = "Passw0rd!"; // Password
     public static Connection connection;  // Connection Interface
 
+    /**
+     * Opens database connection.
+     * @return
+     */
     public static Connection openConnection()
     {
         try {
@@ -31,6 +35,9 @@ public class DBConnect {
         return connection;
     }
 
+    /**
+     * Closes database connection.
+     */
     public static void closeConnection() {
         try {
             connection.close();
@@ -42,13 +49,26 @@ public class DBConnect {
         }
     }
 
+    /**
+     * Maintains/gets the connection.
+     * @return connection
+     */
     public static Connection getConnection() {
         return connection;
     }
 
+    /**
+     * @param connection sets connection
+     * @param sqlCommand sets sqlCommand
+     * @throws SQLException
+     */
     public static void setPreparedStatement(Connection connection, String sqlCommand) throws SQLException {
         preparedStatement = connection.prepareStatement(sqlCommand);
     }
+
+    /**
+     * @return preparedStatement
+     */
     public static PreparedStatement getPreparedStatement() {
         return preparedStatement;
     }
