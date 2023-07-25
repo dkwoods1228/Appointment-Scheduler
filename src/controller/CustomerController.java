@@ -108,6 +108,8 @@ public class CustomerController implements Initializable {
                 updateCustomerAddress.clear();
                 updateCustomerPostalCode.clear();
                 updateCustomerPhoneNumber.clear();
+                updateCustomerCountry.getSelectionModel().clearSelection();
+                updateCustomerStateProv.getSelectionModel().clearSelection();
 
                 ObservableList<Customer> newCustomersTable = CustomerDAO.getCustomers(connection);
                 customerTable.setItems(newCustomersTable);
@@ -199,6 +201,8 @@ public class CustomerController implements Initializable {
                 updateCustomerAddress.clear();
                 updateCustomerPostalCode.clear();
                 updateCustomerPhoneNumber.clear();
+                updateCustomerCountry.getSelectionModel().clearSelection();
+                updateCustomerStateProv.getSelectionModel().clearSelection();
 
                 ObservableList<Customer> newCustomersTable = CustomerDAO.getCustomers(connection);
                 customerTable.setItems(newCustomersTable);
@@ -279,9 +283,6 @@ public class CustomerController implements Initializable {
     }
 
     public void customerToMainMenuButtonClicked(ActionEvent actionEvent) throws IOException {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you would like to return to the main menu?");
-        Optional<ButtonType> validate = alert.showAndWait();
-        if (validate.isPresent() && validate.get() == ButtonType.OK) {
             Parent root = FXMLLoader.load(getClass().getResource("/view/Main.fxml"));
             Scene newScene = new Scene(root);
             Stage returnToMain = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -289,7 +290,7 @@ public class CustomerController implements Initializable {
             returnToMain.show();
             returnToMain.centerOnScreen();
         }
-    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
@@ -328,4 +329,23 @@ public class CustomerController implements Initializable {
             exitProgram.close();
         }
     }
+
+    public void viewReportsButtonClicked(ActionEvent actionEvent) throws IOException {
+            Parent root = FXMLLoader.load(getClass().getResource("/view/Reports.fxml"));
+            Scene newScene = new Scene(root);
+            Stage returnToReports = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            returnToReports.setScene(newScene);
+            returnToReports.show();
+            returnToReports.centerOnScreen();
+        }
+
+
+    public void viewAppointmentsButtonClicked(ActionEvent actionEvent) throws IOException {
+            Parent root = FXMLLoader.load(getClass().getResource("/view/Appointment.fxml"));
+            Scene newScene = new Scene(root);
+            Stage returnToMain = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            returnToMain.setScene(newScene);
+            returnToMain.show();
+            returnToMain.centerOnScreen();
+        }
 }

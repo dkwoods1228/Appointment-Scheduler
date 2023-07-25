@@ -53,7 +53,7 @@ public class ReportsController {
         appointType.setCellValueFactory(new PropertyValueFactory<>("appointType"));
         appointStart.setCellValueFactory(new PropertyValueFactory<>("start"));
         appointEnd.setCellValueFactory(new PropertyValueFactory<>("end"));
-        appointCustomerID.setCellValueFactory(new PropertyValueFactory<>("appointCustomerID"));
+        appointCustomerID.setCellValueFactory(new PropertyValueFactory<>("customerID"));
 
         reportsAppointTypeColumn.setCellValueFactory(new PropertyValueFactory<>("appointByType"));
         reportsTotalAmountTypeColumn.setCellValueFactory(new PropertyValueFactory<>("appointByTypeTotal"));
@@ -142,16 +142,12 @@ public class ReportsController {
     }
 
     @FXML public void returnToMainMenuButtonClicked(ActionEvent actionEvent) throws IOException {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you would like to return to the main menu?");
-        Optional<ButtonType> validate = alert.showAndWait();
-        if (validate.isPresent() && validate.get() == ButtonType.OK) {
             Parent root = FXMLLoader.load(getClass().getResource("/view/Main.fxml"));
             Scene newScene = new Scene(root);
             Stage returnToMain = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             returnToMain.setScene(newScene);
             returnToMain.show();
             returnToMain.centerOnScreen();
-        }
     }
 
     public void contactsComboBoxClicked(ActionEvent actionEvent) {
@@ -182,9 +178,6 @@ public class ReportsController {
     }
 
     public void goToAppointButtonClicked(ActionEvent actionEvent) throws IOException {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you would like to go to Appointments?");
-        Optional<ButtonType> validate = alert.showAndWait();
-        if (validate.isPresent() && validate.get() == ButtonType.OK) {
             Parent root = FXMLLoader.load(getClass().getResource("/view/Appointment.fxml"));
             Scene newScene = new Scene(root);
             Stage returnToMain = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -192,12 +185,9 @@ public class ReportsController {
             returnToMain.show();
             returnToMain.centerOnScreen();
         }
-    }
+
 
     public void goToCustomersButtonClicked(ActionEvent actionEvent) throws IOException {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you would like to go to Customer Records?");
-        Optional<ButtonType> validate = alert.showAndWait();
-        if (validate.isPresent() && validate.get() == ButtonType.OK) {
             Parent root = FXMLLoader.load(getClass().getResource("/view/Customer.fxml"));
             Scene newScene = new Scene(root);
             Stage returnToMain = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -206,4 +196,4 @@ public class ReportsController {
             returnToMain.centerOnScreen();
         }
     }
-}
+

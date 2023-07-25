@@ -77,11 +77,16 @@
                 <Font size="14.0" />
             </font>
         </Button>
-        <Button fx:id="returnToMainMenuButton" layoutX="189.0" layoutY="481.0" mnemonicParsing="false" onAction="#returnToMainMenuButtonClicked" prefHeight="30.0" prefWidth="256.0" text="Main Menu">
+        <Button fx:id="viewCustomersButton" layoutX="25.0" layoutY="472.0" mnemonicParsing="false" onAction="#viewCustomersButtonClicked" prefHeight="30.0" prefWidth="256.0" text="View Customers">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Button>
+        <Button fx:id="viewReportsButton" layoutX="324.0" layoutY="472.0" mnemonicParsing="false" onAction="#viewReportsButtonClicked" prefHeight="30.0" prefWidth="256.0" text="View Reports">
          <font>
             <Font size="14.0" />
          </font></Button>
-        <Button fx:id="exitButton" layoutX="491.0" layoutY="481.0" mnemonicParsing="false" onAction="#exitButtonClicked" prefHeight="30.0" prefWidth="256.0" text="Exit">
+        <Button fx:id="exitButton" layoutX="605.0" layoutY="472.0" mnemonicParsing="false" onAction="#exitButtonClicked" prefHeight="30.0" prefWidth="256.0" text="Exit">
             <font>
                 <Font size="14.0" />
             </font>
@@ -93,6 +98,7 @@
       <RadioButton fx:id="appointMonthRadioButton" layoutX="580.0" layoutY="57.0" mnemonicParsing="false" onAction="#appointMonthRadioButtonClicked" text="Current Month" toggleGroup="$toggle" />
       <RadioButton fx:id="allAppointRadioButton" layoutX="719.0" layoutY="57.0" mnemonicParsing="false" onAction="#allAppointRadioButtonClicked" selected="true" text="View All Appointments" toggleGroup="$toggle" />
       <ComboBox fx:id="updateAppointCustomerID" layoutX="913.0" layoutY="421.0" prefHeight="25.0" prefWidth="187.0" />
+
 
 
 

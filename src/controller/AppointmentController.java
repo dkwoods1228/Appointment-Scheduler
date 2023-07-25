@@ -27,7 +27,8 @@ import java.util.ResourceBundle;
 import static main.Timezone.timeAndDateToUTC;
 
 public class AppointmentController implements Initializable {
-    @FXML private Button updateAppointmentButton;
+    @FXML
+    private Button updateAppointmentButton;
     @FXML
     private Button exitButton;
     @FXML
@@ -104,8 +105,8 @@ public class AppointmentController implements Initializable {
     private TableColumn<?, ?> userID;
 
 
-
-    @FXML void updateAppointmentButtonClicked(ActionEvent actionEvent) {
+    @FXML
+    void updateAppointmentButtonClicked(ActionEvent actionEvent) {
         try {
             DBConnect.openConnection();
             Appointment appointClicked = appointmentTable.getSelectionModel().getSelectedItem();
@@ -126,7 +127,6 @@ public class AppointmentController implements Initializable {
                 ObservableList<Integer> user = FXCollections.observableArrayList();
                 String showUsers = "";
                 updateAppointUserID.setItems(user);
-
 
 
                 maintainContacts.forEach(contact -> contacts.add(contact.getContactName()));
@@ -172,14 +172,15 @@ public class AppointmentController implements Initializable {
             throwables.printStackTrace();
         }
     }
+
     @FXML
     void addAppointButtonClicked(ActionEvent actionEvent) throws IOException {
-       Parent addAppoint = FXMLLoader.load(getClass().getResource("/view/AddAppointment.fxml"));
-       Scene newScene = new Scene(addAppoint);
-       Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-       window.setScene(newScene);
-       window.show();
-       window.centerOnScreen();
+        Parent addAppoint = FXMLLoader.load(getClass().getResource("/view/AddAppointment.fxml"));
+        Scene newScene = new Scene(addAppoint);
+        Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        window.setScene(newScene);
+        window.show();
+        window.centerOnScreen();
     }
 
     @FXML
@@ -333,108 +334,111 @@ public class AppointmentController implements Initializable {
             e.printStackTrace();
         }
     }
-        @FXML void deleteButtonClicked (ActionEvent actionEvent) {
-            try {
-                Appointment appointClicked = appointmentTable.getSelectionModel().getSelectedItem();
-                Connection connection = DBConnect.openConnection();
-                if (appointClicked == null) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error");
-                    alert.setHeaderText("Appointment not Selected");
-                    alert.setContentText("You must select an appointment to delete.");
-                    alert.show();
-                } else {
-                    int delID = appointmentTable.getSelectionModel().getSelectedItem().getAppointID();
-                    String delType = appointmentTable.getSelectionModel().getSelectedItem().getAppointType();
-                    Alert delIDAndType = new Alert(Alert.AlertType.CONFIRMATION, "Delete the appointment with the following information? Appointment ID: " + delID + " | Appointment Type: " + delType + ".");
-                    Optional<ButtonType> validate = delIDAndType.showAndWait();
-                    if (validate.isPresent() && validate.get() == ButtonType.OK) {
-                        AppointmentDAO.deleteAppoint(delID, connection);
 
-                        ObservableList<Appointment> maintainAppointments = AppointmentDAO.getAppointments();
-                        appointmentTable.setItems(maintainAppointments);
+    @FXML
+    void deleteButtonClicked(ActionEvent actionEvent) {
+        try {
+            Appointment appointClicked = appointmentTable.getSelectionModel().getSelectedItem();
+            Connection connection = DBConnect.openConnection();
+            if (appointClicked == null) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Appointment not Selected");
+                alert.setContentText("You must select an appointment to delete.");
+                alert.show();
+            } else {
+                int delID = appointmentTable.getSelectionModel().getSelectedItem().getAppointID();
+                String delType = appointmentTable.getSelectionModel().getSelectedItem().getAppointType();
+                Alert delIDAndType = new Alert(Alert.AlertType.CONFIRMATION, "Delete the appointment with the following information? Appointment ID: " + delID + " | Appointment Type: " + delType + ".");
+                Optional<ButtonType> validate = delIDAndType.showAndWait();
+                if (validate.isPresent() && validate.get() == ButtonType.OK) {
+                    AppointmentDAO.deleteAppoint(delID, connection);
+
+                    ObservableList<Appointment> maintainAppointments = AppointmentDAO.getAppointments();
+                    appointmentTable.setItems(maintainAppointments);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void viewReportsButtonClicked(ActionEvent actionEvent) throws IOException {
+            Parent root = FXMLLoader.load(getClass().getResource("/view/Reports.fxml"));
+            Scene newScene = new Scene(root);
+            Stage viewReports = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            viewReports.setScene(newScene);
+            viewReports.show();
+            viewReports.centerOnScreen();
+        }
+
+    @FXML
+    void appointWeekRadioButtonClicked(ActionEvent actionEvent) {
+        try {
+            ObservableList<Appointment> maintainAppointments = AppointmentDAO.getAppointments();
+            ObservableList<Appointment> maintainWeeklyAppointments = FXCollections.observableArrayList();
+            LocalDateTime startWeekNow = LocalDateTime.now().minusWeeks(1);
+            LocalDateTime endWeekNow = LocalDateTime.now().plusWeeks(1);
+
+            if (maintainAppointments != null) {
+                maintainAppointments.forEach(appointment -> {
+                    if (appointment.getEnd().isBefore(endWeekNow) && appointment.getEnd().isAfter(startWeekNow)) {
+                        maintainWeeklyAppointments.add(appointment);
                     }
+                    appointmentTable.setItems(maintainWeeklyAppointments);
+                });
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @FXML
+    void allAppointRadioButtonClicked(ActionEvent actionEvent) {
+        try {
+            ObservableList<Appointment> maintainAppointments = AppointmentDAO.getAppointments();
+            if (maintainAppointments != null)
+                for (Appointment appointment : maintainAppointments) {
+                    appointmentTable.setItems(maintainAppointments);
                 }
-                } catch(SQLException e){
-                    e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void appointMonthRadioButtonClicked(ActionEvent actionEvent) {
+        try {
+            ObservableList<Appointment> maintainAppointments = AppointmentDAO.getAppointments();
+            ObservableList<Appointment> maintainMonthlyAppointments = FXCollections.observableArrayList();
+            LocalDateTime startMonthNow = LocalDateTime.now().minusMonths(1);
+            LocalDateTime endMonthNow = LocalDateTime.now().plusMonths(1);
+
+            if (maintainAppointments != null)
+            maintainAppointments.forEach(appointment -> {
+                if (appointment.getEnd().isBefore(endMonthNow) && appointment.getEnd().isAfter(startMonthNow)) {
+                    maintainMonthlyAppointments.add(appointment);
                 }
-            }
+                appointmentTable.setItems(maintainMonthlyAppointments);
+            });
 
-        @FXML void returnToMainMenuButtonClicked (ActionEvent actionEvent) throws IOException {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you would like to return to the main menu?");
-            Optional<ButtonType> validate = alert.showAndWait();
-            if (validate.isPresent() && validate.get() == ButtonType.OK) {
-                Parent root = FXMLLoader.load(getClass().getResource("/view/Main.fxml"));
-                Scene newScene = new Scene(root);
-                Stage returnToMain = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-                returnToMain.setScene(newScene);
-                returnToMain.show();
-                returnToMain.centerOnScreen();
-            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        @FXML void appointWeekRadioButtonClicked (ActionEvent actionEvent){
-            try {
-                ObservableList<Appointment> maintainAppointments = AppointmentDAO.getAppointments();
-                ObservableList<Appointment> maintainWeeklyAppointments = FXCollections.observableArrayList();
-                LocalDateTime startWeekNow = LocalDateTime.now().minusWeeks(1);
-                LocalDateTime endWeekNow = LocalDateTime.now().plusWeeks(1);
+    }
 
-                if (maintainAppointments != null) {
-                    maintainAppointments.forEach(appointment -> {
-                        if (appointment.getEnd().isBefore(endWeekNow) && appointment.getEnd().isAfter(startWeekNow)) {
-                            maintainWeeklyAppointments.add(appointment);
-                        }
-                        appointmentTable.setItems(maintainWeeklyAppointments);
-                    });
-                }
-
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
+    public void exitButtonClicked(ActionEvent actionEvent) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you would like to exit this program?");
+        Optional<ButtonType> validate = alert.showAndWait();
+        if (validate.isPresent() && validate.get() == ButtonType.OK) {
+            Stage exitProgram = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            exitProgram.close();
         }
+    }
 
-        @FXML void allAppointRadioButtonClicked (ActionEvent actionEvent){
-            try {
-                ObservableList<Appointment> maintainAppointments = AppointmentDAO.getAppointments();
-                if (maintainAppointments != null)
-                    for (Appointment appointment : maintainAppointments) {
-                        appointmentTable.setItems(maintainAppointments);
-                    }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-
-        @FXML void appointMonthRadioButtonClicked (ActionEvent actionEvent){
-            try {
-                ObservableList<Appointment> maintainAppointments = AppointmentDAO.getAppointments();
-                ObservableList<Appointment> maintainMonthlyAppointments = FXCollections.observableArrayList();
-                LocalDateTime startMonthNow = LocalDateTime.now().minusMonths(1);
-                LocalDateTime endMonthNow = LocalDateTime.now().plusMonths(1);
-
-                if (maintainAppointments != null) {
-                    maintainAppointments.forEach(appointment -> {
-                        if (appointment.getEnd().isAfter(startMonthNow) && appointment.getEnd().isBefore(endMonthNow)) {
-                            maintainMonthlyAppointments.add(appointment);
-                        }
-                        appointmentTable.setItems(maintainMonthlyAppointments);
-                    });
-                }
-
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-
-        public void exitButtonClicked (ActionEvent actionEvent) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you would like to exit this program?");
-            Optional<ButtonType> validate = alert.showAndWait();
-            if (validate.isPresent() && validate.get() == ButtonType.OK) {
-                Stage exitProgram = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-                exitProgram.close();
-            }
-        }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
@@ -459,5 +463,14 @@ public class AppointmentController implements Initializable {
     }
 
 
-}
+    public void viewCustomersButtonClicked(ActionEvent actionEvent) throws IOException {
+            Parent root = FXMLLoader.load(getClass().getResource("/view/Customer.fxml"));
+            Scene newScene = new Scene(root);
+            Stage viewCustomers = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            viewCustomers.setScene(newScene);
+            viewCustomers.show();
+            viewCustomers.centerOnScreen();
+        }
+    }
+
 

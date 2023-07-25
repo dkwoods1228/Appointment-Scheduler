@@ -44,7 +44,7 @@ public class CustomerDAO {
     }
     public static ObservableList<Integer> getEveryCustomerID() throws SQLException {
         ObservableList<Integer> everyCustomerID = FXCollections.observableArrayList();
-        PreparedStatement sql = DBConnect.getConnection().prepareStatement("SELECT DISTINCT Customer_ID FROM customers;");
+        PreparedStatement sql = DBConnect.getConnection().prepareStatement("SELECT DISTINCT Customer_ID FROM customers ORDER BY Customer_ID ASC;");
         ResultSet result = sql.executeQuery();
 
         while (result.next()) {
