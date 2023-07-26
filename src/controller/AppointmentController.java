@@ -404,7 +404,7 @@ public class AppointmentController implements Initializable {
      * When this radio button is chosen, the appointments within the week will appear in the appointment table.
      * <br><br>
      * <p>
-     * <b>Lambda Expression</b> fills the maintainWeeklyAppointments observable list with the results of the if condition. Ultimately, adds result to the list if applicable.
+     * <b>LAMBDA EXPRESSION - fills the maintainWeeklyAppointments observable list with the results of the if condition. Ultimately, adds result to the list if applicable.</b>
      * </p>
      * @param actionEvent
      */
@@ -452,7 +452,7 @@ public class AppointmentController implements Initializable {
      * When this radio button is chosen, the appointments within the month will appear in the appointment table.
      * <br><br>
      * <p>
-     * <b>Lambda Expression</b> fills the maintainMonthlyAppointments observable list with the results of the if condition, if applicable.
+     * <b>LAMBDA EXPRESSION - fills the maintainMonthlyAppointments observable list with the results of the if condition, if applicable.</b>
      * </p>
      * @param actionEvent
      */

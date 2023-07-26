@@ -110,7 +110,7 @@ public class ReportsController {
      * Gathers data from appointments to detect the number of appointments by month and by type.
      * <br><br>
      * <p>
-     * <b>Lambda Expression </b> used to efficiently fill the maintainAppointments observable list with data from appointments. Shortens code to do so.
+     * <b>LAMBDA EXPRESSION - used to efficiently fill the maintainAppointments observable list with data from appointments.</b>
      * </p>
      * @throws SQLException
      */
@@ -123,7 +123,7 @@ public class ReportsController {
             ObservableList<String> newAppoint = FXCollections.observableArrayList();
             ObservableList<ReportByMonth> monthlyReport = FXCollections.observableArrayList();
             ObservableList<ReportByType> typeReport = FXCollections.observableArrayList();
-            //Lambda Expression for observable list
+            //Lambda Expression - used to efficiently fill the maintainAppointments observable list with data from appointments.
             maintainAppointments.forEach(appointment -> {
                 type.add(appointment.getAppointType());
             });

@@ -1,4 +1,7 @@
 package main;
+/**
+ * @author Darren Woods
+ */
 
 import database.DBConnect;
 import javafx.application.Application;

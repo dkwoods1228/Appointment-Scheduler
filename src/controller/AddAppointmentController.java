@@ -219,13 +219,18 @@ public class AddAppointmentController {
     }
 
     /**
-     * Initializes and sets/fills ComboBoxes
+     * Initializes and sets/fills ComboBoxes.
+     * <br><br>
+     * <p>
+     *     <b>LAMBDA EXPRESSION - forEach used to easily fill contactName into the observable list, maintainContacts. </b>
+     * </p>
      * @throws SQLException
      */
     @FXML
     public void initialize() throws SQLException {
         ObservableList<Contact> maintainContacts = ContactDAO.getContacts();
         ObservableList<String> contacts = FXCollections.observableArrayList();
+        //Lambda Expression - forEach used to easily fill contactName into the observable list, maintainContacts.
         maintainContacts.forEach(contact -> contacts.add(contact.getContactName()));
         ObservableList<String> times = FXCollections.observableArrayList();
 

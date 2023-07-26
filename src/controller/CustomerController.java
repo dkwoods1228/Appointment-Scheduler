@@ -270,6 +270,10 @@ public class CustomerController implements Initializable {
 
     /**
      * Creation and entry of the country and state/province combo boxes.
+     * <br><br>
+     * <p>
+     *     <b>LAMBDA EXPRESSION - fills the first level division observable lists by easily pulling countryID data and assigning them to given values. </b>
+     * </p>
      * @param actionEvent
      * @throws SQLException
      */
@@ -281,7 +285,7 @@ public class CustomerController implements Initializable {
             ObservableList<String> US = FXCollections.observableArrayList();
             ObservableList<String> UK = FXCollections.observableArrayList();
             ObservableList<String> Canada = FXCollections.observableArrayList();
-
+            //Lambda Expression - - fills the first level division observable lists by easily pulling countryID data and assigning them to given values.
             maintainDivisions.forEach(Division -> {
                 if (Division.getCountryID() == 1) {
                     US.add(Division.getDivision());
@@ -325,6 +329,10 @@ public class CustomerController implements Initializable {
 
     /**
      * Initializes data within the customers table.
+     * <br><br>
+     * <p>
+     *     <b>LAMBDA EXPRESSION - fills first level division(maintainDivisions) observable list with the divisions.</b>
+     * </p>
      * @param url
      * @param resourceBundle
      */
@@ -348,7 +356,7 @@ public class CustomerController implements Initializable {
 
             maintainCountries.stream().map(Countries::getCountry).forEach(countries::add);
             updateCustomerCountry.setItems(countries);
-
+            //Lambda Expression
             maintainDivisions.forEach(Division -> divisions.add(Division.getDivision()));
             updateCustomerStateProv.setItems(divisions);
             customerTable.setItems(maintainCustomers);
