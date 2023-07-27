@@ -80,8 +80,8 @@ public class AddAppointmentController {
 
                 ZonedDateTime startZone = ZonedDateTime.of(startLocalAll, ZoneId.systemDefault());
                 ZonedDateTime endZone = ZonedDateTime.of(endLocalAll, ZoneId.systemDefault());
-                ZonedDateTime startToEasternTime = startZone.withZoneSameInstant(ZoneId.of("America/Chicago"));
-                ZonedDateTime endToEasternTime = endZone.withZoneSameInstant(ZoneId.of("America/Chicago"));
+                ZonedDateTime startToEasternTime = startZone.withZoneSameInstant(ZoneId.of("America/New_York"));
+                ZonedDateTime endToEasternTime = endZone.withZoneSameInstant(ZoneId.of("America/New_York"));
                 //if any of these scenarios/errors occur, return user to the same page.
                 if (startToEasternTime.toLocalDate().getDayOfWeek().getValue() == (DayOfWeek.SUNDAY.getValue()) ||
                         startToEasternTime.toLocalDate().getDayOfWeek().getValue() == (DayOfWeek.SATURDAY.getValue()) ||
@@ -98,8 +98,8 @@ public class AddAppointmentController {
                         || endToEasternTime.toLocalTime().isBefore(LocalTime.of(8, 0, 0)) || endToEasternTime.toLocalTime().isAfter(LocalTime.of(22, 0, 0))) {
                     Alert timeOutsideBusiness = new Alert(Alert.AlertType.ERROR);
                     timeOutsideBusiness.setTitle("Error");
-                    timeOutsideBusiness.setHeaderText("Outside Business Operations");
-                    timeOutsideBusiness.setContentText("You have selected a time outside of business operations. Business hours are normally 8:00am-10:00pm.");
+                    timeOutsideBusiness.setHeaderText("Outside of Business Operations");
+                    timeOutsideBusiness.setContentText("You have selected a time outside of business operations. Business hours are normally 8:00am-10:00pm EST.");
                     timeOutsideBusiness.showAndWait();
                     return;
                 }
@@ -135,7 +135,7 @@ public class AddAppointmentController {
                             Alert overlapAppoint = new Alert(Alert.AlertType.ERROR);
                             overlapAppoint.setTitle("Error");
                             overlapAppoint.setHeaderText("Overlapping Appointment");
-                            overlapAppoint.setContentText("This appointment will overlap with an existing appointment.");
+                            overlapAppoint.setContentText("This appointment overlaps with an existing appointment that the selected customer is already assigned to. To continue, either alter the time of the appointment or the selected customer ID to avoid an overlap.");
                             overlapAppoint.showAndWait();
                             return;
                         }
@@ -144,7 +144,7 @@ public class AddAppointmentController {
                             Alert overlapStartTime = new Alert(Alert.AlertType.ERROR);
                             overlapStartTime.setTitle("Error");
                             overlapStartTime.setHeaderText("Overlapping Appointment");
-                            overlapStartTime.setContentText("The start time of this appointment will overlap with an existing appointment.");
+                            overlapStartTime.setContentText("The start time of this appointment will overlap with an existing appointment that the selected customer is already assigned to. To continue, either alter the time of the appointment or the selected customer ID to avoid an overlap..");
                             overlapStartTime.showAndWait();
                             return;
                         }
@@ -153,7 +153,7 @@ public class AddAppointmentController {
                             Alert overlapEndTime = new Alert(Alert.AlertType.ERROR);
                             overlapEndTime.setTitle("Error");
                             overlapEndTime.setHeaderText("Overlapping Appointment");
-                            overlapEndTime.setContentText("The end time of this appointment will overlap with an existing appointment.");
+                            overlapEndTime.setContentText("The end time of this appointment will overlap with an existing appointment that the selected customer is already assigned to.");
                             overlapEndTime.showAndWait();
                             return;
                         }

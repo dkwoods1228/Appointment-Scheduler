@@ -224,8 +224,8 @@ public class AppointmentController implements Initializable {
                 ZonedDateTime startZone = ZonedDateTime.of(startLocalAll, ZoneId.systemDefault());
                 ZonedDateTime endZone = ZonedDateTime.of(endLocalAll, ZoneId.systemDefault());
 
-                ZonedDateTime startToEasternTime = startZone.withZoneSameInstant(ZoneId.of("America/Chicago"));
-                ZonedDateTime endToEasternTime = endZone.withZoneSameInstant(ZoneId.of("America/Chicago"));
+                ZonedDateTime startToEasternTime = startZone.withZoneSameInstant(ZoneId.of("America/New_York"));
+                ZonedDateTime endToEasternTime = endZone.withZoneSameInstant(ZoneId.of("America/New_York"));
                 //avoids scheduling an appointment on Saturdays and Sundays
                 if (startToEasternTime.toLocalDate().getDayOfWeek().getValue() == (DayOfWeek.SUNDAY.getValue()) ||
                         startToEasternTime.toLocalDate().getDayOfWeek().getValue() == (DayOfWeek.SATURDAY.getValue()) ||
@@ -277,7 +277,7 @@ public class AppointmentController implements Initializable {
                         Alert overlapAppoint = new Alert(Alert.AlertType.ERROR);
                         overlapAppoint.setTitle("Error");
                         overlapAppoint.setHeaderText("Overlapping Appointment");
-                        overlapAppoint.setContentText("This appointment will overlap with an existing appointment.");
+                        overlapAppoint.setContentText("This appointment will overlap with an existing appointment that the selected customer is already assigned to. To continue, either alter the time of the appointment or the selected customer ID to avoid an overlap.");
                         overlapAppoint.showAndWait();
                         return;
                     }
@@ -286,7 +286,7 @@ public class AppointmentController implements Initializable {
                         Alert overlapStartTime = new Alert(Alert.AlertType.ERROR);
                         overlapStartTime.setTitle("Error");
                         overlapStartTime.setHeaderText("Overlapping Appointment");
-                        overlapStartTime.setContentText("The start time of this appointment will overlap with an existing appointment.");
+                        overlapStartTime.setContentText("The start time of this appointment will overlap with an existing appointment that the selected customer is already assigned to. To continue, either alter the time of the appointment or the selected customer ID to avoid an overlap.");
                         overlapStartTime.showAndWait();
                         return;
                     }
@@ -295,7 +295,7 @@ public class AppointmentController implements Initializable {
                         Alert overlapStartTime = new Alert(Alert.AlertType.ERROR);
                         overlapStartTime.setTitle("Error");
                         overlapStartTime.setHeaderText("Overlapping Appointment");
-                        overlapStartTime.setContentText("The end time of this appointment will overlap with an existing appointment.");
+                        overlapStartTime.setContentText("The end time of this appointment will overlap with an existing appointment that the selected customer is already assigned to. To continue, either alter the time of the appointment or the selected customer ID to avoid an overlap..");
                         overlapStartTime.showAndWait();
                         return;
                     }
