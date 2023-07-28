@@ -93,17 +93,6 @@ public class AddAppointmentController {
                 ZonedDateTime startToEasternTime = startZone.withZoneSameInstant(ZoneId.of("America/New_York"));
                 ZonedDateTime endToEasternTime = endZone.withZoneSameInstant(ZoneId.of("America/New_York"));
 
-                LocalTime checkStartAppointTime = startToEasternTime.toLocalTime();
-                LocalTime checkEndAppointTime = endToEasternTime.toLocalTime();
-
-                DayOfWeek checkStartAppointDate = startToEasternTime.toLocalDate().getDayOfWeek();
-                DayOfWeek checkEndAppointDate = endToEasternTime.toLocalDate().getDayOfWeek();
-
-                int checkStartAppointDateValue = checkStartAppointDate.getValue();
-                int checkEndAppointDateValue = checkEndAppointDate.getValue();
-
-                int startOfBusinessWeek = DayOfWeek.MONDAY.getValue();
-                int endOfBusinessWeek = DayOfWeek.FRIDAY.getValue();
                 //if any of these scenarios/errors occur, return user to the same page.
                 if (startToEasternTime.toLocalDate().getDayOfWeek().getValue() == (DayOfWeek.SUNDAY.getValue()) ||
                         startToEasternTime.toLocalDate().getDayOfWeek().getValue() == (DayOfWeek.SATURDAY.getValue()) ||
@@ -190,8 +179,8 @@ public class AddAppointmentController {
                     prepare.setString(3, addAppointDescription.getText());
                     prepare.setString(4, addAppointLocation.getText());
                     prepare.setString(5, addAppointType.getText());
-                    prepare.setString(6, utcStart);
-                    prepare.setString(7, utcEnd);
+                    prepare.setTimestamp(6, Timestamp.valueOf(utcStart));
+                    prepare.setTimestamp(7, Timestamp.valueOf(utcEnd));
                     prepare.setTimestamp(8, Timestamp.valueOf(LocalDateTime.now()));
                     prepare.setString(9, "admin");
                     prepare.setTimestamp(10, Timestamp.valueOf(LocalDateTime.now()));
@@ -249,8 +238,8 @@ public class AddAppointmentController {
         maintainContacts.forEach(contact -> contacts.add(contact.getContactName()));
         ObservableList<String> times = FXCollections.observableArrayList();
 
-        LocalTime min = LocalTime.MIN.plusHours(8);
-        LocalTime max = LocalTime.MAX.minusHours(1).minusMinutes(45);
+        LocalTime min = LocalTime.MIN.plusHours(0);
+        LocalTime max = LocalTime.MAX.minusMinutes(45);
 
         if (!min.equals(0) || !max.equals(0)) {
             while (min.isBefore(max)) {

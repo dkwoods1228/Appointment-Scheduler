@@ -158,8 +158,8 @@ public class AppointmentController implements Initializable {
                 updateAppointUserID.setValue(appointClicked.getUserID());
 
                 ObservableList<String> times = FXCollections.observableArrayList();
-                LocalTime min = LocalTime.MIN.plusHours(8);
-                LocalTime max = LocalTime.MAX.minusHours(1).minusMinutes(45);
+                LocalTime min = LocalTime.MIN.plusHours(0);
+                LocalTime max = LocalTime.MAX.minusMinutes(45);
 
                 if (!min.equals(0) || !max.equals(0)) {
                     while (min.isBefore(max)) {
