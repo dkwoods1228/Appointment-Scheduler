@@ -73,15 +73,37 @@ public class AddAppointmentController {
                 LocalDate startLocalDate = addAppointStartDate.getValue();
                 LocalDate endLocalDate = addAppointEndDate.getValue();
                 DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
+
+                String startDateOfAppoint = addAppointStartDate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                String startTimeOfAppoint = addAppointStartTime.getValue();
+                String endDateOfAppoint = addAppointEndDate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                String endTimeOfAppoint = addAppointEndTime.getValue();
+
+                System.out.println("This Date + This Start " + startDateOfAppoint + " " + startTimeOfAppoint + ":00");
+                String utcStart = timeAndDateToUTC(startDateOfAppoint + " " + startTimeOfAppoint + ":00");
+                String utcEnd = timeAndDateToUTC(endDateOfAppoint + " " + endTimeOfAppoint + ":00");
+
                 LocalTime startLocalTime = LocalTime.parse(addAppointStartTime.getValue(), timeFormat);
                 LocalTime endLocalTime = LocalTime.parse(addAppointEndTime.getValue(), timeFormat);
-                LocalDateTime startLocalAll = LocalDateTime.of(startLocalDate, startLocalTime);
-                LocalDateTime endLocalAll = LocalDateTime.of(endLocalDate, endLocalTime);
+                LocalDateTime startDateAndTime = LocalDateTime.of(startLocalDate, startLocalTime);
+                LocalDateTime endDateAndTime = LocalDateTime.of(endLocalDate, endLocalTime);
 
-                ZonedDateTime startZone = ZonedDateTime.of(startLocalAll, ZoneId.systemDefault());
-                ZonedDateTime endZone = ZonedDateTime.of(endLocalAll, ZoneId.systemDefault());
+                ZonedDateTime startZone = ZonedDateTime.of(startDateAndTime, ZoneId.systemDefault());
+                ZonedDateTime endZone = ZonedDateTime.of(endDateAndTime, ZoneId.systemDefault());
                 ZonedDateTime startToEasternTime = startZone.withZoneSameInstant(ZoneId.of("America/New_York"));
                 ZonedDateTime endToEasternTime = endZone.withZoneSameInstant(ZoneId.of("America/New_York"));
+
+                LocalTime checkStartAppointTime = startToEasternTime.toLocalTime();
+                LocalTime checkEndAppointTime = endToEasternTime.toLocalTime();
+
+                DayOfWeek checkStartAppointDate = startToEasternTime.toLocalDate().getDayOfWeek();
+                DayOfWeek checkEndAppointDate = endToEasternTime.toLocalDate().getDayOfWeek();
+
+                int checkStartAppointDateValue = checkStartAppointDate.getValue();
+                int checkEndAppointDateValue = checkEndAppointDate.getValue();
+
+                int startOfBusinessWeek = DayOfWeek.MONDAY.getValue();
+                int endOfBusinessWeek = DayOfWeek.FRIDAY.getValue();
                 //if any of these scenarios/errors occur, return user to the same page.
                 if (startToEasternTime.toLocalDate().getDayOfWeek().getValue() == (DayOfWeek.SUNDAY.getValue()) ||
                         startToEasternTime.toLocalDate().getDayOfWeek().getValue() == (DayOfWeek.SATURDAY.getValue()) ||
@@ -109,7 +131,7 @@ public class AddAppointmentController {
                 int disabledID = Integer.parseInt(String.valueOf((int) (Math.random() * 50)));
 
 
-                    if (endLocalAll.isBefore(startLocalAll)) {
+                    if (endDateAndTime.isBefore(startDateAndTime)) {
                         Alert valueError = new Alert(Alert.AlertType.ERROR);
                         valueError.setTitle("Error");
                         valueError.setHeaderText("Start Time After End Time");
@@ -117,7 +139,7 @@ public class AddAppointmentController {
                         valueError.showAndWait();
                         return;
                     }
-                    if (endLocalAll.isEqual(startLocalAll)) {
+                    if (endDateAndTime.isEqual(startDateAndTime)) {
                         Alert sameTimes = new Alert(Alert.AlertType.ERROR);
                         sameTimes.setTitle("Error");
                         sameTimes.setHeaderText("Same Start and End Times");
@@ -131,7 +153,7 @@ public class AddAppointmentController {
 
                         //overlapping appointments
                         if ((alteredCustomID == appointment.getCustomerID()) && (disabledID != appointment.getAppointID()) &&
-                                (startLocalAll.isBefore(startAppointVerify)) && (endLocalAll.isAfter(endAppointVerify))) {
+                                (startDateAndTime.isBefore(startAppointVerify)) && (endDateAndTime.isAfter(endAppointVerify))) {
                             Alert overlapAppoint = new Alert(Alert.AlertType.ERROR);
                             overlapAppoint.setTitle("Error");
                             overlapAppoint.setHeaderText("Overlapping Appointment");
@@ -140,7 +162,7 @@ public class AddAppointmentController {
                             return;
                         }
                         if ((alteredCustomID == appointment.getCustomerID()) && (disabledID != appointment.getAppointID()) &&
-                                (startLocalAll.isAfter(startAppointVerify)) && (startLocalAll.isBefore(endAppointVerify))) {
+                                (startDateAndTime.isAfter(startAppointVerify)) && (startDateAndTime.isBefore(endAppointVerify))) {
                             Alert overlapStartTime = new Alert(Alert.AlertType.ERROR);
                             overlapStartTime.setTitle("Error");
                             overlapStartTime.setHeaderText("Overlapping Appointment");
@@ -149,7 +171,7 @@ public class AddAppointmentController {
                             return;
                         }
                         if ((alteredCustomID == appointment.getCustomerID()) && (disabledID != appointment.getAppointID()) &&
-                                (endLocalAll.isAfter(startAppointVerify)) && (endLocalAll.isBefore(endAppointVerify))) {
+                                (endDateAndTime.isAfter(startAppointVerify)) && (endDateAndTime.isBefore(endAppointVerify))) {
                             Alert overlapEndTime = new Alert(Alert.AlertType.ERROR);
                             overlapEndTime.setTitle("Error");
                             overlapEndTime.setHeaderText("Overlapping Appointment");
@@ -158,13 +180,6 @@ public class AddAppointmentController {
                             return;
                         }
                     }
-                    String timeStart = addAppointStartTime.getValue();
-                    String dateStart = addAppointStartDate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-                    String timeEnd = addAppointEndTime.getValue();
-                    String dateEnd = addAppointEndDate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-                    String utcStart = timeAndDateToUTC(dateStart + " " + timeStart + ":00");
-                    String utcEnd = timeAndDateToUTC(dateEnd + " " + timeEnd + ":00");
-
                     //adds new appointment to the database
                     String sqlCommand = "INSERT INTO appointments (Appointment_ID, Title, Description, Location, Type, Start, End, Create_Date, Created_By, Last_Update, Last_Updated_By, Customer_ID, User_ID, Contact_ID) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
                     DBConnect.setPreparedStatement(DBConnect.getConnection(), sqlCommand);

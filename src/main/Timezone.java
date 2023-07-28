@@ -19,8 +19,8 @@ public class Timezone {
         ZonedDateTime dateTimeZone = dateTimeLocal.atZone(ZoneId.of(ZoneId.systemDefault().toString()));
         ZonedDateTime dateTimeUTC = dateTimeZone.withZoneSameInstant(ZoneId.of("UTC"));
         LocalDateTime localEV = dateTimeUTC.toLocalDateTime();
-        String utc = localEV.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        return utc;
+        String outputUTC = localEV.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        return outputUTC;
 
     }
 }
