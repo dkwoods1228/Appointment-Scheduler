@@ -1,9 +1,7 @@
 # <b>Client Scheduler</b>
 <ul>
 <li><b>Author:</b> Darren Woods</li>
-<li><b>Email Address:</b> dwoo515@wgu.edu</li>
 <li><b>Application Version:</b> 1.0</li>
-<li><b>Date of Submission:</b> July 25th, 2023</li>
 </ul>
 
 ### Purpose of Application:
@@ -33,6 +31,3 @@ The purpose of the application is to give users an enjoyable experience using a 
 <li>Enter correct username and password.</li>
 <li>Proceed to the rest of the program.</li>
 </ol>
-
-###Additional Report:
-For the third third report of my choice, I decided to showcase the number of customers (that are incorporated into the customers table) per country. The different country options are the U.S., U.K., and Canada. To obtain this particular data, I pulled customer and country data from the database, and created a customer/country relation method to ensure the information was accurate and correctly placed in the table.
