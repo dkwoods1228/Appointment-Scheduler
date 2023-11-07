@@ -1,4 +1,4 @@
-#<b>Client Scheduler</b>
+# <b>Client Scheduler</b>
 <ul>
 <li><b>Author:</b> Darren Woods</li>
 <li><b>Email Address:</b> dwoo515@wgu.edu</li>
@@ -6,11 +6,11 @@
 <li><b>Date of Submission:</b> July 25th, 2023</li>
 </ul>
 
-###Purpose of Application:
+### Purpose of Application:
 The purpose of the application is to give users an enjoyable experience using a functional and useful scheduling application.
 <br>
 
-###Java Information:
+### Java Information:
 <ul>
 <li><b>IDE:</b> Intellij IDEA 2021.1.3 (Community Edition)</li>
 <li><b>IDE Build:</b> #IC-211.7628.21, built on June 30, 2021.</li>
@@ -19,12 +19,12 @@ The purpose of the application is to give users an enjoyable experience using a 
 <li><b>JavaFX Version:</b> JavaFX-SDK-17.0.1</li>
 </ul>
 
-###mySQL Information:
+### mySQL Information:
 <ul>
 <li><b>MySQL Connector Version Number:</b> mysql_connector_java_8.0.25</li>
 </ul>
 
-###How to Run the Program:
+### How to Run the Program:
 <ol><li>Install and open Intellij</li>
 <li>Ensure javafx controls and graphics are installed.</li>
 <li>Ensure the proper database is connected.</li>
