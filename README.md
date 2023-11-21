@@ -1,4 +1,4 @@
-# <b>Client Scheduler</b>
+# <b>Appointment Scheduler</b>
 <ul>
 <li><b>Author:</b> Darren Woods</li>
 <li><b>Application Version:</b> 1.0</li>
